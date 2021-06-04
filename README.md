@@ -133,14 +133,36 @@ console.log(clean.cleanArraysInObject(object2)) // { number2: [{ number1: "numbe
 
 ### getFiles
 
-> Get all files inside a path even inside of folders inside the path.
+> Get all files inside a path and files inside folders if needed
 
 ```js
 import { getFiles } from '@secjs/utils'
 
-for await (const file of getFiles('any/path')) {
+const iterateFolders = false 
+for await (const file of getFiles('any/path', iterateFolders)) {
   console.log(file) // /home/path/to/your/file
 }
+```
+
+### getFolders
+
+> Get all folders inside a path and files if needed.
+
+```js
+import { getFolders } from '@secjs/utils'
+
+const withFiles = true
+const directory = await getFolders('some/path', withFiles)
+
+// {
+//   path: '/home/some/path',
+//   files: ['/home/some/path/file.ts'],
+//   folders: [{
+//     path: '/home/some/path/folder',
+//     files: ['/home/some/path/file.ts'],
+//     folders: []
+//   }] as IDirectory[]
+// } as IDirectory
 ```
 
 ### fileExists
