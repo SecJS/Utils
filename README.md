@@ -30,7 +30,7 @@ yarn add @secjs/utils
 > Use Numbers to manipulate numbers the best way
 
 ```js
-import { Numbers } from '@secjs/core/utils'
+import { Numbers } from '@secjs/utils'
 
 const numbers = new Numbers()
 
@@ -54,7 +54,7 @@ console.log(numbers.arrayAverage(arrayOfNumbers)) // 3
 > Generate UUID tokens using a prefix, and validate it to using uuidv4 lib
 
 ```js
-import { Token } from '@secjs/core/utils'
+import { Token } from '@secjs/utils'
 
 const token = new Token()
 
@@ -73,7 +73,7 @@ console.log(isUuid) // true
 > Use Parser to parse all type of data of you application
 
 ```js
-import { Parser } from '@secjs/core/utils'
+import { Parser } from '@secjs/utils'
 
 const parser = new Parser()
 
@@ -92,10 +92,8 @@ const object = {
   lenon: 'lenon',
 }
 const parsed3 = parser.jsonToFormData(object)
-const parsed4 = parser.jsonToQueryString(object)
 
 console.log(parsed3) // &joao=joao&lenon=lenon
-console.log(parsed4) // ?joao=joao&lenon=lenon
 ```
 
 ---
@@ -105,7 +103,7 @@ console.log(parsed4) // ?joao=joao&lenon=lenon
 > Use Clean to clean arrays and objects
 
 ```js
-import { Clean } from '@secjs/core/utils'
+import { Clean } from '@secjs/utils'
 
 const clean = new Clean()
 
@@ -133,12 +131,37 @@ console.log(clean.cleanArraysInObject(object2)) // { number2: [{ number1: "numbe
 
 ## Functions Usage
 
+### getFiles
+
+> Get all files inside a path even inside of folders inside the path.
+
+```js
+import { getFiles } from '@secjs/utils'
+
+for await (const file of getFiles('any/path')) {
+  console.log(file) // /home/path/to/your/file
+}
+```
+
+### fileExists
+
+> Return true if file exists or false
+
+```js
+import { fileExists } from '@secjs/utils'
+
+// Just abstracting the error that node throws 
+// if file does not exist
+
+console.log(fileExists('path/to/file')) // true or false
+```
+
 ### observeChanges
 
 > Use observeChanges to observe changes in the value of an object
 
 ```js
-import { observeChanges } from '@secjs/core/utils'
+import { observeChanges } from '@secjs/utils'
 
 const data = {}
 
@@ -162,7 +185,7 @@ data.name = 'João'
 > Use removeDuplicated to remove duplicated values from an Array
 
 ```js
-import { removeDuplicated } from '@secjs/core/utils'
+import { removeDuplicated } from '@secjs/utils'
 
 const array = [1, 1, 2, 4, 4]
 
@@ -174,7 +197,7 @@ console.log(removeDuplicated(array)) // [1, 2, 4]
 > Use randomColor to generate a random Hexadecimal color
 
 ```js
-import { randomColor } from '@secjs/core/utils'
+import { randomColor } from '@secjs/utils'
 
 console.log(randomColor()) // #7059c1
 ```
@@ -184,7 +207,7 @@ console.log(randomColor()) // #7059c1
 > Use isArrayOfObjects to verify if all values inside of the array are objects
 
 ```js
-import { isArrayOfObjects } from '@secjs/core/utils'
+import { isArrayOfObjects } from '@secjs/utils'
 
 const array1 = [1, 2, 3]
 const array2 = [{ foo: 'bar' }, 2, 'string']
@@ -204,7 +227,7 @@ console.log(isArrayOfObjects(fakeArray)) // false
 > Use urlify to inject some URL of a string inside a HTML Link
 
 ```js
-import { urlify } from '@secjs/core/utils'
+import { urlify } from '@secjs/utils'
 
 const message = 'Link: https://google.com'
 
@@ -218,7 +241,7 @@ console.log(urlify(message)) // Link: <a href="https://google.com">https://googl
 > Use scheduler to execute some function based on MS
 
 ```js
-import { scheduler } from '@secjs/core/utils'
+import { scheduler } from '@secjs/utils'
 
 const func = () => {
     console.log('Starting at...', new Date.toISOString())
@@ -234,7 +257,7 @@ scheduler(func, 3000) // scheduler function will execute the func every 3 second
 > Use paginate get meta and links from for response
 
 ```js
-import { paginate } from '@secjs/core/utils'
+import { paginate } from '@secjs/utils'
 import { PaginationContract } from '@secjs/core/contracts'
 
 const filters = {
@@ -278,7 +301,7 @@ console.log(paginate(array, total, pagination))
 > Use fillable to return the array reduced by keys
 
 ```js
-import { fillable } from '@secjs/core/utils'
+import { fillable } from '@secjs/utils'
 
 const object = {
   number1: 'good string',
@@ -297,7 +320,7 @@ console.log(readyToSaveOnDatabase) // { number1: 'good string' }
 > Use random to generate random strings by the length you want using crypto
 
 ```js
-import { random } from '@secjs/core/utils'
+import { random } from '@secjs/utils'
 
 const randomStringWith10Chars = await random(10)
 
@@ -311,7 +334,7 @@ console.log(randomStringWith10Chars) // qwiortlkps
 > Use sleep to let you code sleep for sometime
 
 ```js
-import { sleep } from '@secjs/core/utils'
+import { sleep } from '@secjs/utils'
 
 await sleep(2000) // Your code will stop in this line for two seconds
 ```
@@ -323,7 +346,7 @@ await sleep(2000) // Your code will stop in this line for two seconds
 > Use sort to get a sorted value from an array
 
 ```js
-import { sort } from '@secjs/core/utils'
+import { sort } from '@secjs/utils'
 
 const array = ['a', 'b', 'c'] // Array length = 2 (0, 1, 2)
 const index = sort(array) // Sorted index value, could only be 0, 1 or 2
@@ -338,7 +361,7 @@ console.log(array[index]) // a, b or c
 > Find out what's the distance between a coordinate to other
 
 ```js
-import { kmRadius, ICoordinate } from '@secjs/core/utils'
+import { kmRadius, ICoordinate } from '@secjs/utils'
 
 // Use type number for more precision,
 // but you can use string to,
@@ -365,7 +388,7 @@ console.log(distance) // The distance in Kilometers (KM)
 > Validate if is a valid CPF Document or not.
 
 ```js
-import { isCpf } from '@secjs/core/utils'
+import { isCpf } from '@secjs/utils'
 
 // CPF (911.881.600-28) Generated using https://4devs.com.br
 
@@ -384,7 +407,7 @@ console.log(isCpf("000.000.000-00")) // false
 > Validate if is a valid CNPJ Document or not.
 
 ```js
-import { isCnpj } from '@secjs/core/utils'
+import { isCnpj } from '@secjs/utils'
 
 // CNPJ (77.111.157/0001-19) Generated using https://4devs.com.br
 
