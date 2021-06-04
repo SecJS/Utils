@@ -23,7 +23,7 @@ export async function getFolders(
   const dirents = await promises.readdir(dir, { withFileTypes: true })
 
   const directory = {
-    path: dir,
+    path: resolve(dir),
     files: [],
     folders: [],
   }
