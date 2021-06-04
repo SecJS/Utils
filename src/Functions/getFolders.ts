@@ -3,7 +3,7 @@ import { promises } from 'fs'
 
 interface IDirectory {
   path: string
-  files: string[]
+  files: string[] | Buffer[]
   folders: IDirectory[]
 }
 
@@ -12,11 +12,13 @@ interface IDirectory {
  *
  * @param dir The directory
  * @param withFiles If need to get files inside folders by default false
+ * @param buffer Return the buffer of the file by default false
  * @return The directory root with sub folders and files when withFiles true
  */
 export async function getFolders(
   dir: string,
   withFiles = false,
+  buffer = false,
 ): Promise<IDirectory> {
   const dirents = await promises.readdir(dir, { withFileTypes: true })
 
@@ -36,7 +38,7 @@ export async function getFolders(
     }
 
     if (dirent.isFile() && withFiles) {
-      directory.files.push(res)
+      directory.files.push(buffer ? Buffer.from(res) : res)
     }
   }
 

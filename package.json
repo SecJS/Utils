@@ -1,6 +1,6 @@
 {
   "name": "@secjs/utils",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "scripts": {
     "build": "tsc",
