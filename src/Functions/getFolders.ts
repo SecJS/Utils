@@ -3,7 +3,7 @@ import { resolve, basename } from 'path'
 
 export interface FileContract {
   name: string
-  value: string | Buffer[]
+  value: string | Buffer
 }
 
 export interface DirectoryContract {
@@ -45,18 +45,11 @@ export async function getFolders(
     }
 
     if (dirent.isFile() && withFiles) {
-      if (!fullPath && !buffer) {
-        directory.files.push({
-          name: basename(res),
-          value: await promises.readFile(res, 'utf-8'),
-        })
-
-        continue
-      }
-
       directory.files.push({
-        name: basename(res),
-        value: buffer ? Buffer.from(res) : await promises.readFile(res),
+        name: fullPath ? res : basename(res),
+        value: buffer
+          ? Buffer.from(res)
+          : await promises.readFile(res, 'utf-8'),
       })
     }
   }
