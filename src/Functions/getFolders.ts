@@ -32,7 +32,7 @@ export async function getFolders(
     const res = resolve(dir, dirent.name)
 
     if (dirent.isDirectory()) {
-      directory.folders.push(await getFolders(res, withFiles))
+      directory.folders.push(await getFolders(res, withFiles, buffer))
 
       continue
     }
