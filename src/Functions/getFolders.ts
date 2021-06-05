@@ -1,10 +1,10 @@
 import { resolve } from 'path'
 import { promises } from 'fs'
 
-interface IDirectory {
+export interface DirectoryContract {
   path: string
   files: string[] | Buffer[]
-  folders: IDirectory[]
+  folders: DirectoryContract[]
 }
 
 /**
@@ -19,7 +19,7 @@ export async function getFolders(
   dir: string,
   withFiles = false,
   buffer = false,
-): Promise<IDirectory> {
+): Promise<DirectoryContract> {
   const dirents = await promises.readdir(dir, { withFileTypes: true })
 
   const directory = {
