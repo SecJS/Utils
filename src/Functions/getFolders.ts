@@ -1,9 +1,14 @@
 import { promises } from 'fs'
 import { resolve, basename } from 'path'
 
+export interface FileContract {
+  name: string
+  value: string | Buffer[]
+}
+
 export interface DirectoryContract {
   path: string
-  files: string[] | Buffer[]
+  files: FileContract[]
   folders: DirectoryContract[]
 }
 
@@ -41,12 +46,18 @@ export async function getFolders(
 
     if (dirent.isFile() && withFiles) {
       if (!fullPath && !buffer) {
-        directory.files.push(basename(res))
+        directory.files.push({
+          name: basename(res),
+          value: await promises.readFile(res, 'utf-8'),
+        })
 
         continue
       }
 
-      directory.files.push(buffer ? Buffer.from(res) : res)
+      directory.files.push({
+        name: basename(res),
+        value: buffer ? Buffer.from(res) : await promises.readFile(res),
+      })
     }
   }
 
