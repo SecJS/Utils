@@ -576,10 +576,10 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
-"@secjs/contracts@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@secjs/contracts/-/contracts-1.0.3.tgz#ef61246e7ce57bc65e97877bfd64733e03b6ee7f"
-  integrity sha512-VCyBi96vvBf4JBWf8GM8Y+5fMmyDqNxWjm6i8L42fJCizyul4i5XWQbTq5SzEyH60LP5cK7QNLok2cadCOzEXQ==
+"@secjs/contracts@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@secjs/contracts/-/contracts-1.0.4.tgz#79d8127afd3e42454f281ad4b4a58a1d2e49b44a"
+  integrity sha512-yXzC2bCk5o+7EQUye79k8mB4fkzBsOvQYkhDAJtqjy04tR14znbp6gBqAOvU3OHkJ6DlbwWGmsVEfk98qVo+0w==
 
 "@secjs/logger@^1.1.3":
   version "1.1.3"

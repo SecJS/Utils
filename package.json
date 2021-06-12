@@ -1,6 +1,6 @@
 {
   "name": "@secjs/utils",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "",
   "scripts": {
     "build": "tsc",
@@ -16,7 +16,7 @@
   "author": "João Lenon <lenonsec7@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@secjs/contracts": "^1.0.3",
+    "@secjs/contracts": "^1.0.4",
     "@secjs/logger": "^1.1.3",
     "uuid": "^8.3.2"
   },
