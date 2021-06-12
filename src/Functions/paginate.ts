@@ -1,42 +1,9 @@
-export interface PaginationContract {
-  page?: number
-  limit?: number
-  resourceUrl?: string
-}
-
-export interface PaginationMetaContract {
-  itemCount: number
-  totalItems: number
-  totalPages: number
-  currentPage: number
-  itemsPerPage: number
-}
-
-export interface PaginationLinksContract {
-  first: string
-  previous: string
-  next: string
-  last: string
-}
-
-export interface ApiResponseContract {
-  code: string
-  path: string
-  method: string
-  status: number
-  data: any
-}
-
-export interface PaginatedResponse<TModel> {
-  data: TModel[]
-  meta: PaginationMetaContract
-  links: PaginationLinksContract
-}
+import { PaginatedResponse, PaginationContract } from '@secjs/contracts'
 
 export function paginate(
   data: any[],
   total: number,
-  pagination: any,
+  pagination: PaginationContract,
 ): PaginatedResponse<any> {
   const totalPages = Math.ceil(total / pagination.limit)
 

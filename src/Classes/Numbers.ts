@@ -1,5 +1,4 @@
 import { Parser } from './Parser'
-import { Clean } from './Clean'
 
 export class Numbers {
   /**

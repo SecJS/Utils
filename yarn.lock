@@ -576,6 +576,11 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
+"@secjs/contracts@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@secjs/contracts/-/contracts-1.0.1.tgz#c2e2300811d4b38f34035ac14749c8b9ca241ec2"
+  integrity sha512-XW79Fj4LpdXxyPErssuPcpDeZ5Z6sbP8amx7F5zyvXLZSvaxhb4zcj+wY5swGC/H+Lq4G6jNnOjU/BzIZ+iVhQ==
+
 "@secjs/logger@^1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@secjs/logger/-/logger-1.1.3.tgz#f101b876b24f5b75e94f63f40b9b3eb21c2bf9d1"

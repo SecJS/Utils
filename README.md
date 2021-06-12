@@ -280,7 +280,7 @@ scheduler(func, 3000) // scheduler function will execute the func every 3 second
 
 ```js
 import { paginate } from '@secjs/utils'
-import { PaginationContract } from '@secjs/core/contracts'
+import { PaginationContract } from '@secjs/contracts'
 
 const filters = {
   where: { id: 1 }
