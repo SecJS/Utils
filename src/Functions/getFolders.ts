@@ -1,16 +1,6 @@
 import { promises } from 'fs'
 import { resolve, basename } from 'path'
-
-export interface FileContract {
-  name: string
-  value: string | Buffer
-}
-
-export interface DirectoryContract {
-  path: string
-  files: FileContract[]
-  folders: DirectoryContract[]
-}
+import { DirectoryContract } from '@secjs/contracts'
 
 /**
  * Return all folders of a directory and files inside
