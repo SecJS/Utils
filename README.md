@@ -131,6 +131,25 @@ console.log(clean.cleanArraysInObject(object2)) // { number2: [{ number1: "numbe
 
 ## Functions Usage
 
+### download
+
+> Download an archive/image to determined path.
+
+```js
+import { download } from '@secjs/utils'
+
+;(async function () {
+  const url =
+    'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/1.png'
+  const pathToSave = `${process.cwd()}/tests`
+  const imageName = '1.png'
+  
+  await download(url, imageName, pathToSave)
+})()
+```
+
+---
+
 ### getFiles
 
 > Get all files inside a path and files inside folders if needed
