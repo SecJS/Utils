@@ -2,6 +2,7 @@ export * from './src/Classes/Token'
 export * from './src/Classes/Clean'
 export * from './src/Classes/Parser'
 export * from './src/Classes/Numbers'
+export * from './src/Classes/Blacklist'
 
 export * from './src/Functions/sort'
 export * from './src/Functions/sleep'

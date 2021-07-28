@@ -25,6 +25,38 @@ yarn add @secjs/utils
 
 ## Classes Usage
 
+### Blacklist
+
+> Use Blacklist to add, find and remove values from a blacklist/whitelist file
+
+```js
+import { Blacklist } from '@secjs/utils'
+
+const blacklist = new Blacklist()
+
+const filePath = 'blacklist.txt'
+
+await blacklist.add('192.168.0.1', filePath) // void
+
+// blacklist.txt value
+// 192.168.0.1
+
+await blacklist.add('192.168.0.2', filePath) // void
+
+// blacklist.txt value
+// 192.168.0.1
+// 192.168.0.2
+
+const valueFound = await blacklist.find('192.168.0.2', filePath) // Will return the value - 192.168.0.2
+
+await blacklist.remove('192.168.0.2', filePath) // void
+
+// blacklist.txt value
+// 192.168.0.1
+```
+
+---
+
 ### Numbers
 
 > Use Numbers to manipulate numbers the best way
