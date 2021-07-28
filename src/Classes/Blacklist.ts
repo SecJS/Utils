@@ -2,6 +2,13 @@ import { createInterface } from 'readline'
 import { createWriteStream, createReadStream } from 'fs'
 
 export class Blacklist {
+  /**
+   * Add value to a file path
+   *
+   * @param value The value to be add
+   * @param filePath The file path to the blacklist
+   * @return void
+   */
   async add(value: string, filePath: string): Promise<void> {
     return new Promise((resolve, reject) => {
       const stream = createWriteStream(filePath, { flags: 'a' })
@@ -16,7 +23,14 @@ export class Blacklist {
     })
   }
 
-  async find(value: string, filePath: string): Promise<string> {
+  /**
+   * Find value inside file path
+   *
+   * @param value The value to find inside file
+   * @param filePath The file path to the blacklist
+   * @return string|null The value found or null
+   */
+  async find(value: string, filePath: string): Promise<string | null> {
     const stream = createReadStream(filePath)
 
     const lines = createInterface({
@@ -35,6 +49,13 @@ export class Blacklist {
     return null
   }
 
+  /**
+   * Remove value inside file path
+   *
+   * @param value The value to remove inside file
+   * @param filePath The file path to the blacklist
+   * @return void The value found or null
+   */
   async remove(value: string, filePath: string): Promise<void> {
     return new Promise((resolve, reject) => {
       const readStream = createReadStream(filePath)
