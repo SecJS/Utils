@@ -1,4 +1,4 @@
-import { readFile, unlink } from 'fs/promises'
+import { promises } from 'fs'
 import { download } from '../../src/Functions/download'
 
 describe('\n download Function', () => {
@@ -10,10 +10,12 @@ describe('\n download Function', () => {
 
     await download(url, imageName, pathToSave)
 
-    const fileSavedInPath = await readFile(`${pathToSave}/${imageName}`)
+    const fileSavedInPath = await promises.readFile(
+      `${pathToSave}/${imageName}`,
+    )
 
     expect(fileSavedInPath).toBeTruthy()
 
-    await unlink(`${pathToSave}/${imageName}`)
+    await promises.unlink(`${pathToSave}/${imageName}`)
   })
 })

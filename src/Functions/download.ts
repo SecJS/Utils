@@ -1,5 +1,5 @@
 import { Transform } from 'stream'
-import { writeFile } from 'fs/promises'
+import { promises } from 'fs'
 import { request as requestHttp } from 'http'
 import { request as requestHttps } from 'https'
 
@@ -24,7 +24,7 @@ export async function download(
       })
 
       response.on('end', function () {
-        resolve(writeFile(`${path}/${name}`, data.read()))
+        resolve(promises.writeFile(`${path}/${name}`, data.read()))
       })
 
       response.on('error', () => {
