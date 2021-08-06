@@ -163,6 +163,29 @@ console.log(clean.cleanArraysInObject(object2)) // { number2: [{ number1: "numbe
 
 ## Functions Usage
 
+### pathPattern
+
+> Transform all route paths to the same pattern.
+
+```js
+import { pathPattern } from '@secjs/utils'
+
+pathPattern('/users/:id/') // returns /users/:id
+pathPattern('clients/') // returns /clients
+pathPattern('/api/v2') // returns /api/v2
+pathPattern('/api/v3/') // returns /api/v3
+
+pathPattern(['/api/v1/', 'api/v2', 'api/v3/', '/api/v4'])
+
+// returns
+// [
+//  '/api/v1',
+//  '/api/v2',
+//  '/api/v3',
+//  '/api/v4'
+// ]
+```
+
 ### download
 
 > Download an archive/image to determined path.
