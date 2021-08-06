@@ -29,6 +29,10 @@ jobs:
         run: |
           export PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g')
 
+      - run: echo ${{ env.PACKAGE_VERSION }}
+
+      - run: echo $PACKAGE_VERSION
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
