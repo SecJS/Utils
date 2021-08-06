@@ -6,6 +6,9 @@ describe('\n scheduler Function', () => {
       expect(arg).toBe(1)
     }
 
-    scheduler(func, 300, 1)
+    const interval = scheduler(func, 300, 1)
+
+    // TODO test scheduler func somehow
+    clearInterval(interval)
   })
 })
