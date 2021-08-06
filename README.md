@@ -516,3 +516,5 @@ console.log(isCnpj("00.000.000/0000-00")) // false
 ```
 
 ---
+
+Made with 🖤 by [jlenon7](https://github.com/jlenon7) :wave:
