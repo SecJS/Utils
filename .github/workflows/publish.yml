@@ -26,7 +26,8 @@ jobs:
           name: Deploy
 
       - name: Create tag name
-        run: echo "PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g')" >> $GITHUB_ENV
+        run: |
+          export PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g')
 
       - name: Create Release
         id: create_release
