@@ -1,4 +1,4 @@
-name: Utils Publish
+name: CD Utils
 
 on:
   push:
