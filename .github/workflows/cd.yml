@@ -17,32 +17,22 @@ jobs:
           node-version: '14.x'
           registry-url: 'https://registry.npmjs.org'
 
-      - run: yarn
-      - run: yarn test
-      - run: yarn build
-      - run: yarn publish --access public
+      - name: Download dependencies
+        run: yarn
+
+      - name: Run the tests inside project
+        run: yarn test
+
+      - name: Transpile typescript to javascript
+        run: yarn build
+
+      - name: Automatic GitHub Release
+        uses: justincy/github-action-npm-release@2.0.1
+        id: release
+
+      - name: Publish to NPM Registry
+        run: yarn publish --access public
+        if: steps.release.outputs.released == 'true'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           name: Deploy
-
-      - name: Create tag name
-        run: |
-          export PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g')
-
-      - run: echo ${{ env.PACKAGE_VERSION }}
-
-      - run: echo $PACKAGE_VERSION
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # provided by actions
-        with:
-          tag_name: ${{ env.PACKAGE_VERSION }}
-          release_name: Release ${{ env.PACKAGE_VERSION }}
-          body: |
-            Changes in this Release
-            - (See here)[https://github.com/SecJS/Utils/blob/master/README.md]
-          draft: false
-          prerelease: false
