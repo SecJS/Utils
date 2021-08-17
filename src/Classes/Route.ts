@@ -137,6 +137,8 @@ export class Route {
 
     route = routeArray.join('')
 
+    if (!route) route = '[/]'
+
     return new RegExp(`^${route}$`)
   }
 }
