@@ -1,5 +1,6 @@
 export * from './src/Classes/Token'
 export * from './src/Classes/Clean'
+export * from './src/Classes/Route'
 export * from './src/Classes/Parser'
 export * from './src/Classes/Numbers'
 export * from './src/Classes/Blacklist'
