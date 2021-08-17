@@ -76,5 +76,15 @@ describe('\n Route Class', () => {
     expect(matcher.test(pathTest1)).toBe(true)
     expect(matcher.test(pathTest2)).toBe(false)
     expect(matcher.test(pathTest3)).toBe(true)
+
+    const path2 = '/'
+
+    const matcher2 = route.createMatcher(path2)
+
+    expect(matcher2).toStrictEqual(/^[/]$/)
+    expect(matcher2.test(path2)).toBe(true)
+    expect(matcher2.test(pathTest1)).toBe(false)
+    expect(matcher2.test(pathTest2)).toBe(false)
+    expect(matcher2.test(pathTest3)).toBe(false)
   })
 })
