@@ -29,4 +29,15 @@ describe('\n Parser Class', () => {
 
     expect(formData).toBe('name=lenon&email=lenonSec7%40gmail.com')
   })
+
+  it('should parse form data to json', () => {
+    const formData = 'name=lenon&email=lenonSec7%40gmail.com'
+
+    const json = parser.formDataToJson(formData)
+
+    expect(json).toStrictEqual({
+      name: 'lenon',
+      email: 'lenonSec7@gmail.com',
+    })
+  })
 })

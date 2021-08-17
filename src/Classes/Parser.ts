@@ -34,7 +34,7 @@ export class Parser {
   }
 
   /**
-   * Parse an object form data
+   * Parse an object to form data
    *
    * @param object The object to parse
    * @return The object parsed to form data
@@ -45,5 +45,25 @@ export class Parser {
         return previous + `&${current}=${encodeURIComponent(object[current])}`
       }, '')
       .substring(1)
+  }
+
+  /**
+   * Parse form data to json
+   *
+   * @param formData The form data to parse
+   * @return The form data parsed to object
+   */
+  formDataToJson(formData: string): any {
+    const object = {}
+
+    if (formData.startsWith('?')) formData = formData.replace('?', '')
+
+    formData.split('&').forEach(queries => {
+      const query = queries.split('=')
+
+      object[decodeURIComponent(query[0])] = decodeURIComponent(query[1])
+    })
+
+    return object
   }
 }

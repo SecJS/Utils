@@ -25,6 +25,32 @@ yarn add @secjs/utils
 
 ## Classes Usage
 
+### Route
+
+> Use Route to manipulate paths, getParams, getQueryParams, create route matcher RegExp etc.
+
+```js
+import { Route } from '@secjs/utils'
+
+const route = new Route()
+const absolutePath = '/tests/:id/users/:user_id'
+const path = '/tests/1/users/2?page=1&limit=10'
+
+route.getQueryString(path) // ?page=1&limit=10
+route.removeQueryParams(path) // /tests/1/users/2
+route.getQueryParamsValue(path) // { page: '1', limit: '10' }
+route.getQueryParamsName(path) // ['path', 'limit']
+route.getParamsValue(absolutePath, path) // { id: '1', user_id: '10' }
+route.getParamsName(absolutePath) // ['id', 'user_id']
+
+const regExpMatcher = route.createMatcher(absolutePath) // /^(?:\/tests\b)(?:\/[\w-]+)(?:\/users\b)(?:\/[\w-]+)$/
+
+regExpMatcher.test(path) // false - because of queryParams
+regExpMatcher.test(route.removeQueryParams(path)) // true
+```
+
+---
+
 ### Blacklist
 
 > Use Blacklist to add, find and remove values from a blacklist/whitelist file
@@ -121,11 +147,15 @@ console.log(parsed2) // 21313
 
 const object = {
   joao: 'joao',
-  lenon: 'lenon',
+  email: 'lenonsec7@gmail.com',
 }
 const parsed3 = parser.jsonToFormData(object)
 
-console.log(parsed3) // &joao=joao&lenon=lenon
+console.log(parsed3) // &joao=joao&email=lenonSec7%40gmail.com
+
+const parsed4 = parser.formDataToJson('?joao=joao&email=lenonSec7%40gmail.com')
+
+console.log(parsed4) // { joao: 'joao', email: 'lenonsec7@gmail.com' }
 ```
 
 ---
