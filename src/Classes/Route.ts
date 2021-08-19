@@ -10,7 +10,7 @@ export class Route {
   getQueryString(route: string): string {
     const queryIndex = route.search(/\?(.*)/)
 
-    if (queryIndex === -1) return route
+    if (queryIndex === -1) return null
 
     return route.substring(queryIndex)
   }
@@ -22,9 +22,11 @@ export class Route {
    * @return The route without the query params
    */
   removeQueryParams(route: string): string {
-    if (this.getQueryString(route) === route) return route
+    const queryString = this.getQueryString(route)
 
-    return route.replace(this.getQueryString(route), '')
+    if (!queryString) return route
+
+    return route.replace(queryString, '')
   }
 
   /**
@@ -34,7 +36,11 @@ export class Route {
    * @return The object of queryParams found inside route
    */
   getQueryParamsValue(route: string): any {
-    return new Parser().formDataToJson(this.getQueryString(route))
+    const queryString = this.getQueryString(route)
+
+    if (!queryString) return {}
+
+    return new Parser().formDataToJson(queryString)
   }
 
   /**
@@ -46,6 +52,8 @@ export class Route {
   getQueryParamsName(route: string): string[] {
     const queryNames = []
     let queryString = this.getQueryString(route)
+
+    if (!queryString) return []
 
     if (queryString.startsWith('?')) queryString = queryString.replace('?', '')
 
@@ -61,7 +69,8 @@ export class Route {
   /**
    * Get object with :params values from route
    *
-   * @param route The route to get the params
+   * @param routeWithParams The route with the :params
+   * @param routeWithValues The route with the :params values
    * @return The object of params found inside route
    */
   getParamsValue(routeWithParams: string, routeWithValues: string): any {
@@ -125,7 +134,7 @@ export class Route {
     routeArray.forEach((r, i) => {
       if (r === '') return
       if (r.startsWith(':')) {
-        // Match with any value RegExp
+        // Match with any word and - value RegExp
         routeArray[i] = `(?:\\/[\\w-]+)`
 
         return
