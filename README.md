@@ -25,6 +25,37 @@ yarn add @secjs/utils
 
 ## Classes Usage
 
+### Json
+
+> Use Json to parse json without errors and more.
+
+```js
+import { Json } from '@secjs/utils'
+
+const json = new Json()
+
+const data = [
+  {
+    hello: 'hello',
+    world: 'world',
+  },
+]
+
+json.isArrayOfObjects(data) // true
+json.isArrayOfObjects([]) // false
+json.isArrayOfObjects([1, 2, 3]) // false
+
+const textWithJsons = 'string with a json inside of it {"text":"hello"} and one more json {"hello":"world"}'
+
+json.getJson(textWithJsons) // ['{"text":"hello"}', '{"hello":"world"}']
+
+const text = 'a string that is not a valid JSON'
+
+json.parse(text) // null
+```
+
+---
+
 ### Route
 
 > Use Route to manipulate paths, getParams, getQueryParams, create route matcher RegExp etc.

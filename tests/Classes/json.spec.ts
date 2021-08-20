@@ -24,7 +24,6 @@ describe('\n Json Class', () => {
     const text =
       'this is a string with a json inside of it {"text":"hello"} and one more json {"hello":"world"}'
 
-    console.log(json.getJson(text))
     expect(json.getJson(text)).toStrictEqual([
       '{"text":"hello"}',
       '{"hello":"world"}',
