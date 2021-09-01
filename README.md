@@ -27,7 +27,7 @@ yarn add @secjs/utils
 
 ### Json
 
-> Use Json to parse json without errors and more.
+> Use Json to parse json without errors, deep copy and more.
 
 ```js
 import { Json } from '@secjs/utils'
@@ -52,6 +52,22 @@ json.getJson(textWithJsons) // ['{"text":"hello"}', '{"hello":"world"}']
 const text = 'a string that is not a valid JSON'
 
 json.parse(text) // null
+
+
+const object = {
+  test: 'hello',
+  hello: () => 'hy',
+}
+
+const objectCopy = json.copy(object)
+
+objectCopy.test = 'hello from copy'
+objectCopy.hello = () => 'hy from copy'
+
+console.log(object.test) // hello
+console.log(object.hello()) // hy
+console.log(objectCopy.test) // hello from copy
+console.log(objectCopy.hello()) // hy from copy
 ```
 
 ---

@@ -20,6 +20,23 @@ describe('\n Json Class', () => {
     expect(json.isArrayOfObjects([1, 2, 3])).toBe(false)
   })
 
+  it('should return a deep copy from the object', async () => {
+    const object = {
+      test: 'hello',
+      hello: () => 'hy',
+    }
+
+    const objectCopy = json.copy(object)
+
+    objectCopy.test = 'hello from copy'
+    objectCopy.hello = () => 'hy from copy'
+
+    expect(object.test).toBe('hello')
+    expect(object.hello()).toBe('hy')
+    expect(objectCopy.test).toBe('hello from copy')
+    expect(objectCopy.hello()).toBe('hy from copy')
+  })
+
   it('should return all json found inside of the string', () => {
     const text =
       'this is a string with a json inside of it {"text":"hello"} and one more json {"hello":"world"}'
