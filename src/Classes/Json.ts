@@ -14,6 +14,24 @@ export class Json {
   }
 
   /**
+   * Deep copy any object properties without reference
+   *
+   * @param object The object to be copied
+   * @return A copy from object without any reference
+   */
+  copy<T>(object: T): T {
+    const copy: any = {}
+
+    for (const i in object) {
+      const item = object[i]
+      copy[i] =
+        item != null && typeof item === 'object' ? this.copy(item) : item
+    }
+
+    return copy
+  }
+
+  /**
    * Find all JSON's inside string and return it.
    * @param text A valid string with one or more JSON's inside.
    * @returns An array of JSON's found in the string.
