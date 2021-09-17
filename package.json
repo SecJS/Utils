@@ -1,7 +1,12 @@
 {
   "name": "@secjs/utils",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "",
+  "license": "MIT",
+  "author": "João Lenon",
+  "repository": "https://github.com/SecJS/Utils.git",
+  "bugs": "https://github.com/SecJS/Utils/issues",
+  "homepage": "https://github.com/SecJS/Utils#readme",
   "scripts": {
     "build": "tsc",
     "test": "jest --verbose",
@@ -12,52 +17,35 @@
     "utils",
     "nodejs"
   ],
-  "repository": "https://github.com/secjs/utils",
-  "author": "João Lenon <lenonsec7@gmail.com>",
-  "license": "MIT",
-  "dependencies": {},
-  "files": [
-    "src/Classes/*.js",
-    "src/Classes/*.d.ts",
-    "src/Functions/*.js",
-    "src/Functions/*.d.ts",
-    "index.js",
-    "index.d.ts"
-  ],
   "devDependencies": {
-    "@adonisjs/mrm-preset": "^4.0.1",
-    "@secjs/contracts": "^1.1.1",
-    "@types/debug": "^4.1.5",
-    "@types/jest": "^26.0.22",
-    "@types/node": "^14.14.37",
-    "@types/uuid": "^8.3.0",
-    "@typescript-eslint/eslint-plugin": "^4.19.0",
-    "@typescript-eslint/parser": "^4.19.0",
-    "commitizen": "^4.2.3",
-    "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^7.23.0",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-config-standard": "^16.0.2",
-    "eslint-import-resolver-typescript": "^2.4.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^3.3.1",
-    "eslint-plugin-promise": "^4.3.1",
-    "eslint-plugin-standard": "^5.0.0",
-    "husky": "^5.2.0",
-    "jest": "^26.6.3",
-    "lint-staged": "^10.5.4",
-    "mrm": "^3.0.2",
-    "prettier": "^2.2.1",
-    "ts-jest": "^26.5.4",
-    "ts-node": "^9.1.1",
-    "typescript": "^4.2.3",
-    "uuid": "^8.3.2"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "@secjs/contracts": "1.1.2",
+    "@secjs/exceptions": "^1.0.1",
+    "@types/debug": "4.1.5",
+    "@types/jest": "27.0.1",
+    "@types/node": "14.14.3",
+    "@types/uuid": "8.3.0",
+    "@typescript-eslint/eslint-plugin": "4.31.0",
+    "@typescript-eslint/parser": "4.31.0",
+    "eslint": "7.32.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-config-standard": "16.0.3",
+    "eslint-import-resolver-typescript": "2.4.0",
+    "eslint-plugin-import": "2.24.2",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-promise": "5.1.0",
+    "eslint-plugin-standard": "5.0.0",
+    "husky": "3.1.0",
+    "jest": "27.1.0",
+    "lint-staged": "9.4.3",
+    "prettier": "2.0.5",
+    "reflect-metadata": "0.1.13",
+    "ts-jest": "27.0.5",
+    "ts-loader": "9.2.3",
+    "ts-node": "10.0.0",
+    "tsconfig-paths": "3.9.0",
+    "typescript": "4.3.5",
+    "uuid": "8.3.2"
   },
   "lint-staged": {
     "*.js": [
@@ -69,19 +57,19 @@
       "git add"
     ]
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "jest": {
-    "setupFiles": [
-      "dotenv/config"
-    ],
     "modulePaths": [
       "<rootDir>"
     ],
     "moduleDirectories": [
       "node_modules",
-      "app",
-      "config",
-      "start",
-      "database"
+      "src",
+      "tests"
     ],
     "moduleFileExtensions": [
       "js",
@@ -96,17 +84,21 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "node"
   },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
   "prettier": {
     "singleQuote": true,
     "trailingComma": "all",
     "arrowParens": "avoid",
     "endOfLine": "lf",
-    "semi": false
+    "semi": false,
+    "printWidth": 80,
+    "overrides": [
+      {
+        "files": "test/**/*",
+        "options": {
+          "printWidth": 120
+        }
+      }
+    ]
   },
   "eslintConfig": {
     "env": {
@@ -119,26 +111,44 @@
       "plugin:prettier/recommended"
     ],
     "globals": {
-      "use": true,
       "Atomics": "readonly",
       "SharedArrayBuffer": "readonly"
     },
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
-      "ecmaVersion": 2018
+      "ecmaVersion": 2018,
+      "sourceType": "module"
     },
     "plugins": [
+      "@typescript-eslint",
       "prettier"
     ],
     "rules": {
-      "prettier/prettier": "error",
+      "dot-notation": "off",
+      "camelcase": "off",
+      "no-undef": "off",
+      "@typescript-eslint/no-var-requires": "off",
+      "no-useless-constructor": "off",
+      "@typescript-eslint/no-useless-constructor": "off",
+      "@typescript-eslint/camelcase": "off",
+      "@typescript-eslint/explicit-module-boundary-types": "off",
       "@typescript-eslint/interface-name-prefix": "off",
       "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/camelcase": "off"
-    },
-    "settings": {
-      "import/resolver": {
-        "typescript": {}
-      }
+      "prettier/prettier": "error",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          "argsIgnorePattern": "_"
+        }
+      ]
     }
-  }
+  },
+  "files": [
+    "src/Classes/*.js",
+    "src/Classes/*.d.ts",
+    "src/Functions/*.js",
+    "src/Functions/*.d.ts",
+    "index.js",
+    "index.d.ts"
+  ]
 }

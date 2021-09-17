@@ -1,4 +1,5 @@
 import { Parser } from './Parser'
+import { InternalServerException } from '@secjs/exceptions'
 
 export class Route {
   /**
@@ -83,7 +84,7 @@ export class Route {
     const routeWithValuesArray = routeWithValues.split('/')
 
     if (routeWithParamsArray.length !== routeWithValuesArray.length) {
-      throw new Error('DIFFERENT_ROUTES')
+      throw new InternalServerException('Routes are not the same.')
     }
 
     routeWithParamsArray.forEach((param, i) => {

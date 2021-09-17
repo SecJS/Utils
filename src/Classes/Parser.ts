@@ -1,3 +1,5 @@
+import { InternalServerException } from '@secjs/exceptions'
+
 export class Parser {
   /**
    * Parse a string to array
@@ -19,8 +21,8 @@ export class Parser {
    */
   stringToNumber(string: string, isCoordinate = false): number {
     if (!string.replace(/\D/g, '')) {
-      throw new Error(
-        'Your string is invalid, it should have at least one number',
+      throw new InternalServerException(
+        'Your string is invalid, it should have at least one number.',
       )
     }
 
