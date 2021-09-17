@@ -1,4 +1,5 @@
 import { v4, validate } from 'uuid'
+import { InternalServerException } from '@secjs/exceptions'
 
 export class Token {
   /**
@@ -52,7 +53,7 @@ export class Token {
    */
   injectPrefix(prefix: string, token: string): string {
     if (!this.verify(token)) {
-      throw new Error('TOKEN_IS_NOT_UUID')
+      throw new InternalServerException('Token is not a valid uuid.')
     }
 
     return `${prefix}-${token}`
@@ -70,7 +71,7 @@ export class Token {
     const uuid = this.getToken(token)
 
     if (!this.verify(uuid)) {
-      throw new Error('TOKEN_IS_NOT_UUID')
+      throw new InternalServerException('Token is not a valid uuid.')
     }
 
     return `${newPrefix}-${uuid}`

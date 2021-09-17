@@ -64,7 +64,7 @@ describe('\n Route Class', () => {
   it('should create a matcher RegExp to recognize the route', () => {
     const path = '/users/:id/posts/:post_id?page=1&limit=10'
 
-    const pathTest1 = '/users/1/posts/test'
+    const pathTest1 = '/users/1/posts/tests'
     const pathTest2 = '/users/1/posts/2/oi'
     const pathTest3 = `/users/${new Token().generate()}/posts/1`
 

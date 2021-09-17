@@ -8,7 +8,7 @@ describe('\n scheduler Function', () => {
 
     const interval = scheduler(func, 300, 1)
 
-    // TODO test scheduler func somehow
+    // TODO tests scheduler func somehow
     clearInterval(interval)
   })
 })

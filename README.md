@@ -19,8 +19,15 @@ The intention behind this repository is to always maintain a `Utils` package wit
 
 ## Installation
 
+> To use the high potential from @secjs/utils you need to install first this packages from SecJS,
+> it keeps as dev dependency because one day @secjs/core will install everything once.
+
 ```bash
-yarn add @secjs/utils
+npm install @secjs/contracts @secjs/exceptions
+```
+
+```bash
+npm install @secjs/utils
 ```
 
 ## Classes Usage
