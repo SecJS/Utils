@@ -249,6 +249,16 @@ console.log(clean.cleanArraysInObject(object2)) // { number2: [{ number1: "numbe
 
 ## Functions Usage
 
+### getBranch
+
+> Get the actual git branch that the project is running or not a repository.
+
+```js
+import { getBranch } from '@secjs/utils'
+
+await getBranch() // master || Not a repository
+```
+
 ### pathPattern
 
 > Transform all route paths to the same pattern.
