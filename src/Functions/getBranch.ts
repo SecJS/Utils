@@ -9,13 +9,15 @@ const exec = promisify(require('child_process').exec)
  * @return the branch HEAD name or not a repository
  */
 export async function getBranch(): Promise<string> {
-  let commit: string
+  let branch: string
 
   try {
-    commit = (await exec('git branch --show-current')).stdout.replace('\n', '')
+    branch = (await exec('git branch --show-current')).stdout.replace('\n', '')
+
+    if (!branch || branch === '') branch = 'Not a repository'
   } catch (error) {
-    commit = 'Not a repository'
+    branch = 'Not a repository'
   }
 
-  return commit
+  return branch
 }
