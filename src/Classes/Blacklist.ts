@@ -2,6 +2,12 @@ import { createInterface } from 'readline'
 import { createWriteStream, createReadStream } from 'fs'
 
 export class Blacklist {
+  private readonly filePath?: string
+
+  constructor(filePath?: string) {
+    this.filePath = filePath
+  }
+
   /**
    * Add value to a file path
    *
@@ -9,7 +15,9 @@ export class Blacklist {
    * @param filePath The file path to the blacklist
    * @return void
    */
-  async add(value: string, filePath: string): Promise<void> {
+  async add(value: string, filePath?: string): Promise<void> {
+    filePath = filePath || this.filePath
+
     return new Promise((resolve, reject) => {
       const stream = createWriteStream(filePath, { flags: 'a' })
 
@@ -31,6 +39,8 @@ export class Blacklist {
    * @return string|null The value found or null
    */
   async find(value: string, filePath: string): Promise<string | null> {
+    filePath = filePath || this.filePath
+
     const stream = createReadStream(filePath)
 
     const lines = createInterface({
@@ -57,6 +67,8 @@ export class Blacklist {
    * @return void The value found or null
    */
   async remove(value: string, filePath: string): Promise<void> {
+    filePath = filePath || this.filePath
+
     return new Promise((resolve, reject) => {
       const readStream = createReadStream(filePath)
 
