@@ -3,7 +3,7 @@ name: CD Utils
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:
