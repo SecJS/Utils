@@ -40,6 +40,33 @@ npm install @secjs/utils
 
 ## Classes Usage
 
+### Path
+
+> Use Path to get the absolute path from project folders.
+
+```ts
+import { Path } from '@secjs/utils'
+
+// pwd method will depend if you NODE_ENV environment variable is set.
+// if you are using ci, testing or ts-development, pwd will return like this:
+Path.pwd() // '/home/your/computer/path/your-project-name'
+
+// if your NODE_ENV is not set, or you are using a diffrent value from ci, testing or ts-development,
+// your pwd will return like this:
+Path.pwd() // '/home/your/computer/path/your-project-name/dist'
+
+// you can change your buildFolder name using forBuildFolder method
+Path.forBuild('build').pwd()
+// '/home/your/computer/path/your-project-name/build'
+
+Path.pwd('/src/') // '/home/your/computer/path/your-project-name/src'
+
+Path.public() // '/home/your/computer/path/your-project-name/public'
+Path.assets() // '/home/your/computer/path/your-project-name/public/assets'
+```
+
+---
+
 ### Json
 
 > Use Json to parse json without errors, deep copy and more.
