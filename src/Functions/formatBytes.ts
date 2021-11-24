@@ -1,4 +1,4 @@
-/*
+/**
  * @secjs/utils
  *
  * (c) João Lenon <lenon@secjs.com.br>

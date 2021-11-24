@@ -1,4 +1,4 @@
-/*
+/**
  * @secjs/utils
  *
  * (c) João Lenon <lenon@secjs.com.br>
@@ -48,13 +48,28 @@ export interface FileJsonContract {
 }
 
 export class File {
-  constructor(path: string, content: Buffer | null = null) {
-    const { ext, dir, name, base, mime } = File.parsePath(path)
+  static async createFileOfSize(filePath: string, size: number) {
+    const { dir, path } = File.parsePath(filePath)
+
+    await promises.mkdir(dir, { recursive: true })
+
+    return new Promise((resolve, reject) => {
+      const writable = createWriteStream(path)
+
+      writable.write(Buffer.alloc(Math.max(0, size - 2), 'l'))
+
+      writable.end(() => resolve(this))
+      writable.on('error', err => reject(err))
+    })
+  }
+
+  constructor(filePath: string, content: Buffer | null = null) {
+    const { ext, dir, name, base, mime, path } = File.parsePath(filePath)
 
     this._originalDir = dir
     this._originalName = name
     this._originalBase = base
-    this._originalPath = this._originalDir + '/' + this._originalBase
+    this._originalPath = path
     this._originalFileExists = existsSync(this._originalPath)
     this._fileExists = this._originalFileExists
     this._content = content
@@ -130,7 +145,7 @@ export class File {
     })
   }
 
-  loadSync(options?: { withContent: boolean }) {
+  loadSync(options?: { withContent?: boolean }) {
     options = Object.assign({}, { withContent: true }, options)
 
     if (this._content && this._fileExists)
@@ -162,7 +177,7 @@ export class File {
     return this
   }
 
-  async load(options?: { withContent: boolean }): Promise<File> {
+  async load(options?: { withContent?: boolean }): Promise<File> {
     options = Object.assign({}, { withContent: true }, options)
 
     if (this._content && this._fileExists) {
@@ -287,8 +302,10 @@ export class File {
     this._path = this._dir + '/' + this._base
   }
 
-  private static parsePath(path: string) {
-    const { base, dir, root } = parse(isAbsolute(path) ? path : Path.pwd(path))
+  private static parsePath(filePath: string) {
+    const { base, dir, root } = parse(
+      isAbsolute(filePath) ? filePath : Path.pwd(filePath),
+    )
 
     const baseArray = base.split('.')
 
@@ -300,7 +317,7 @@ export class File {
     }, '')
     const mime = lookup(dir + '/' + base)
 
-    return { ext, dir, name, root, base, mime }
+    return { ext, dir, name, root, base, mime, path: dir + '/' + base }
   }
 
   private _dir?: string

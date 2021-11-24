@@ -8,20 +8,21 @@
  * file that was distributed with this source code.
  */
 
-import { existsSync, promises } from 'fs'
-import { Path } from '../../src/Classes/Path'
-import { Folder } from '../../src/Classes/Folder'
-import { File } from '../../src/Classes/File'
+import '../../src/utils/global'
 
-describe('\n Folder Class', () => {
+import { existsSync, promises } from 'fs'
+
+describe('\n Folder Class Global', () => {
   // 100 MB
   const size = 1024 * 1024 * 100
 
   let bigFolder: Folder = null
   let nonexistentFolder: Folder = null
 
-  const bigFolderPath = Path.pwd('tests/folder-class-test/big')
-  const nonexistentFolderPath = Path.pwd('tests/folder-class-test/non-existent')
+  const bigFolderPath = Path.pwd('tests/folder-class-global-test/big')
+  const nonexistentFolderPath = Path.pwd(
+    'tests/folder-class-global-test/non-existent',
+  )
 
   beforeEach(async () => {
     await File.createFileOfSize(bigFolderPath + '/file.txt', size)
@@ -137,14 +138,14 @@ describe('\n Folder Class', () => {
   it('should get all files and folders that match the pattern', async () => {
     const files = bigFolder
       .loadSync()
-      .getFilesByPattern('tests/folder-class-test/**/*.txt', true)
+      .getFilesByPattern('tests/folder-class-global-test/**/*.txt', true)
 
     expect(files.length).toBe(3)
 
     files.forEach(file => expect(file.extension).toBe('.txt'))
 
     const folders = bigFolder.getFoldersByPattern(
-      'tests/folder-class-test/big/*',
+      'tests/folder-class-global-test/big/*',
       true,
     )
 
@@ -168,7 +169,7 @@ describe('\n Folder Class', () => {
     await promises.rmdir(bigFolder.dir, { recursive: true })
     await promises.rmdir(nonexistentFolder.dir, { recursive: true })
 
-    bigFolder = null
-    nonexistentFolder = null
+    unset(bigFolder)
+    unset(nonexistentFolder)
   })
 })

@@ -1,4 +1,4 @@
-/*
+/**
  * @secjs/utils
  *
  * (c) João Lenon <lenon@secjs.com.br>
@@ -22,7 +22,7 @@ import {
 import { File } from './File'
 import { Path } from './Path'
 import { randomBytes } from 'crypto'
-import { isAbsolute, parse, resolve } from 'path'
+import { isAbsolute, join, parse, resolve } from 'path'
 import { formatBytes } from '../Functions/formatBytes'
 import { InternalServerException } from '@secjs/exceptions'
 
@@ -45,12 +45,22 @@ export interface FolderJsonContract {
 }
 
 export class Folder {
-  constructor(path: string) {
-    const { dir, name } = Folder.parsePath(path)
+  static async folderSize(folderPath: string): Promise<number> {
+    const files = await promises.readdir(folderPath)
+    const stats = files.map(file => promises.stat(join(folderPath, file)))
+
+    return (await Promise.all(stats)).reduce(
+      (accumulator, { size }) => accumulator + size,
+      0,
+    )
+  }
+
+  constructor(folderPath: string) {
+    const { dir, name, path } = Folder.parsePath(folderPath)
 
     this._originalDir = dir
     this._originalName = name
-    this._originalPath = this._originalDir + '/' + this._originalName
+    this._originalPath = path
     this._originalFolderExists = existsSync(this._originalPath)
     this._folderExists = this._originalFolderExists
 
@@ -298,10 +308,12 @@ export class Folder {
     this._path = this._dir + '/' + this._name
   }
 
-  private static parsePath(path: string) {
-    const { dir, name } = parse(isAbsolute(path) ? path : Path.pwd(path))
+  private static parsePath(folderPath: string) {
+    const { dir, name } = parse(
+      isAbsolute(folderPath) ? folderPath : Path.pwd(folderPath),
+    )
 
-    return { dir, name }
+    return { dir, name, path: dir + '/' + name }
   }
 
   private loadSubSync(

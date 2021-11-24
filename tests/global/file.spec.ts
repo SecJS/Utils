@@ -7,16 +7,18 @@
  * file that was distributed with this source code.
  */
 
-import { existsSync, promises } from 'fs'
-import { Path } from '../../src/Classes/Path'
-import { File } from '../../src/Classes/File'
+import '../../src/utils/global'
 
-describe('\n File Class', () => {
+import { existsSync, promises } from 'fs'
+
+describe('\n File Class Global', () => {
   let bigFile: File = null
   let nonexistentFile: File = null
 
-  const bigFilePath = Path.pwd('tests/file-class-test/file.txt')
-  const nonexistentFilePath = Path.pwd('tests/file-class-test/non-existent.txt')
+  const bigFilePath = Path.pwd('tests/file-class-global-test/file.txt')
+  const nonexistentFilePath = Path.pwd(
+    'tests/file-class-global-test/non-existent.txt',
+  )
 
   beforeEach(async () => {
     await File.createFileOfSize(bigFilePath, 1024 * 1024 * 100)
@@ -205,7 +207,7 @@ describe('\n File Class', () => {
     await promises.rmdir(bigFile.dir, { recursive: true })
     await promises.rmdir(nonexistentFile.dir, { recursive: true })
 
-    bigFile = null
-    nonexistentFile = null
+    unset(bigFile)
+    unset(nonexistentFile)
   })
 })

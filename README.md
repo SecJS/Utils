@@ -389,48 +389,7 @@ const decimals = 4
 formatBytes(bytes, decimals) // Example: 1.0932 GB
 ```
 
-### createFileOfSize
-
-> Create a file in determined size. Good for testing.
-
-```ts
-import { createFileOfSize } from '@secjs/utils'
-
-createFileOfSize('path/to/file', 1024*1024*1024)
-```
-
-### dirSize
-
-> Get the size of the directory without recursive going inside sub folders.
-
-```ts
-import { dirSize } from '@secjs/utils'
-
-dirSize('path/to/directory') // The size in bytes
-```
-
-### pathPattern
-
-> Transform all route paths to the same pattern.
-
-```js
-import { pathPattern } from '@secjs/utils'
-
-pathPattern('/users/:id/') // returns /users/:id
-pathPattern('clients/') // returns /clients
-pathPattern('/api/v2') // returns /api/v2
-pathPattern('/api/v3/') // returns /api/v3
-
-pathPattern(['/api/v1/', 'api/v2', 'api/v3/', '/api/v4'])
-
-// returns
-// [
-//  '/api/v1',
-//  '/api/v2',
-//  '/api/v3',
-//  '/api/v4'
-// ]
-```
+---
 
 ### getBranch
 
@@ -442,28 +401,7 @@ import { getBranch } from '@secjs/utils'
 await getBranch() // master || Not a repository
 ```
 
-### pathPattern
-
-> Transform all route paths to the same pattern.
-
-```js
-import { pathPattern } from '@secjs/utils'
-
-pathPattern('/users/:id/') // returns /users/:id
-pathPattern('clients/') // returns /clients
-pathPattern('/api/v2') // returns /api/v2
-pathPattern('/api/v3/') // returns /api/v3
-
-pathPattern(['/api/v1/', 'api/v2', 'api/v3/', '/api/v4'])
-
-// returns
-// [
-//  '/api/v1',
-//  '/api/v2',
-//  '/api/v3',
-//  '/api/v4'
-// ]
-```
+---
 
 ### download
 
@@ -483,53 +421,6 @@ import { download } from '@secjs/utils'
 ```
 
 ---
-
-### getFiles
-
-> Get all files inside a path and files inside folders if needed
-
-```js
-import { getFiles } from '@secjs/utils'
-
-const iterateFolders = false 
-for await (const file of getFiles('any/path', iterateFolders)) {
-  console.log(file) // /home/path/to/your/file
-}
-```
-
-### getFolders
-
-> Get all folders inside a path and files if needed.
-
-```js
-import { getFolders } from '@secjs/utils'
-
-const withFiles = true
-const directory = await getFolders('some/path', withFiles)
-
-// {
-//   path: '/home/some/path',
-//   files: ['/home/some/path/file.ts'],
-//   folders: [{
-//     path: '/home/some/path/folder',
-//     files: ['/home/some/path/file.ts'],
-//     folders: []
-//   }] as IDirectory[]
-// } as IDirectory
-```
-
-### fileExists
-
-> Return true if file exists or false
-
-```js
-import { fileExists } from '@secjs/utils'
-
-// Just abstracting the error that node throws 
-// if file does not exist
-
-console.log(fileExists('path/to/file')) // true or false
-```
 
 ### observeChanges
 
@@ -555,6 +446,8 @@ data.name = 'João'
 // Name changed to: João { value: 'args are the same second parameter of doSomething function' }
 ```
 
+---
+
 ### removeDuplicated
 
 > Use removeDuplicated to remove duplicated values from an Array
@@ -567,6 +460,8 @@ const array = [1, 1, 2, 4, 4]
 console.log(removeDuplicated(array)) // [1, 2, 4]
 ```
 
+---
+
 ### randomColor
 
 > Use randomColor to generate a random Hexadecimal color
@@ -577,9 +472,11 @@ import { randomColor } from '@secjs/utils'
 console.log(randomColor()) // #7059c1
 ```
 
+---
+
 ### isArrayOfObjects
 
-> Use isArrayOfObjects to verify if all values inside of the array are objects
+> Use isArrayOfObjects to verify if all values inside the array are objects
 
 ```js
 import { isArrayOfObjects } from '@secjs/utils'
@@ -597,9 +494,11 @@ console.log(isArrayOfObjects(array3)) // true
 console.log(isArrayOfObjects(fakeArray)) // false
 ```
 
+---
+
 ### urlify
 
-> Use urlify to inject some URL of a string inside a HTML Link
+> Use urlify to inject some URL of a string inside an HTML Link
 
 ```js
 import { urlify } from '@secjs/utils'

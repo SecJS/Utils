@@ -129,4 +129,6 @@ build
 
 # testing files generated here
 file-class-test
+file-class-global-test
 folder-class-test
+folder-class-global-test
