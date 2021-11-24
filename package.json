@@ -1,6 +1,6 @@
 {
   "name": "@secjs/utils",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "",
   "license": "MIT",
   "author": "João Lenon",
@@ -18,10 +18,12 @@
     "nodejs"
   ],
   "devDependencies": {
-    "@secjs/contracts": "1.1.6",
-    "@secjs/exceptions": "1.0.3",
+    "@secjs/contracts": "1.1.7",
+    "@secjs/exceptions": "1.0.4",
+    "@secjs/logger": "1.2.2",
     "@types/debug": "4.1.5",
     "@types/jest": "27.0.1",
+    "@types/mime-types": "2.1.1",
     "@types/node": "14.17.0",
     "@types/uuid": "8.3.0",
     "@typescript-eslint/eslint-plugin": "4.31.0",
@@ -61,8 +63,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true"
+      "prepare-commit-msg": "lint-staged && exec < /dev/tty && git cz --hook || true"
     }
   },
   "jest": {
@@ -158,5 +159,8 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "dependencies": {
+    "mime-types": "2.1.34"
   }
 }

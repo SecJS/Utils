@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import { Path } from '../../src/Classes/Path'
+import '../../src/utils/global'
 
-describe('\n Path Class', () => {
+describe('\n Path Class Global', () => {
   it('should get application pwd path', () => {
     const myMainPath = process.cwd()
     const mySrcPath = myMainPath + '/src'
