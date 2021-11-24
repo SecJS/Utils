@@ -18,9 +18,9 @@
     "nodejs"
   ],
   "devDependencies": {
-    "@secjs/contracts": "1.1.6",
-    "@secjs/exceptions": "1.0.3",
-    "@secjs/logger": "^1.2.2",
+    "@secjs/contracts": "1.1.7",
+    "@secjs/exceptions": "1.0.4",
+    "@secjs/logger": "1.2.2",
     "@types/debug": "4.1.5",
     "@types/jest": "27.0.1",
     "@types/mime-types": "2.1.1",
@@ -162,6 +162,6 @@
     }
   },
   "dependencies": {
-    "mime-types": "^2.1.34"
+    "mime-types": "2.1.34"
   }
 }
