@@ -1,12 +1,7 @@
 import { Json } from '../../src/Classes/Json'
+import { sleep } from '../../src/Functions/sleep'
 
 describe('\n Json Class', () => {
-  let json: Json
-
-  beforeAll(() => {
-    json = new Json()
-  })
-
   it('should verify if the array is an array of objects', async () => {
     const data = [
       {
@@ -15,9 +10,9 @@ describe('\n Json Class', () => {
       },
     ]
 
-    expect(json.isArrayOfObjects(data)).toBe(true)
-    expect(json.isArrayOfObjects([])).toBe(false)
-    expect(json.isArrayOfObjects([1, 2, 3])).toBe(false)
+    expect(Json.isArrayOfObjects(data)).toBe(true)
+    expect(Json.isArrayOfObjects([])).toBe(false)
+    expect(Json.isArrayOfObjects([1, 2, 3])).toBe(false)
   })
 
   it('should return a deep copy from the object', async () => {
@@ -26,7 +21,7 @@ describe('\n Json Class', () => {
       hello: () => 'hy',
     }
 
-    const objectCopy = json.copy(object)
+    const objectCopy = Json.copy(object)
 
     objectCopy.test = 'hello from copy'
     objectCopy.hello = () => 'hy from copy'
@@ -41,7 +36,7 @@ describe('\n Json Class', () => {
     const text =
       'this is a string with a json inside of it {"text":"hello"} and one more json {"hello":"world"}'
 
-    expect(json.getJson(text)).toStrictEqual([
+    expect(Json.getJson(text)).toStrictEqual([
       '{"text":"hello"}',
       '{"hello":"world"}',
     ])
@@ -50,12 +45,64 @@ describe('\n Json Class', () => {
   it('should return null if JSON parse goes wrong', () => {
     const text = 'a string that is not a valid JSON'
 
-    expect(json.parse(text)).toBe(null)
+    expect(Json.parse(text)).toBe(null)
   })
 
   it('should return the object when string is a valid JSON', () => {
     const text = '{"text":"hello"}'
 
-    expect(json.parse(text)).toStrictEqual({ text: 'hello' })
+    expect(Json.parse(text)).toStrictEqual({ text: 'hello' })
+  })
+
+  it('should clean data object removing all keys that are not in key array', async () => {
+    const data = {
+      hello: 'hello',
+      world: 'world',
+    }
+
+    expect(Json.fillable(data, ['world'])).toStrictEqual({ world: 'world' })
+    expect(Json.fillable(data, ['world', 'someNullWord'])).toStrictEqual({
+      world: 'world',
+    })
+  })
+
+  it('should be able to observe changes of an object', async () => {
+    const object = {
+      joao: 'lenon',
+      hello: 'world',
+    }
+
+    const objectProxy = Json.observeChanges(
+      object,
+      (value: string, arg1, arg2, arg3) => {
+        expect(value).toBe('oi')
+        expect(arg1).toBe(1)
+        expect(arg2).toBe(2)
+        expect(arg3).toBe(3)
+      },
+      1,
+      2,
+      3,
+    )
+
+    objectProxy.joao = 'oi'
+
+    await sleep(2000)
+  })
+
+  it('should be able to remove duplicated values from array', async () => {
+    const array = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5]
+
+    const newArray = Json.removeDuplicated(array)
+
+    expect(newArray).toStrictEqual([1, 2, 3, 4, 5])
+  })
+
+  it('should be able to sort any value from the array', async () => {
+    const array = [1, 2, 3, 4, 5]
+
+    const sortedValue = Json.sort(array)
+
+    expect(array.find(a => a === sortedValue)).toBeTruthy()
   })
 })

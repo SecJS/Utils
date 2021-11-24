@@ -163,12 +163,10 @@ Path.assets() // '/home/your/computer/path/your-project-name/public/assets'
 
 ### Json
 
-> Use Json to parse json without errors, deep copy and more.
+> Use Json to parse json without errors, deep copy, observeChanges inside objects and more.
 
-```js
+```ts
 import { Json } from '@secjs/utils'
-
-const json = new Json()
 
 const data = [
   {
@@ -177,25 +175,28 @@ const data = [
   },
 ]
 
-json.isArrayOfObjects(data) // true
-json.isArrayOfObjects([]) // false
-json.isArrayOfObjects([1, 2, 3]) // false
+Json.isArrayOfObjects(data) // true
+Json.isArrayOfObjects([]) // false
+Json.isArrayOfObjects([1, 2, 3]) // false
+```
 
-const textWithJsons = 'string with a json inside of it {"text":"hello"} and one more json {"hello":"world"}'
+```ts
+const textWithJsons = 'string with a Json inside of it {"text":"hello"} and one more Json {"hello":"world"}'
 
-json.getJson(textWithJsons) // ['{"text":"hello"}', '{"hello":"world"}']
+Json.getJson(textWithJsons) // ['{"text":"hello"}', '{"hello":"world"}']
 
 const text = 'a string that is not a valid JSON'
 
-json.parse(text) // null
+Json.parse(text) // null
+```
 
-
+```ts
 const object = {
   test: 'hello',
   hello: () => 'hy',
 }
 
-const objectCopy = json.copy(object)
+const objectCopy = Json.copy(object)
 
 objectCopy.test = 'hello from copy'
 objectCopy.hello = () => 'hy from copy'
@@ -204,6 +205,46 @@ console.log(object.test) // hello
 console.log(object.hello()) // hy
 console.log(objectCopy.test) // hello from copy
 console.log(objectCopy.hello()) // hy from copy
+```
+
+```ts
+const data = {}
+
+const doSomething = (value, args) => {
+  console.log(`Name changed to: ${value}`, args)
+}
+
+const args = {
+  value: 'args are the same second parameter of doSomething function'
+}
+
+Json.observeChanges(data, 'name', doSomething, args)
+
+data.name = 'João'
+
+// Name changed to: João { value: 'args are the same second parameter of doSomething function' }
+
+const object = {
+  number1: 'good string',
+  number2: 'bad string',
+}
+
+const readyToSaveOnDatabase = Json.fillable(object, ['number1'])
+
+console.log(readyToSaveOnDatabase) // { number1: 'good string' }
+```
+
+```ts
+const array = [1, 1, 2, 4, 4]
+
+console.log(Json.removeDuplicated(array)) // [1, 2, 4]
+```
+
+```ts
+const array = ['a', 'b', 'c'] // Array length = 2 (0, 1, 2)
+const sortedValue =  Json.sort(array) // Sorted value from the array, could be a, b or c
+
+console.log(sortedValue) // a, b or c
 ```
 
 ---
@@ -215,21 +256,20 @@ console.log(objectCopy.hello()) // hy from copy
 ```js
 import { Route } from '@secjs/utils'
 
-const route = new Route()
 const absolutePath = '/tests/:id/users/:user_id'
 const path = '/tests/1/users/2?page=1&limit=10'
 
-route.getQueryString(path) // ?page=1&limit=10
-route.removeQueryParams(path) // /tests/1/users/2
-route.getQueryParamsValue(path) // { page: '1', limit: '10' }
-route.getQueryParamsName(path) // ['path', 'limit']
-route.getParamsValue(absolutePath, path) // { id: '1', user_id: '10' }
-route.getParamsName(absolutePath) // ['id', 'user_id']
+Route.getQueryString(path) // ?page=1&limit=10
+Route.removeQueryParams(path) // /tests/1/users/2
+Route.getQueryParamsValue(path) // { page: '1', limit: '10' }
+Route.getQueryParamsName(path) // ['path', 'limit']
+Route.getParamsValue(absolutePath, path) // { id: '1', user_id: '10' }
+Route.getParamsName(absolutePath) // ['id', 'user_id']
 
-const regExpMatcher = route.createMatcher(absolutePath) // /^(?:\/tests\b)(?:\/[\w-]+)(?:\/users\b)(?:\/[\w-]+)$/
+const regExpMatcher = Route.createMatcher(absolutePath) // /^(?:\/tests\b)(?:\/[\w-]+)(?:\/users\b)(?:\/[\w-]+)$/
 
 regExpMatcher.test(path) // false - because of queryParams
-regExpMatcher.test(route.removeQueryParams(path)) // true
+regExpMatcher.test(Route.removeQueryParams(path)) // true
 ```
 
 ---
@@ -273,19 +313,17 @@ await blacklist.remove('192.168.0.2', filePath) // void
 ```js
 import { Numbers } from '@secjs/utils'
 
-const numbers = new Numbers()
-
 const arrayOfNumbers = [2, 4]
 const stringNumber = "Hello my name is João, I'm 20 year old!"
 
-console.log(numbers.getLower(arrayOfNumbers)) // 2
-console.log(numbers.getHigher(arrayOfNumbers)) // 4
+console.log(Numbers.getLower(arrayOfNumbers)) // 2
+console.log(Numbers.getHigher(arrayOfNumbers)) // 4
 
-console.log(numbers.extractNumber(stringNumber)) // '20'
-console.log(numbers.extractNumbers(stringNumber)) // ['20']
+console.log(Numbers.extractNumber(stringNumber)) // '20'
+console.log(Numbers.extractNumbers(stringNumber)) // ['20']
 
-console.log(numbers.argsAverage(2, 4)) // 3
-console.log(numbers.arrayAverage(arrayOfNumbers)) // 3
+console.log(Numbers.argsAverage(2, 4)) // 3
+console.log(Numbers.arrayAverage(arrayOfNumbers)) // 3
 ```
 
 ---
@@ -297,13 +335,11 @@ console.log(numbers.arrayAverage(arrayOfNumbers)) // 3
 ```js
 import { Token } from '@secjs/utils'
 
-const token = new Token()
-
 // Do not use the char "-", it would break token.verify() method
-const uuidGeneratedToken = token.generate('yourServicePrefix')
+const uuidGeneratedToken = Token.generate('yourServicePrefix')
 console.log(uuidGeneratedToken) // yourServicePrefix-c546b11c-2c2b-11eb-adc1-0242ac120002
 
-const isUuid = token.verify(uuidGeneratedToken)
+const isUuid = Token.verify(uuidGeneratedToken)
 console.log(isUuid) // true
 ```
 
@@ -313,32 +349,49 @@ console.log(isUuid) // true
 
 > Use Parser to parse all type of data of you application
 
-```js
+```ts
 import { Parser } from '@secjs/utils'
 
-const parser = new Parser()
-
 const string1 = '1,2,3'
-const parsed1 = parser.stringToArray(string1)
+const parsed1 = Parser.stringToArray(string1)
 
 console.log(parsed1) // ['1', '2', '3']
+```
 
+```ts
 const string2 = 'aaaasadzczaaa21313'
-const parsed2 = parser.stringToNumber(string2)
+const parsed2 = Parser.stringToNumber(string2)
 
 console.log(parsed2) // 21313
+```
 
+```ts
 const object = {
   joao: 'joao',
   email: 'lenonsec7@gmail.com',
 }
-const parsed3 = parser.jsonToFormData(object)
+const parsed3 = Parser.jsonToFormData(object)
 
 console.log(parsed3) // &joao=joao&email=lenonSec7%40gmail.com
+```
 
-const parsed4 = parser.formDataToJson('?joao=joao&email=lenonSec7%40gmail.com')
+```ts
+const parsed4 = Parser.formDataToJson('?joao=joao&email=lenonSec7%40gmail.com')
 
 console.log(parsed4) // { joao: 'joao', email: 'lenonsec7@gmail.com' }
+```
+
+```ts
+const bytes = 1024*1024*1024 // 1GB
+const decimals = 4
+
+Parser.bytesToSize(bytes, decimals) // Example: 1.0932 GB
+```
+
+```ts
+const message = 'Link: https://google.com'
+
+console.log(urlify(message)) // Link: <a href="https://google.com">https://google.com</a>
 ```
 
 ---
@@ -350,11 +403,9 @@ console.log(parsed4) // { joao: 'joao', email: 'lenonsec7@gmail.com' }
 ```js
 import { Clean } from '@secjs/utils'
 
-const clean = new Clean()
-
 const array = [null, undefined, 1, "number"]
 
-console.log(clean.cleanArray(array)) // [1, "number"]
+console.log(Clean.cleanArray(array)) // [1, "number"]
 
 const object = {
   number1: "number",
@@ -368,28 +419,13 @@ const object2 = {
   number2: [object],
 }
 
-console.log(clean.cleanObject(object)) // { number1: "number", number4: 1 }
-console.log(clean.cleanArraysInObject(object2)) // { number2: [{ number1: "number", number4: 1 }]}
+console.log(Clean.cleanObject(object)) // { number1: "number", number4: 1 }
+console.log(Clean.cleanArraysInObject(object2)) // { number2: [{ number1: "number", number4: 1 }]}
 ```
 
 ---
 
 ## Functions Usage
-
-### formatBytes
-
-> Creates a string based on the bytes size.
-
-```ts
-import { formatBytes } from '@secjs/utils'
-
-const bytes = 1024*1024*1024 // 1GB
-const decimals = 4
-
-formatBytes(bytes, decimals) // Example: 1.0932 GB
-```
-
----
 
 ### getBranch
 
@@ -399,6 +435,18 @@ formatBytes(bytes, decimals) // Example: 1.0932 GB
 import { getBranch } from '@secjs/utils'
 
 await getBranch() // master || Not a repository
+```
+
+---
+
+### getCommitId
+
+> Get the actual commit id from the local repository.
+
+```js
+import { getCommitId } from '@secjs/utils'
+
+await getCommitId() // the commit sha || Not a repository
 ```
 
 ---
@@ -422,46 +470,6 @@ import { download } from '@secjs/utils'
 
 ---
 
-### observeChanges
-
-> Use observeChanges to observe changes in the value of an object
-
-```js
-import { observeChanges } from '@secjs/utils'
-
-const data = {}
-
-const doSomething = (value, args) => {
-  console.log(`Name changed to: ${value}`, args)
-}
-
-const args = {
-  value: 'args are the same second parameter of doSomething function'
-}
-
-observeChanges(data, 'name', doSomething, args)
-
-data.name = 'João'
-
-// Name changed to: João { value: 'args are the same second parameter of doSomething function' }
-```
-
----
-
-### removeDuplicated
-
-> Use removeDuplicated to remove duplicated values from an Array
-
-```js
-import { removeDuplicated } from '@secjs/utils'
-
-const array = [1, 1, 2, 4, 4]
-
-console.log(removeDuplicated(array)) // [1, 2, 4]
-```
-
----
-
 ### randomColor
 
 > Use randomColor to generate a random Hexadecimal color
@@ -470,42 +478,6 @@ console.log(removeDuplicated(array)) // [1, 2, 4]
 import { randomColor } from '@secjs/utils'
 
 console.log(randomColor()) // #7059c1
-```
-
----
-
-### isArrayOfObjects
-
-> Use isArrayOfObjects to verify if all values inside the array are objects
-
-```js
-import { isArrayOfObjects } from '@secjs/utils'
-
-const array1 = [1, 2, 3]
-const array2 = [{ foo: 'bar' }, 2, 'string']
-const array3 = [{ foo: 'bar' }]
-
-const fakeArray = { foo: 'bar' }
-
-console.log(isArrayOfObjects(array1)) // false
-console.log(isArrayOfObjects(array2)) // false
-console.log(isArrayOfObjects(array3)) // true
-
-console.log(isArrayOfObjects(fakeArray)) // false
-```
-
----
-
-### urlify
-
-> Use urlify to inject some URL of a string inside an HTML Link
-
-```js
-import { urlify } from '@secjs/utils'
-
-const message = 'Link: https://google.com'
-
-console.log(urlify(message)) // Link: <a href="https://google.com">https://google.com</a>
 ```
 
 ---
@@ -570,25 +542,6 @@ console.log(paginate(array, total, pagination))
 
 ---
 
-### fillable
-
-> Use fillable to return the array reduced by keys
-
-```js
-import { fillable } from '@secjs/utils'
-
-const object = {
-  number1: 'good string',
-  number2: 'bad string',
-}
-
-const readyToSaveOnDatabase = fillable(object, ['number1'])
-
-console.log(readyToSaveOnDatabase) // { number1: 'good string' }
-```
-
----
-
 ### random
 
 > Use random to generate random strings by the length you want using crypto
@@ -611,21 +564,6 @@ console.log(randomStringWith10Chars) // qwiortlkps
 import { sleep } from '@secjs/utils'
 
 await sleep(2000) // Your code will stop in this line for two seconds
-```
-
----
-
-### sort
-
-> Use sort to get a sorted value from an array
-
-```js
-import { sort } from '@secjs/utils'
-
-const array = ['a', 'b', 'c'] // Array length = 2 (0, 1, 2)
-const index = sort(array) // Sorted index value, could only be 0, 1 or 2
-
-console.log(array[index]) // a, b or c
 ```
 
 ---

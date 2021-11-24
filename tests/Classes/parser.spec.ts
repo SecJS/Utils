@@ -1,20 +1,14 @@
 import { Parser } from '../../src/Classes/Parser'
 
 describe('\n Parser Class', () => {
-  let parser: Parser
-
-  beforeAll(() => {
-    parser = new Parser()
-  })
-
   it('should parse string to number and string to array', () => {
-    const parsedNumberInt = parser.stringToNumber('1')
-    const parsedNumberFloat = parser.stringToNumber('100.000,000000')
+    const parsedNumberInt = Parser.stringToNumber('1')
+    const parsedNumberFloat = Parser.stringToNumber('100.000,000000')
 
     expect(parsedNumberInt).toStrictEqual(1)
     expect(parsedNumberFloat).toStrictEqual(100000000000)
 
-    const parsedArray = parser.stringToArray('hello, peopleee', ',')
+    const parsedArray = Parser.stringToArray('hello, peopleee', ',')
 
     expect(parsedArray).toStrictEqual(['hello', 'peopleee'])
   })
@@ -25,7 +19,7 @@ describe('\n Parser Class', () => {
       email: 'lenonSec7@gmail.com',
     }
 
-    const formData = parser.jsonToFormData(json)
+    const formData = Parser.jsonToFormData(json)
 
     expect(formData).toBe('name=lenon&email=lenonSec7%40gmail.com')
   })
@@ -33,11 +27,18 @@ describe('\n Parser Class', () => {
   it('should parse form data to json', () => {
     const formData = 'name=lenon&email=lenonSec7%40gmail.com'
 
-    const json = parser.formDataToJson(formData)
+    const json = Parser.formDataToJson(formData)
 
     expect(json).toStrictEqual({
       name: 'lenon',
       email: 'lenonSec7@gmail.com',
     })
+  })
+
+  it('should be able to parse a link to urls with <a></a> from html inside strings', async () => {
+    const string =
+      'this is a string with one link - https://joao.com and other link https://joaolenon.com and https://lenon.com'
+
+    expect(Parser.linkToHref(string)).toBeTruthy()
   })
 })

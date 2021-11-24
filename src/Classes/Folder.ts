@@ -21,9 +21,9 @@ import {
 
 import { File } from './File'
 import { Path } from './Path'
+import { Parser } from './Parser'
 import { randomBytes } from 'crypto'
 import { isAbsolute, join, parse, resolve } from 'path'
-import { formatBytes } from '../Functions/formatBytes'
 import { InternalServerException } from '@secjs/exceptions'
 
 export interface FolderJsonContract {
@@ -132,7 +132,7 @@ export class Folder {
     this._createdAt = fileStat.birthtime
     this._accessedAt = fileStat.atime
     this._modifiedAt = fileStat.mtime
-    this._folderSize = formatBytes(fileStat.size, 4)
+    this._folderSize = Parser.bytesToSize(fileStat.size, 4)
 
     if (options.withSub) {
       this.loadSubSync(
@@ -170,7 +170,7 @@ export class Folder {
     this._createdAt = folderStat.birthtime
     this._accessedAt = folderStat.atime
     this._modifiedAt = folderStat.mtime
-    this._folderSize = formatBytes(folderStat.size, 4)
+    this._folderSize = Parser.bytesToSize(folderStat.size, 4)
 
     if (options.withSub) {
       await this.loadSub(
