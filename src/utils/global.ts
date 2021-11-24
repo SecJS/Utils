@@ -9,8 +9,8 @@
 
 import { unset as unsetFn } from '../Functions/unset'
 import { Path as PathInstance } from '../Classes/Path'
+import { File as FileInstance, FileJsonContract } from '../Classes/File'
 import { Folder as FolderInstance, FolderJsonContract } from '../Classes/Folder'
-import { File, File as FileInstance, FileJsonContract } from '../Classes/File'
 
 const _global = global as any
 
