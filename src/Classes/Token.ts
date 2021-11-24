@@ -9,7 +9,7 @@ export class Token {
    * @param isPrefixed If is prefixed or not
    * @return True or false
    */
-  verify(token: string, isPrefixed = false): boolean {
+  static verify(token: string, isPrefixed = false): boolean {
     if (isPrefixed) {
       return validate(this.getToken(token))
     }
@@ -23,7 +23,7 @@ export class Token {
    * @param prefix The token prefix to come in front
    * @return The token generated
    */
-  generate(prefix?: string): string {
+  static generate(prefix?: string): string {
     if (prefix) {
       return `${prefix}-${v4()}`
     }
@@ -37,7 +37,7 @@ export class Token {
    * @param prefix The token prefix to come in front
    * @return The token generated
    */
-  getToken(token: string): string {
+  static getToken(token: string): string {
     const prefix = token.split('-')[0]
 
     return token.split(`${prefix}-`)[1]
@@ -51,7 +51,7 @@ export class Token {
    * @throws Error if token is not a valid uuid
    * @return The token prefixed
    */
-  injectPrefix(prefix: string, token: string): string {
+  static injectPrefix(prefix: string, token: string): string {
     if (!this.verify(token)) {
       throw new InternalServerException('Token is not a valid uuid.')
     }
@@ -67,7 +67,7 @@ export class Token {
    * @throws Error if token is not a valid uuid
    * @return The token prefixed
    */
-  changePrefix(newPrefix: string, token: string): string {
+  static changePrefix(newPrefix: string, token: string): string {
     const uuid = this.getToken(token)
 
     if (!this.verify(uuid)) {
@@ -85,7 +85,7 @@ export class Token {
    * @throws Error if token is not a valid uuid
    * @return The token prefixed or generated
    */
-  changeOrGenerate(prefix: string, token?: string): string {
+  static changeOrGenerate(prefix: string, token?: string): string {
     if (token) {
       return this.changePrefix(prefix, token)
     }

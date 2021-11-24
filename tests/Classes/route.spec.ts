@@ -2,16 +2,10 @@ import { Token } from './../../src/Classes/Token'
 import { Route } from '../../src/Classes/Route'
 
 describe('\n Route Class', () => {
-  let route: Route
-
-  beforeAll(() => {
-    route = new Route()
-  })
-
   it('should get query params in string format from the route', () => {
     const path = '/users/1/posts?page=1&limit=10&created_at=1995-12-17T03:24:00'
 
-    expect(route.getQueryString(path)).toStrictEqual(
+    expect(Route.getQueryString(path)).toStrictEqual(
       '?page=1&limit=10&created_at=1995-12-17T03:24:00',
     )
   })
@@ -19,16 +13,16 @@ describe('\n Route Class', () => {
   it('should remove all query params from the route', () => {
     const path = '/users/1/posts?page=1&limit=10&created_at=1995-12-17T03:24:00'
 
-    expect(route.removeQueryParams(path)).toStrictEqual('/users/1/posts')
+    expect(Route.removeQueryParams(path)).toStrictEqual('/users/1/posts')
     expect(
-      route.removeQueryParams(route.removeQueryParams(path)),
+      Route.removeQueryParams(Route.removeQueryParams(path)),
     ).toStrictEqual('/users/1/posts')
   })
 
   it('should get query params value from any route', () => {
     const path = '/users/1/posts?page=1&limit=10&created_at=1995-12-17T03:24:00'
 
-    expect(route.getQueryParamsValue(path)).toStrictEqual({
+    expect(Route.getQueryParamsValue(path)).toStrictEqual({
       page: '1',
       limit: '10',
       created_at: '1995-12-17T03:24:00',
@@ -38,7 +32,7 @@ describe('\n Route Class', () => {
   it('should get query params names from any route', () => {
     const path = '/users/1/posts?page=1&limit=10&created_at=1995-12-17T03:24:00'
 
-    expect(route.getQueryParamsName(path)).toStrictEqual([
+    expect(Route.getQueryParamsName(path)).toStrictEqual([
       'page',
       'limit',
       'created_at',
@@ -49,7 +43,7 @@ describe('\n Route Class', () => {
     const pathWithParams = '/users/:id/posts/:post_id?page=1&limit=10'
     const pathWithValues = '/users/1/posts/2?page=1&limit=10'
 
-    expect(route.getParamsValue(pathWithParams, pathWithValues)).toStrictEqual({
+    expect(Route.getParamsValue(pathWithParams, pathWithValues)).toStrictEqual({
       id: '1',
       post_id: '2',
     })
@@ -58,7 +52,7 @@ describe('\n Route Class', () => {
   it('should get params names from any route', () => {
     const path = '/users/:id/posts/:post_id?page=1&limit=10'
 
-    expect(route.getParamsName(path)).toStrictEqual(['id', 'post_id'])
+    expect(Route.getParamsName(path)).toStrictEqual(['id', 'post_id'])
   })
 
   it('should create a matcher RegExp to recognize the route', () => {
@@ -66,9 +60,9 @@ describe('\n Route Class', () => {
 
     const pathTest1 = '/users/1/posts/tests'
     const pathTest2 = '/users/1/posts/2/oi'
-    const pathTest3 = `/users/${new Token().generate()}/posts/1`
+    const pathTest3 = `/users/${Token.generate()}/posts/1`
 
-    const matcher = route.createMatcher(path)
+    const matcher = Route.createMatcher(path)
 
     expect(matcher).toStrictEqual(
       /^(?:\/users\b)(?:\/[\w-]+)(?:\/posts\b)(?:\/[\w-]+)$/,
@@ -79,7 +73,7 @@ describe('\n Route Class', () => {
 
     const path2 = '/'
 
-    const matcher2 = route.createMatcher(path2)
+    const matcher2 = Route.createMatcher(path2)
 
     expect(matcher2).toStrictEqual(/^[/]$/)
     expect(matcher2.test(path2)).toBe(true)

@@ -7,7 +7,7 @@ export class Numbers {
    * @param numbers The array of numbers
    * @return The higher number from the array
    */
-  getHigher(numbers: number[]): number {
+  static getHigher(numbers: number[]): number {
     // eslint-disable-next-line prefer-spread
     return Math.max.apply(Math, numbers)
   }
@@ -18,7 +18,7 @@ export class Numbers {
    * @param numbers The array of numbers
    * @return The lower number from the array
    */
-  getLower(numbers: number[]): number {
+  static getLower(numbers: number[]): number {
     // eslint-disable-next-line prefer-spread
     return Math.min.apply(Math, numbers)
   }
@@ -29,8 +29,8 @@ export class Numbers {
    * @param string The string with numbers inside
    * @return One number only
    */
-  extractNumber(string: string): number {
-    return new Parser().stringToNumber(string.replace(/\D/g, ''))
+  static extractNumber(string: string): number {
+    return Parser.stringToNumber(string.replace(/\D/g, ''))
   }
 
   /**
@@ -39,9 +39,9 @@ export class Numbers {
    * @param string The string with numbers inside
    * @return An array of numbers
    */
-  extractNumbers(string: string): number[] {
+  static extractNumbers(string: string): number[] {
     return string.match(/[0-9]+/g).map(numberString => {
-      return new Parser().stringToNumber(numberString)
+      return Parser.stringToNumber(numberString)
     })
   }
 
@@ -51,7 +51,7 @@ export class Numbers {
    * @param args The array of numbers from all function arguments
    * @return The average of all numbers
    */
-  argsAverage(...args: number[]): number {
+  static argsAverage(...args: number[]): number {
     return args.reduce((acc: any, curr: any) => acc + curr, 0) / args.length
   }
 
@@ -61,7 +61,7 @@ export class Numbers {
    * @param array The array of numbers
    * @return The average of all numbers
    */
-  arrayAverage(array: number[]): number {
+  static arrayAverage(array: number[]): number {
     return array.reduce((acc, curr) => acc + curr, 0) / array.length
   }
 }

@@ -1,5 +1,5 @@
 export class Clean {
-  isEmpty(data: any | any[] | string): boolean {
+  static isEmpty(data: any | any[] | string): boolean {
     if (!data) {
       return true
     }
@@ -26,7 +26,7 @@ export class Clean {
    * @param removeEmpty Remove all empty objects/arrays from array
    * @return The array filtered without any falsy value
    */
-  cleanArray(
+  static cleanArray(
     array: any[],
     removeEmpty = false,
     cleanInsideObjects = false,
@@ -62,7 +62,7 @@ export class Clean {
    * @param removeEmpty Remove all empty objects/arrays from object
    * @return The object filtered without any falsy value
    */
-  cleanObject(
+  static cleanObject(
     object: any,
     removeEmpty = false,
     cleanInsideArrays = false,

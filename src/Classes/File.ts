@@ -22,10 +22,10 @@ import {
 } from 'fs'
 
 import { Path } from './Path'
+import { Parser } from './Parser'
 import { lookup } from 'mime-types'
 import { randomBytes } from 'crypto'
 import { parse, isAbsolute } from 'path'
-import { formatBytes } from '../Functions/formatBytes'
 import { InternalServerException } from '@secjs/exceptions'
 
 export interface FileJsonContract {
@@ -161,7 +161,7 @@ export class File {
     this._createdAt = fileStat.birthtime
     this._accessedAt = fileStat.atime
     this._modifiedAt = fileStat.mtime
-    this._fileSize = formatBytes(fileStat.size, 4)
+    this._fileSize = Parser.bytesToSize(fileStat.size, 4)
 
     if (options.withContent) {
       // 200mb
@@ -195,7 +195,7 @@ export class File {
     this._accessedAt = fileStat.atime
     this._modifiedAt = fileStat.mtime
     this._createdAt = fileStat.birthtime
-    this._fileSize = formatBytes(fileStat.size, 4)
+    this._fileSize = Parser.bytesToSize(fileStat.size, 4)
 
     if (!options.withContent) return this
 

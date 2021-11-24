@@ -1,12 +1,6 @@
 import { Clean } from '../../src/Classes/Clean'
 
 describe('\n Clean Class', () => {
-  let clean: Clean
-
-  beforeAll(() => {
-    clean = new Clean()
-  })
-
   it('should clean all falsy values from array and empty when needed', () => {
     const array = [
       1,
@@ -19,10 +13,10 @@ describe('\n Clean Class', () => {
       {},
     ]
 
-    clean.cleanArray(array)
+    Clean.cleanArray(array)
     expect(array).toStrictEqual([1, 2, 3, { joao: 'joao', lenon: null }, {}])
 
-    clean.cleanArray(array, true, true)
+    Clean.cleanArray(array, true, true)
     expect(array).toStrictEqual([1, 2, 3, { joao: 'joao' }])
   })
 
@@ -39,7 +33,7 @@ describe('\n Clean Class', () => {
       i: [null, 1, { joao: 'joao', lenon: null }, {}],
     }
 
-    clean.cleanObject(object)
+    Clean.cleanObject(object)
 
     expect(object).toStrictEqual({
       a: 'a',
@@ -51,7 +45,7 @@ describe('\n Clean Class', () => {
       i: [null, 1, { joao: 'joao', lenon: null }, {}],
     })
 
-    clean.cleanObject(object, true, true)
+    Clean.cleanObject(object, true, true)
 
     expect(object).toStrictEqual({
       a: 'a',
