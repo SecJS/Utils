@@ -126,3 +126,7 @@ out
 *.d.ts
 dist
 build
+
+# testing files generated here
+file-class-test
+folder-class-test

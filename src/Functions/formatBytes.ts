@@ -1,0 +1,27 @@
+/*
+ * @secjs/utils
+ *
+ * (c) João Lenon <lenon@secjs.com.br>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+/**
+ * formatBytes creates a string based on the bytes size
+ *
+ * @param bytes - The number of bytes
+ * @param decimals - The number of decimals to be showed
+ * @return formattedString - Return the formatted value based on the size
+ */
+export function formatBytes(bytes: number, decimals = 2) {
+  if (bytes === 0) return '0 Bytes'
+
+  const k = 1024
+  const dm = decimals < 0 ? 0 : decimals
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
+}

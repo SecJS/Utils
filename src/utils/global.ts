@@ -1,3 +1,4 @@
+import { unset as unsetFn } from '../Functions/unset'
 import { Path as PathInstance } from '../Classes/Path'
 
 export {}
@@ -24,7 +25,13 @@ declare global {
     static forBuild(name: string): typeof Path
     static changeBuild(name: string): typeof Path
   }
+  function unset(object: any): void
 }
 
 const _global = global as any
+
+// Classes
 _global.Path = PathInstance
+
+// Functions
+_global.unset = unsetFn

@@ -40,6 +40,100 @@ npm install @secjs/utils
 
 ## Classes Usage
 
+### File
+
+> Use File to create an instance of a File, it's existing or not.
+
+```ts
+import { File } from '@secjs/utils'
+
+// With file you can manipulate an existing file, or create a new one
+
+const existentFile = new File('path/to/existent/file.txt')
+const nonExistentFile = new File('path/to/nonExistent/file.txt', Buffer.from('File content'))
+
+// Now existentFile and nonExistentFile instances are created, but not loaded/created
+
+// using load here because the file already exists, if using create, would generate an exception
+// property withContent if true, will save the file content in the instance, Be careful with big files
+existentFile.loadSync({ withContent: true })
+nonExistentFile.createSync().loadSync({ withContent: true })
+
+// now the files will have this properties
+console.log(existentFile.createdAt)
+console.log(existentFile.accessedAt)
+console.log(existentFile.modifiedAt)
+console.log(existentFile.fileSize)
+console.log(existentFile.content)
+
+// you can delete the file using remove method
+existentFile.removeSync() // void
+
+// you can get the content of the file with getContent method
+console.log(existentFile.getContentSync()) // Some Buffer instance
+
+// you can use toJSON method to get the instance informations in JSON
+console.log(existentFile.toJSON()) // { ...infos }
+
+// File uses readable streams in async methods to not block the event loop when handling huge files content
+await existentFile.load()
+await existentFile.remove()
+await existentFile.create()
+await existentFile.getContent()
+```
+
+---
+
+### Folder
+
+> Use Folder to create an instance of a Folder, it's existing or not.
+
+```ts
+import { Folder } from '@secjs/utils'
+
+// With folder you can manipulate an existing folder, or create a new one
+
+const existentFolder = new Folder('path/to/existent/folder')
+const nonExistentFolder = new Folder('path/to/nonExistent/folder')
+
+// Now existentFolder and nonExistentFolder instances are created, but not loaded/created
+
+// using load here because the file already exists, if using create, would generate an exception
+
+// property withSub if true, will load files and subFolders from the folder
+// property withFileContent if true, will get the content of all files in the folder, Be careful with big files
+
+existentFolder.loadSync({ withSub: true, withFileContent: false })
+nonExistentFolder.createSync().loadSync({ withSub: true, withFileContent: true })
+
+// now the folders will have this properties
+console.log(existentFolder.createdAt)
+console.log(existentFolder.accessedAt)
+console.log(existentFolder.modifiedAt)
+console.log(existentFolder.folderSize)
+
+// you can delete the folder using remove method
+existentFolder.removeSync() // void
+
+// you can use toJSON method to get the instance informations in JSON
+console.log(existentFolder.toJSON()) // { ...infos }
+
+// you can use getFilesByPattern method to get all files in the folder that match some pattern
+// if recursive is true, will go inside subFolders too
+const recursive = true
+console.log(existentFolder.getFilesByPattern('path/to/**/*.ts', recursive)) // [...files instance]
+
+// you can use getFoldersByPattern method to get all folders in the folder that match some pattern
+console.log(existentFolder.getFoldersByPattern('path/to/**/folder', recursive)) // [...folders instance]
+
+// Folder uses readable streams in async methods to not block the event loop when handling huge files content
+await existentFolder.load()
+await existentFolder.remove()
+await existentFolder.create()
+```
+
+---
+
 ### Path
 
 > Use Path to get the absolute path from project folders.
@@ -281,6 +375,62 @@ console.log(clean.cleanArraysInObject(object2)) // { number2: [{ number1: "numbe
 ---
 
 ## Functions Usage
+
+### formatBytes
+
+> Creates a string based on the bytes size.
+
+```ts
+import { formatBytes } from '@secjs/utils'
+
+const bytes = 1024*1024*1024 // 1GB
+const decimals = 4
+
+formatBytes(bytes, decimals) // Example: 1.0932 GB
+```
+
+### createFileOfSize
+
+> Create a file in determined size. Good for testing.
+
+```ts
+import { createFileOfSize } from '@secjs/utils'
+
+createFileOfSize('path/to/file', 1024*1024*1024)
+```
+
+### dirSize
+
+> Get the size of the directory without recursive going inside sub folders.
+
+```ts
+import { dirSize } from '@secjs/utils'
+
+dirSize('path/to/directory') // The size in bytes
+```
+
+### pathPattern
+
+> Transform all route paths to the same pattern.
+
+```js
+import { pathPattern } from '@secjs/utils'
+
+pathPattern('/users/:id/') // returns /users/:id
+pathPattern('clients/') // returns /clients
+pathPattern('/api/v2') // returns /api/v2
+pathPattern('/api/v3/') // returns /api/v3
+
+pathPattern(['/api/v1/', 'api/v2', 'api/v3/', '/api/v4'])
+
+// returns
+// [
+//  '/api/v1',
+//  '/api/v2',
+//  '/api/v3',
+//  '/api/v4'
+// ]
+```
 
 ### getBranch
 
