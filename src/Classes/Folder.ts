@@ -55,6 +55,13 @@ export class Folder {
     )
   }
 
+  /**
+   * Constructor
+   *
+   * @param folderPath Path to the file, it existing or not
+   * @param mockedValues Default is false
+   * @param isCopy Default is false
+   */
   constructor(folderPath: string, mockedValues = false, isCopy = false) {
     const { dir, name, path } = Folder.parsePath(folderPath)
 
@@ -114,6 +121,13 @@ export class Folder {
     return this
   }
 
+  /**
+   * load
+   *
+   * @param options Options
+   * @param options.withSub Default is true
+   * @param options.withFileContent Default is false
+   */
   loadSync(options?: { withSub?: boolean; withFileContent?: boolean }) {
     options = Object.assign(
       {},
@@ -151,6 +165,13 @@ export class Folder {
     return this
   }
 
+  /**
+   * load
+   *
+   * @param options Options
+   * @param options.withSub Default is true
+   * @param options.withFileContent Default is false
+   */
   async load(options?: {
     withSub?: boolean
     withFileContent?: boolean
@@ -229,6 +250,15 @@ export class Folder {
     await promises.rmdir(this._path, { recursive: true })
   }
 
+  /**
+   * copy
+   *
+   * @param newFolderPath New path to the file
+   * @param options Options
+   * @param options.withSub Default is true
+   * @param options.withFileContent Default is false
+   * @param options.mockedValues Default is false
+   */
   copySync(
     newFolderPath: string,
     options?: {
@@ -277,6 +307,15 @@ export class Folder {
     return copy
   }
 
+  /**
+   * copy
+   *
+   * @param newFolderPath New path to the file
+   * @param options Options
+   * @param options.withSub Default is true
+   * @param options.withFileContent Default is false
+   * @param options.mockedValues Default is false
+   */
   async copy(
     newFolderPath: string,
     options?: {
@@ -331,6 +370,15 @@ export class Folder {
     return copy
   }
 
+  /**
+   * move
+   *
+   * @param folderPath New path to the file
+   * @param options Options
+   * @param options.withSub Default is true
+   * @param options.withFileContent Default is false
+   * @param options.mockedValues Default is false
+   */
   moveSync(
     folderPath: string,
     options?: {
@@ -381,6 +429,15 @@ export class Folder {
     return copy
   }
 
+  /**
+   * move
+   *
+   * @param folderPath New path to the file
+   * @param options Options
+   * @param options.withSub Default is true
+   * @param options.withFileContent Default is false
+   * @param options.mockedValues Default is false
+   */
   async move(
     folderPath: string,
     options?: {
@@ -437,6 +494,12 @@ export class Folder {
     return copy
   }
 
+  /**
+   * getFilesByPattern
+   *
+   * @param pattern The pattern of files path to match
+   * @param recursive Default is false
+   */
   getFilesByPattern(pattern: string, recursive = false): File[] {
     const files = []
 
@@ -453,6 +516,12 @@ export class Folder {
     return files
   }
 
+  /**
+   * getFoldersByPattern
+   *
+   * @param pattern The pattern of folders path to match
+   * @param recursive Default is false
+   */
   getFoldersByPattern(pattern: string, recursive = false): Folder[] {
     const folders = []
 

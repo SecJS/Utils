@@ -64,6 +64,14 @@ export class File {
     })
   }
 
+  /**
+   * Constructor
+   *
+   * @param filePath Path to the file, it existing or not
+   * @param content Default is null
+   * @param mockedValues Default is false
+   * @param isCopy Default is false
+   */
   constructor(
     filePath: string,
     content: Buffer | null = null,
@@ -163,6 +171,12 @@ export class File {
     })
   }
 
+  /**
+   * load
+   *
+   * @param options Options
+   * @param options.withContent Default is true
+   */
   loadSync(options?: { withContent?: boolean }) {
     options = Object.assign({}, { withContent: true }, options)
 
@@ -199,6 +213,12 @@ export class File {
     return this
   }
 
+  /**
+   * load
+   *
+   * @param options Options
+   * @param options.withContent Default is true
+   */
   async load(options?: { withContent?: boolean }): Promise<File> {
     options = Object.assign({}, { withContent: true }, options)
 
@@ -246,6 +266,12 @@ export class File {
     })
   }
 
+  /**
+   * getContent
+   *
+   * @param options Options
+   * @param options.saveContent Default is false
+   */
   getContentSync(options?: { saveContent?: boolean }): Buffer {
     options = Object.assign({}, { saveContent: false }, options)
 
@@ -264,6 +290,12 @@ export class File {
     return content
   }
 
+  /**
+   * getContent
+   *
+   * @param options Options
+   * @param options.saveContent Default is false
+   */
   async getContent(options?: { saveContent?: boolean }): Promise<Buffer> {
     options = Object.assign({}, { saveContent: false }, options)
 
@@ -329,6 +361,14 @@ export class File {
     await promises.rm(this._path, { recursive: true })
   }
 
+  /**
+   * copy
+   *
+   * @param newFilePath New path to the file
+   * @param options Options
+   * @param options.withContent Default is true
+   * @param options.mockedValues Default is false
+   */
   copySync(
     newFilePath: string,
     options?: { withContent?: boolean; mockedValues?: boolean },
@@ -357,6 +397,14 @@ export class File {
     return copy
   }
 
+  /**
+   * copy
+   *
+   * @param newFilePath New path to the file
+   * @param options Options
+   * @param options.withContent Default is true
+   * @param options.mockedValues Default is false
+   */
   async copy(
     newFilePath: string,
     options?: { withContent?: boolean; mockedValues?: boolean },
@@ -387,6 +435,14 @@ export class File {
     return copy
   }
 
+  /**
+   * move
+   *
+   * @param filePath New path to the file
+   * @param options Options
+   * @param options.withContent Default is true
+   * @param options.mockedValues Default is false
+   */
   moveSync(
     filePath: string,
     options?: { withContent?: boolean; mockedValues?: boolean },
@@ -417,6 +473,14 @@ export class File {
     return movedFile
   }
 
+  /**
+   * move
+   *
+   * @param filePath New path to the file
+   * @param options Options
+   * @param options.withContent Default is true
+   * @param options.mockedValues Default is false
+   */
   async move(
     filePath: string,
     options?: { withContent?: boolean; mockedValues?: boolean },
