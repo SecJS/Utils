@@ -53,16 +53,112 @@ declare global {
 
   class File {
     static createFileOfSize(filePath: string, size: number): Promise<any>
-    constructor(filePath: string, content?: Buffer | null)
+
+    /**
+     * Constructor
+     *
+     * @param filePath Path to the file, it existing or not
+     * @param content Default is null
+     * @param mockedValues Default is false
+     * @param isCopy Default is false
+     */
+    constructor(
+      filePath: string,
+      content?: Buffer | null,
+      mockedValues?: boolean,
+      isCopy?: boolean,
+    )
+
     toJSON(): FileJsonContract
     createSync(): File
     create(): Promise<File>
+
+    /**
+     * load
+     *
+     * @param options Options
+     * @param options.withContent Default is true
+     */
     loadSync(options?: { withContent?: boolean }): File
+
+    /**
+     * load
+     *
+     * @param options Options
+     * @param options.withContent Default is true
+     */
     load(options?: { withContent?: boolean }): Promise<File>
-    getContentSync(): Buffer
-    getContent(): Promise<Buffer>
-    removeSync(): File
+
+    /**
+     * getContent
+     *
+     * @param options Options
+     * @param options.saveContent Default is false
+     */
+    getContentSync(options?: { saveContent?: boolean }): Buffer
+
+    /**
+     * getContent
+     *
+     * @param options Options
+     * @param options.saveContent Default is false
+     */
+    getContent(options?: { saveContent?: boolean }): Promise<Buffer>
+    removeSync(): void
     remove(): Promise<void>
+
+    /**
+     * copy
+     *
+     * @param newFilePath New path to the file
+     * @param options Options
+     * @param options.withContent Default is true
+     * @param options.mockedValues Default is false
+     */
+    copySync(
+      newFilePath: string,
+      options?: { withContent?: boolean; mockedValues?: boolean },
+    ): File
+
+    /**
+     * copy
+     *
+     * @param newFilePath New path to the file
+     * @param options Options
+     * @param options.withContent Default is true
+     * @param options.mockedValues Default is false
+     */
+    copy(
+      newFilePath: string,
+      options?: { withContent?: boolean; mockedValues?: boolean },
+    ): Promise<File>
+
+    /**
+     * move
+     *
+     * @param filePath New path to the file
+     * @param options Options
+     * @param options.withContent Default is true
+     * @param options.mockedValues Default is false
+     */
+    moveSync(
+      filePath: string,
+      options?: { withContent?: boolean; mockedValues?: boolean },
+    ): File
+
+    /**
+     * move
+     *
+     * @param filePath New path to the file
+     * @param options Options
+     * @param options.withContent Default is true
+     * @param options.mockedValues Default is false
+     */
+    move(
+      filePath: string,
+      options?: { withContent?: boolean; mockedValues?: boolean },
+    ): Promise<File>
+
     get dir(): string
     get name(): string
     get base(): string
@@ -79,9 +175,13 @@ declare global {
     get originalBase(): string
     get originalPath(): string
     /**
-     * fileExists - If true means the file has been created or already exists
+     * _fileExists - If true means the file has been created or already exists
      */
     get fileExists(): boolean
+    /**
+     * _isCopy - If true means the file is not a copy from other file.
+     */
+    get isCopy(): boolean
     /**
      * _originalFileExists - If true means the file already exists when creating the instance
      */
@@ -90,19 +190,127 @@ declare global {
 
   class Folder {
     static folderSize(folderPath: string): Promise<number>
-    constructor(folderPath: string)
+
+    /**
+     * Constructor
+     *
+     * @param folderPath Path to the file, it existing or not
+     * @param mockedValues Default is false
+     * @param isCopy Default is false
+     */
+    constructor(folderPath: string, mockedValues?: boolean, isCopy?: boolean)
     toJSON(): FolderJsonContract
     createSync(): Folder
     create(): Promise<Folder>
+    /**
+     * load
+     *
+     * @param options Options
+     * @param options.withSub Default is true
+     * @param options.withFileContent Default is false
+     */
     loadSync(options?: { withSub?: boolean; withFileContent?: boolean })
+    /**
+     * load
+     *
+     * @param options Options
+     * @param options.withSub Default is true
+     * @param options.withFileContent Default is false
+     */
     load(options?: {
       withSub?: boolean
       withFileContent?: boolean
     }): Promise<Folder>
 
-    removeSync(): Folder
+    removeSync(): void
     remove(): Promise<void>
+
+    /**
+     * copy
+     *
+     * @param newFolderPath New path to the file
+     * @param options Options
+     * @param options.withSub Default is true
+     * @param options.withFileContent Default is false
+     * @param options.mockedValues Default is false
+     */
+    copySync(
+      newFolderPath: string,
+      options?: {
+        withSub?: boolean
+        withFileContent?: boolean
+        mockedValues?: boolean
+      },
+    ): Folder
+
+    /**
+     * copy
+     *
+     * @param newFolderPath New path to the file
+     * @param options Options
+     * @param options.withSub Default is true
+     * @param options.withFileContent Default is false
+     * @param options.mockedValues Default is false
+     */
+    copy(
+      newFolderPath: string,
+      options?: {
+        withSub?: boolean
+        withFileContent?: boolean
+        mockedValues?: boolean
+      },
+    ): Promise<Folder>
+
+    /**
+     * move
+     *
+     * @param folderPath New path to the file
+     * @param options Options
+     * @param options.withSub Default is true
+     * @param options.withFileContent Default is false
+     * @param options.mockedValues Default is false
+     */
+    moveSync(
+      folderPath: string,
+      options?: {
+        withSub?: boolean
+        withFileContent?: boolean
+        mockedValues?: boolean
+      },
+    ): Folder
+
+    /**
+     * move
+     *
+     * @param folderPath New path to the file
+     * @param options Options
+     * @param options.withSub Default is true
+     * @param options.withFileContent Default is false
+     * @param options.mockedValues Default is false
+     */
+    move(
+      folderPath: string,
+      options?: {
+        withSub?: boolean
+        withFileContent?: boolean
+        mockedValues?: boolean
+      },
+    ): Promise<Folder>
+
+    /**
+     * getFilesByPattern
+     *
+     * @param pattern The pattern of files path to match
+     * @param recursive Default is false
+     */
     getFilesByPattern(pattern: string, recursive?: boolean): File[]
+
+    /**
+     * getFoldersByPattern
+     *
+     * @param pattern The pattern of folders path to match
+     * @param recursive Default is false
+     */
     getFoldersByPattern(pattern: string, recursive?: boolean): Folder[]
     get dir(): string
     get name(): string
@@ -120,6 +328,10 @@ declare global {
      * fileExists - If true means the file has been created or already exists
      */
     get folderExists(): boolean
+    /**
+     * _isCopy - If true means the file is not a copy from other file.
+     */
+    get isCopy(): boolean
     /**
      * _originalFileExists - If true means the file already exists when creating the instance
      */

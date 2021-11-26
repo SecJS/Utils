@@ -55,16 +55,24 @@ export class Folder {
     )
   }
 
-  constructor(folderPath: string) {
+  /**
+   * Constructor
+   *
+   * @param folderPath Path to the file, it existing or not
+   * @param mockedValues Default is false
+   * @param isCopy Default is false
+   */
+  constructor(folderPath: string, mockedValues = false, isCopy = false) {
     const { dir, name, path } = Folder.parsePath(folderPath)
 
     this._originalDir = dir
     this._originalName = name
     this._originalPath = path
-    this._originalFolderExists = existsSync(this._originalPath)
+    this._isCopy = isCopy
+    this._originalFolderExists = existsSync(this._originalPath) && !this._isCopy
     this._folderExists = this._originalFolderExists
 
-    this.createFolderValues()
+    this.createFolderValues(mockedValues)
   }
 
   toJSON(): FolderJsonContract {
@@ -83,14 +91,16 @@ export class Folder {
         originalName: this.originalName,
         originalPath: this.originalPath,
         folderExists: this.folderExists,
+        isCopy: this.isCopy,
         originalFolderExists: this.originalFolderExists,
       }),
     )
   }
 
   createSync() {
-    if (this.folderExists)
-      throw new InternalServerException('Folder already exists')
+    if (this._folderExists) {
+      throw new InternalServerException(`Folder ${this._name} already exists`)
+    }
 
     mkdirSync(this.path, { recursive: true })
 
@@ -100,8 +110,9 @@ export class Folder {
   }
 
   async create(): Promise<Folder> {
-    if (this.folderExists)
-      throw new InternalServerException('Folder already exists')
+    if (this._folderExists) {
+      throw new InternalServerException(`Folder ${this._name} already exists`)
+    }
 
     await promises.mkdir(this.path, { recursive: true })
 
@@ -110,6 +121,13 @@ export class Folder {
     return this
   }
 
+  /**
+   * load
+   *
+   * @param options Options
+   * @param options.withSub Default is true
+   * @param options.withFileContent Default is false
+   */
   loadSync(options?: { withSub?: boolean; withFileContent?: boolean }) {
     options = Object.assign(
       {},
@@ -119,12 +137,14 @@ export class Folder {
 
     if (!this._folderExists) {
       throw new InternalServerException(
-        'Folder does not exist, use create method to create the folder',
+        `Folder ${this._name} does not exist, use create method to create the folder`,
       )
     }
 
     if (this._files.length || this._folders.length) {
-      throw new InternalServerException('Folder has been already loaded')
+      throw new InternalServerException(
+        `Folder ${this._name} has been already loaded`,
+      )
     }
 
     const fileStat = statSync(this._path)
@@ -145,6 +165,13 @@ export class Folder {
     return this
   }
 
+  /**
+   * load
+   *
+   * @param options Options
+   * @param options.withSub Default is true
+   * @param options.withFileContent Default is false
+   */
   async load(options?: {
     withSub?: boolean
     withFileContent?: boolean
@@ -157,12 +184,14 @@ export class Folder {
 
     if (!this._folderExists) {
       throw new InternalServerException(
-        'Folder does not exist, use create method to create the folder',
+        `Folder ${this._name} does not exist, use create method to create the folder`,
       )
     }
 
     if (this._files.length || this._folders.length) {
-      throw new InternalServerException('Folder has been already loaded')
+      throw new InternalServerException(
+        `Folder ${this._name} has been already loaded`,
+      )
     }
 
     const folderStat = await promises.stat(this._path)
@@ -184,8 +213,11 @@ export class Folder {
   }
 
   removeSync() {
-    if (!this._folderExists)
-      throw new InternalServerException('Folder does not exist')
+    if (!this._folderExists) {
+      throw new InternalServerException(
+        `Folder ${this._name} does not exist, use create method to create the folder`,
+      )
+    }
 
     this._createdAt = null
     this._accessedAt = null
@@ -200,8 +232,11 @@ export class Folder {
   }
 
   async remove(): Promise<void> {
-    if (!this._folderExists)
-      throw new InternalServerException('Folder does not exist')
+    if (!this._folderExists) {
+      throw new InternalServerException(
+        `Folder ${this._name} does not exist, use create method to create the folder`,
+      )
+    }
 
     this._createdAt = null
     this._accessedAt = null
@@ -215,6 +250,256 @@ export class Folder {
     await promises.rmdir(this._path, { recursive: true })
   }
 
+  /**
+   * copy
+   *
+   * @param newFolderPath New path to the file
+   * @param options Options
+   * @param options.withSub Default is true
+   * @param options.withFileContent Default is false
+   * @param options.mockedValues Default is false
+   */
+  copySync(
+    newFolderPath: string,
+    options?: {
+      withSub?: boolean
+      withFileContent?: boolean
+      mockedValues?: boolean
+    },
+  ): Folder {
+    options = Object.assign(
+      {},
+      { withSub: true, withFileContent: false, mockedValues: false },
+      options,
+    )
+
+    if (!this._folderExists) {
+      throw new InternalServerException(
+        `Folder ${this._name} does not exist, use create method to create the folder`,
+      )
+    }
+
+    const copy = new Folder(
+      newFolderPath,
+      options.mockedValues,
+      true,
+    ).createSync()
+
+    this._folders.forEach(folder => {
+      return new Folder(
+        `${copy.path}/${folder.name}`,
+        options.mockedValues,
+        true,
+      ).createSync()
+    })
+
+    this._files.forEach(file => {
+      new File(
+        `${copy.path}/${file.base}`,
+        file.getContentSync(),
+        options.mockedValues,
+        true,
+      ).createSync()
+    })
+
+    if (this._folderSize) copy.loadSync(options)
+
+    return copy
+  }
+
+  /**
+   * copy
+   *
+   * @param newFolderPath New path to the file
+   * @param options Options
+   * @param options.withSub Default is true
+   * @param options.withFileContent Default is false
+   * @param options.mockedValues Default is false
+   */
+  async copy(
+    newFolderPath: string,
+    options?: {
+      withSub?: boolean
+      withFileContent?: boolean
+      mockedValues?: boolean
+    },
+  ): Promise<Folder> {
+    options = Object.assign(
+      {},
+      { withSub: true, withFileContent: false, mockedValues: false },
+      options,
+    )
+
+    if (!this._folderExists) {
+      throw new InternalServerException(
+        `Folder ${this._name} does not exist, use create method to create the folder`,
+      )
+    }
+
+    const copy = await new Folder(
+      newFolderPath,
+      options.mockedValues,
+      true,
+    ).create()
+
+    await Promise.all(
+      this._folders.map(folder => {
+        return new Folder(
+          `${copy.path}/${folder.name}`,
+          options.mockedValues,
+          true,
+        ).create()
+      }),
+    )
+
+    await Promise.all(
+      this._files.map(file => {
+        return file.getContent().then(content => {
+          return new File(
+            `${copy.path}/${file.base}`,
+            content,
+            options.mockedValues,
+            true,
+          ).create()
+        })
+      }),
+    )
+
+    if (this._folderSize) await copy.load(options)
+
+    return copy
+  }
+
+  /**
+   * move
+   *
+   * @param folderPath New path to the file
+   * @param options Options
+   * @param options.withSub Default is true
+   * @param options.withFileContent Default is false
+   * @param options.mockedValues Default is false
+   */
+  moveSync(
+    folderPath: string,
+    options?: {
+      withSub?: boolean
+      withFileContent?: boolean
+      mockedValues?: boolean
+    },
+  ): Folder {
+    options = Object.assign(
+      {},
+      { withSub: true, withFileContent: false, mockedValues: false },
+      options,
+    )
+
+    if (!this._folderExists) {
+      throw new InternalServerException(
+        `Folder ${this._name} does not exist, use create method to create the folder`,
+      )
+    }
+
+    const copy = new Folder(
+      folderPath,
+      options.mockedValues,
+      false,
+    ).createSync()
+
+    this._folders.forEach(folder => {
+      return new Folder(
+        `${copy.path}/${folder.name}`,
+        options.mockedValues,
+        false,
+      ).createSync()
+    })
+
+    this._files.forEach(file => {
+      new File(
+        `${copy.path}/${file.base}`,
+        file.getContentSync(),
+        options.mockedValues,
+        false,
+      ).createSync()
+    })
+
+    if (this._folderSize) copy.loadSync(options)
+
+    this.removeSync()
+
+    return copy
+  }
+
+  /**
+   * move
+   *
+   * @param folderPath New path to the file
+   * @param options Options
+   * @param options.withSub Default is true
+   * @param options.withFileContent Default is false
+   * @param options.mockedValues Default is false
+   */
+  async move(
+    folderPath: string,
+    options?: {
+      withSub?: boolean
+      withFileContent?: boolean
+      mockedValues?: boolean
+    },
+  ): Promise<Folder> {
+    options = Object.assign(
+      {},
+      { withSub: true, withFileContent: false, mockedValues: false },
+      options,
+    )
+
+    if (!this._folderExists) {
+      throw new InternalServerException(
+        `Folder ${this._name} does not exist, use create method to create the folder`,
+      )
+    }
+
+    const copy = await new Folder(
+      folderPath,
+      options.mockedValues,
+      false,
+    ).create()
+
+    await Promise.all(
+      this._folders.map(folder => {
+        return new Folder(
+          `${copy.path}/${folder.name}`,
+          options.mockedValues,
+          false,
+        ).create()
+      }),
+    )
+
+    await Promise.all(
+      this._files.map(file => {
+        return file.getContent().then(content => {
+          return new File(
+            `${copy.path}/${file.base}`,
+            content,
+            options.mockedValues,
+            false,
+          ).create()
+        })
+      }),
+    )
+
+    if (this._folderSize) await copy.load(options)
+
+    await this.remove()
+
+    return copy
+  }
+
+  /**
+   * getFilesByPattern
+   *
+   * @param pattern The pattern of files path to match
+   * @param recursive Default is false
+   */
   getFilesByPattern(pattern: string, recursive = false): File[] {
     const files = []
 
@@ -231,6 +516,12 @@ export class Folder {
     return files
   }
 
+  /**
+   * getFoldersByPattern
+   *
+   * @param pattern The pattern of folders path to match
+   * @param recursive Default is false
+   */
   getFoldersByPattern(pattern: string, recursive = false): Folder[] {
     const folders = []
 
@@ -291,21 +582,21 @@ export class Folder {
     return subFolders
   }
 
-  private createFolderValues() {
-    if (this.originalFolderExists) {
+  private createFolderValues(mockedValues = false) {
+    if (mockedValues && !this._originalFolderExists) {
+      const bytes = randomBytes(8)
+      const buffer = Buffer.from(bytes)
+
       this._dir = this._originalDir
-      this._name = this._originalName
-      this._path = this._originalPath
+      this._name = buffer.toString('base64').replace(/[^a-zA-Z0-9]/g, '')
+      this._path = this._dir + '/' + this._name
 
       return
     }
 
-    const bytes = randomBytes(8)
-    const buffer = Buffer.from(bytes)
-
     this._dir = this._originalDir
-    this._name = buffer.toString('base64').replace(/[^a-zA-Z0-9]/g, '')
-    this._path = this._dir + '/' + this._name
+    this._name = this._originalName
+    this._path = this._originalPath
   }
 
   private static parsePath(folderPath: string) {
@@ -373,6 +664,7 @@ export class Folder {
   private _originalName: string
   private _originalPath: string
   private _folderExists: boolean
+  private _isCopy: boolean
   private _originalFolderExists: boolean
 
   get dir() {
@@ -428,6 +720,13 @@ export class Folder {
    */
   get folderExists() {
     return this._folderExists
+  }
+
+  /**
+   * _isCopy - If true means the file is not a copy from other file.
+   */
+  get isCopy() {
+    return this._isCopy
   }
 
   /**
