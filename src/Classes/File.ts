@@ -40,6 +40,7 @@ export interface FileJsonContract {
   fileSize: string
   extension: string
   fileExists: boolean
+  isCopy: boolean
   originalDir: string
   originalName: string
   originalPath: string
@@ -63,19 +64,25 @@ export class File {
     })
   }
 
-  constructor(filePath: string, content: Buffer | null = null) {
+  constructor(
+    filePath: string,
+    content: Buffer | null = null,
+    mockedValues = false,
+    isCopy = false,
+  ) {
     const { ext, dir, name, base, mime, path } = File.parsePath(filePath)
 
     this._originalDir = dir
     this._originalName = name
     this._originalBase = base
     this._originalPath = path
-    this._originalFileExists = existsSync(this._originalPath)
+    this._isCopy = isCopy
+    this._originalFileExists = existsSync(this._originalPath) && !this._isCopy
     this._fileExists = this._originalFileExists
     this._content = content
     this._mime = mime
     this._extension = ext
-    this.createFileValues()
+    this.createFileValues(mockedValues)
 
     if (!this._originalFileExists && !this._content)
       throw new InternalServerException(
@@ -97,6 +104,7 @@ export class File {
         fileSize: this.fileSize,
         extension: this.extension,
         fileExists: this.fileExists,
+        isCopy: this.isCopy,
         originalDir: this.originalDir,
         originalName: this.originalName,
         originalPath: this.originalPath,
@@ -107,11 +115,15 @@ export class File {
   }
 
   createSync() {
-    if (this._fileExists)
-      throw new InternalServerException('File already exists')
+    if (this._fileExists) {
+      throw new InternalServerException(`File ${this._base} already exists`)
+    }
 
-    if (!this._content)
-      throw new InternalServerException('Cannot create a file without content')
+    if (!this._content) {
+      throw new InternalServerException(
+        `Cannot create the file ${this._base} without content`,
+      )
+    }
 
     mkdirSync(this._dir, { recursive: true })
     writeFileSync(this._path, this._content)
@@ -123,18 +135,24 @@ export class File {
   }
 
   async create(): Promise<File> {
-    if (this._fileExists)
-      throw new InternalServerException('File already exists')
+    if (this._fileExists) {
+      throw new InternalServerException(`File ${this._base} already exists`)
+    }
 
-    if (!this._content)
-      throw new InternalServerException('Cannot create a file without content')
+    if (!this._content) {
+      throw new InternalServerException(
+        `Cannot create the file ${this._base} without content`,
+      )
+    }
 
     await promises.mkdir(this._dir, { recursive: true })
 
     return new Promise((resolve, reject) => {
-      const writable = createWriteStream(this._path)
+      const writable = createWriteStream(this._path, { flags: 'w' })
 
-      writable.on('end', () => {
+      writable.write(this._content)
+
+      writable.end(() => {
         this._content = null
         this._fileExists = true
 
@@ -148,13 +166,17 @@ export class File {
   loadSync(options?: { withContent?: boolean }) {
     options = Object.assign({}, { withContent: true }, options)
 
-    if (this._content && this._fileExists)
-      throw new InternalServerException('File has been already loaded')
-
-    if (!this._fileExists)
+    if (this._fileSize) {
       throw new InternalServerException(
-        'File does not exist, use create method to create the file',
+        `File ${this._base} has been already loaded`,
       )
+    }
+
+    if (!this._fileExists) {
+      throw new InternalServerException(
+        `File ${this._base} does not exist, use create method to create the file`,
+      )
+    }
 
     const fileStat = statSync(this._path)
 
@@ -180,13 +202,15 @@ export class File {
   async load(options?: { withContent?: boolean }): Promise<File> {
     options = Object.assign({}, { withContent: true }, options)
 
-    if (this._content && this._fileExists) {
-      throw new InternalServerException('File has been already loaded')
+    if (this._fileSize) {
+      throw new InternalServerException(
+        `File ${this._base} has been already loaded`,
+      )
     }
 
     if (!this._fileExists) {
       throw new InternalServerException(
-        'File does not exist, use create method to create the file',
+        `File ${this._base} does not exist, use create method to create the file`,
       )
     }
 
@@ -222,22 +246,32 @@ export class File {
     })
   }
 
-  getContentSync(): Buffer {
-    if (!this._fileExists)
+  getContentSync(options?: { saveContent?: boolean }): Buffer {
+    options = Object.assign({}, { saveContent: false }, options)
+
+    if (!this._fileExists) {
       throw new InternalServerException(
-        'File does not exist, use create method to create the file',
+        `File ${this._base} does not exist, use create method to create the file`,
       )
+    }
 
     if (this._content) return this._content
 
-    return readFileSync(this._path)
+    const content = readFileSync(this._path)
+
+    if (options.saveContent) this._content = content
+
+    return content
   }
 
-  async getContent(): Promise<Buffer> {
-    if (!this._fileExists)
+  async getContent(options?: { saveContent?: boolean }): Promise<Buffer> {
+    options = Object.assign({}, { saveContent: false }, options)
+
+    if (!this._fileExists) {
       throw new InternalServerException(
-        'File does not exist, use create method to create the file',
+        `File ${this._base} does not exist, use create method to create the file`,
       )
+    }
 
     if (this._content) return this._content
 
@@ -247,15 +281,24 @@ export class File {
       const chunks = []
 
       readable.on('data', chunk => chunks.push(chunk))
-      readable.on('end', () => resolve(Buffer.concat(chunks)))
+      readable.on('end', () => {
+        const content = Buffer.concat(chunks)
+
+        if (options.saveContent) this._content = content
+
+        resolve(content)
+      })
 
       readable.on('error', err => reject(err))
     })
   }
 
   removeSync() {
-    if (!this._fileExists)
-      throw new InternalServerException('File does not exist')
+    if (!this._fileExists) {
+      throw new InternalServerException(
+        `File ${this._base} does not exist, use create method to create the file`,
+      )
+    }
 
     this._content = null
     this._createdAt = null
@@ -269,8 +312,11 @@ export class File {
   }
 
   async remove(): Promise<void> {
-    if (!this._fileExists)
-      throw new InternalServerException('File does not exist')
+    if (!this._fileExists) {
+      throw new InternalServerException(
+        `File ${this._base} does not exist, use create method to create the file`,
+      )
+    }
 
     this._content = null
     this._createdAt = null
@@ -283,23 +329,139 @@ export class File {
     await promises.rm(this._path, { recursive: true })
   }
 
-  private createFileValues() {
-    if (this._originalFileExists) {
+  copySync(
+    newFilePath: string,
+    options?: { withContent?: boolean; mockedValues?: boolean },
+  ): File {
+    options = Object.assign(
+      {},
+      { withContent: true, mockedValues: false },
+      options,
+    )
+
+    if (!this._fileExists) {
+      throw new InternalServerException(
+        `File ${this._base} does not exist, use create method to create the file`,
+      )
+    }
+
+    const copy = new File(
+      newFilePath,
+      this.getContentSync(),
+      options.mockedValues,
+      true,
+    ).createSync()
+
+    if (this._fileSize) copy.loadSync(options)
+
+    return copy
+  }
+
+  async copy(
+    newFilePath: string,
+    options?: { withContent?: boolean; mockedValues?: boolean },
+  ): Promise<File> {
+    options = Object.assign(
+      {},
+      { withContent: true, mockedValues: false },
+      options,
+    )
+
+    if (!this._fileExists) {
+      throw new InternalServerException(
+        `File ${this._base} does not exist, use create method to create the file`,
+      )
+    }
+
+    const copy = new File(
+      newFilePath,
+      await this.getContent(),
+      options.mockedValues,
+      true,
+    )
+
+    await copy.create()
+
+    if (this._fileSize) await copy.load(options)
+
+    return copy
+  }
+
+  moveSync(
+    filePath: string,
+    options?: { withContent?: boolean; mockedValues?: boolean },
+  ): File {
+    options = Object.assign(
+      {},
+      { withContent: true, mockedValues: false },
+      options,
+    )
+
+    if (!this._fileExists) {
+      throw new InternalServerException(
+        `File ${this._base} does not exist, use create method to create the file`,
+      )
+    }
+
+    const movedFile = new File(
+      filePath,
+      this.getContentSync(),
+      options.mockedValues,
+      false,
+    ).createSync()
+
+    if (this._fileSize) movedFile.loadSync(options)
+
+    this.removeSync()
+
+    return movedFile
+  }
+
+  async move(
+    filePath: string,
+    options?: { withContent?: boolean; mockedValues?: boolean },
+  ): Promise<File> {
+    options = Object.assign({}, { withContent: true }, options)
+
+    if (!this._fileExists) {
+      throw new InternalServerException(
+        `File ${this._base} does not exist, use create method to create the file`,
+      )
+    }
+
+    const movedFile = await new File(
+      filePath,
+      await this.getContent(),
+      options.mockedValues,
+      false,
+    ).create()
+
+    if (this._fileSize) {
+      await movedFile.load(options)
+    }
+
+    await this.remove()
+
+    return movedFile
+  }
+
+  private createFileValues(mockedValues = false) {
+    if (mockedValues && !this._originalFileExists) {
+      const bytes = randomBytes(30)
+      const buffer = Buffer.from(bytes)
+
       this._dir = this._originalDir
-      this._name = this._originalName
-      this._base = this._originalBase
-      this._path = this._originalPath
+      this._name = buffer.toString('base64').replace(/[^a-zA-Z0-9]/g, '')
+      this._base = this._name + this._extension
+      this._path = this._dir + '/' + this._base
 
       return
     }
 
-    const bytes = randomBytes(30)
-    const buffer = Buffer.from(bytes)
-
     this._dir = this._originalDir
-    this._name = buffer.toString('base64').replace(/[^a-zA-Z0-9]/g, '')
-    this._base = this._name + this._extension
-    this._path = this._dir + '/' + this._base
+    this._name = this._originalName
+    this._base = this._originalBase
+    this._path = this._originalPath
   }
 
   private static parsePath(filePath: string) {
@@ -336,6 +498,7 @@ export class File {
   private _originalBase: string
   private _originalPath: string
   private _fileExists: boolean
+  private _isCopy: boolean
   private _originalFileExists: boolean
 
   get dir() {
@@ -399,10 +562,17 @@ export class File {
   }
 
   /**
-   * fileExists - If true means the file has been created or already exists
+   * _fileExists - If true means the file has been created or already exists
    */
   get fileExists() {
     return this._fileExists
+  }
+
+  /**
+   * _isCopy - If true means the file is not a copy from other file.
+   */
+  get isCopy() {
+    return this._isCopy
   }
 
   /**

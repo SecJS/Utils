@@ -10,6 +10,7 @@
 import '../../src/utils/global'
 
 import { existsSync, promises } from 'fs'
+import { Path } from '../../src/Classes/Path'
 
 describe('\n File Class Global', () => {
   let bigFile: File = null
@@ -49,7 +50,7 @@ describe('\n File Class Global', () => {
       expect(error.status).toBe(500)
       expect(error.isSecJsException).toBe(true)
       expect(error.name).toBe('InternalServerException')
-      expect(error.content).toBe('File already exists')
+      expect(error.content).toBe('File file.txt already exists')
     }
 
     try {
@@ -59,7 +60,7 @@ describe('\n File Class Global', () => {
       expect(error.isSecJsException).toBe(true)
       expect(error.name).toBe('InternalServerException')
       expect(error.content).toBe(
-        'File does not exist, use create method to create the file',
+        'File non-existent.txt does not exist, use create method to create the file',
       )
     }
 
@@ -91,7 +92,7 @@ describe('\n File Class Global', () => {
       expect(error.status).toBe(500)
       expect(error.isSecJsException).toBe(true)
       expect(error.name).toBe('InternalServerException')
-      expect(error.content).toBe('File already exists')
+      expect(error.content).toBe('File file.txt already exists')
     }
 
     try {
@@ -100,7 +101,7 @@ describe('\n File Class Global', () => {
       expect(error.status).toBe(500)
       expect(error.isSecJsException).toBe(true)
       expect(error.name).toBe('InternalServerException')
-      expect(error.content).toBe('File has been already loaded')
+      expect(error.content).toBe('File file.txt has been already loaded')
     }
 
     try {
@@ -109,7 +110,7 @@ describe('\n File Class Global', () => {
       expect(error.status).toBe(500)
       expect(error.isSecJsException).toBe(true)
       expect(error.name).toBe('InternalServerException')
-      expect(error.content).toBe('File already exists')
+      expect(error.content).toBe('File file.txt already exists')
     }
 
     try {
@@ -118,7 +119,7 @@ describe('\n File Class Global', () => {
       expect(error.status).toBe(500)
       expect(error.isSecJsException).toBe(true)
       expect(error.name).toBe('InternalServerException')
-      expect(error.content).toBe('File has been already loaded')
+      expect(error.content).toBe('File file.txt has been already loaded')
     }
   })
 
@@ -137,7 +138,7 @@ describe('\n File Class Global', () => {
       expect(error.isSecJsException).toBe(true)
       expect(error.name).toBe('InternalServerException')
       expect(error.content).toBe(
-        'File does not exist, use create method to create the file',
+        'File non-existent.txt does not exist, use create method to create the file',
       )
     }
   })
@@ -158,7 +159,9 @@ describe('\n File Class Global', () => {
       expect(error.status).toBe(500)
       expect(error.isSecJsException).toBe(true)
       expect(error.name).toBe('InternalServerException')
-      expect(error.content).toBe('Cannot create a file without content')
+      expect(error.content).toBe(
+        'Cannot create the file file.txt without content',
+      )
     }
 
     try {
@@ -167,7 +170,9 @@ describe('\n File Class Global', () => {
       expect(error.status).toBe(500)
       expect(error.isSecJsException).toBe(true)
       expect(error.name).toBe('InternalServerException')
-      expect(error.content).toBe('Cannot create a file without content')
+      expect(error.content).toBe(
+        'Cannot create the file non-existent.txt without content',
+      )
     }
   })
 
@@ -180,7 +185,9 @@ describe('\n File Class Global', () => {
       expect(error.status).toBe(500)
       expect(error.isSecJsException).toBe(true)
       expect(error.name).toBe('InternalServerException')
-      expect(error.content).toBe('File does not exist')
+      expect(error.content).toBe(
+        'File file.txt does not exist, use create method to create the file',
+      )
     }
 
     try {
@@ -189,18 +196,94 @@ describe('\n File Class Global', () => {
       expect(error.status).toBe(500)
       expect(error.isSecJsException).toBe(true)
       expect(error.name).toBe('InternalServerException')
-      expect(error.content).toBe('File does not exist')
+      expect(error.content).toBe(
+        'File non-existent.txt does not exist, use create method to create the file',
+      )
     }
   })
 
-  it('should load the file but without content', async () => {
-    await bigFile.load({ withContent: false })
+  it('should be able to make a copy of the file', async () => {
+    await bigFile.load()
 
-    expect(bigFile.content).toBeFalsy()
+    const copyBigFilePath = Path.pwd(
+      'tests/file-class-global-test/copy-big-file.txt',
+    )
+    const copyOfBigFile = await bigFile.copy(copyBigFilePath, {
+      withContent: false,
+    })
 
-    nonexistentFile.createSync().loadSync({ withContent: false })
+    expect(existsSync(bigFile.path)).toBeTruthy()
+    expect(existsSync(copyOfBigFile.path)).toBeTruthy()
+    expect(copyOfBigFile.content).toBeFalsy()
 
-    expect(nonexistentFile.content).toBeFalsy()
+    nonexistentFile.createSync()
+
+    const copyNoExistFilePath = Path.pwd(
+      'tests/file-class-global-test/copy-non-existent-file.txt',
+    )
+    const copyOfNoExistFile = nonexistentFile.copySync(copyNoExistFilePath)
+
+    expect(copyOfNoExistFile.content).toBeFalsy()
+
+    copyOfNoExistFile.loadSync()
+
+    expect(existsSync(nonexistentFile.path)).toBeTruthy()
+    expect(existsSync(copyOfNoExistFile.path)).toBeTruthy()
+    expect(copyOfNoExistFile.content).toBeTruthy()
+  })
+
+  it('should be able to move the file', async () => {
+    await bigFile.load()
+
+    const moveBigFilePath = Path.pwd(
+      'tests/file-class-global-test/move-big-file.txt',
+    )
+    const moveOfBigFile = await bigFile.move(moveBigFilePath, {
+      withContent: false,
+    })
+
+    expect(existsSync(bigFile.path)).toBeFalsy()
+    expect(existsSync(moveOfBigFile.path)).toBeTruthy()
+    expect(moveOfBigFile.content).toBeFalsy()
+
+    nonexistentFile.createSync()
+
+    const moveNoExistFilePath = Path.pwd(
+      'tests/file-class-global-test/move-non-existent-file.txt',
+    )
+    const moveOfNoExistFile = nonexistentFile.moveSync(moveNoExistFilePath)
+
+    expect(moveOfNoExistFile.content).toBeFalsy()
+
+    moveOfNoExistFile.loadSync()
+
+    expect(existsSync(nonexistentFile.path)).toBeFalsy()
+    expect(existsSync(moveOfNoExistFile.path)).toBeTruthy()
+    expect(moveOfNoExistFile.content).toBeTruthy()
+  })
+
+  it('should throw errors when trying to copy/move files that does not exist', async () => {
+    try {
+      nonexistentFile.copySync('any/path')
+    } catch (error) {
+      expect(error.status).toBe(500)
+      expect(error.isSecJsException).toBe(true)
+      expect(error.name).toBe('InternalServerException')
+      expect(error.content).toBe(
+        'File non-existent.txt does not exist, use create method to create the file',
+      )
+    }
+
+    try {
+      await nonexistentFile.move('any/path')
+    } catch (error) {
+      expect(error.status).toBe(500)
+      expect(error.isSecJsException).toBe(true)
+      expect(error.name).toBe('InternalServerException')
+      expect(error.content).toBe(
+        'File non-existent.txt does not exist, use create method to create the file',
+      )
+    }
   })
 
   afterEach(async () => {

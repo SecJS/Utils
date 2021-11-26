@@ -55,8 +55,8 @@ const nonExistentFile = new File('path/to/nonExistent/file.txt', Buffer.from('Fi
 // Now existentFile and nonExistentFile instances are created, but not loaded/created
 
 // using load here because the file already exists, if using create, would generate an exception
-// property withContent if true, will save the file content in the instance, Be careful with big files
 existentFile.loadSync({ withContent: true })
+// property withContent if true, will save the file content in the instance, Be careful with big files
 nonExistentFile.createSync().loadSync({ withContent: true })
 
 // now the files will have this properties
@@ -75,8 +75,16 @@ console.log(existentFile.getContentSync()) // Some Buffer instance
 // you can use toJSON method to get the instance informations in JSON
 console.log(existentFile.toJSON()) // { ...infos }
 
+// you can make a copy from existentFile using copy
+console.log(existentFile.copySync('path/to/copy.txt'))
+
+// you can move existentFile to other path using move
+console.log(existentFile.moveSync('path/to/move.txt'))
+
 // File uses readable streams in async methods to not block the event loop when handling huge files content
 await existentFile.load()
+await existentFile.copy()
+await existentFile.move()
 await existentFile.remove()
 await existentFile.create()
 await existentFile.getContent()
@@ -99,11 +107,10 @@ const nonExistentFolder = new Folder('path/to/nonExistent/folder')
 // Now existentFolder and nonExistentFolder instances are created, but not loaded/created
 
 // using load here because the file already exists, if using create, would generate an exception
+existentFolder.loadSync({ withSub: true, withFileContent: false })
 
 // property withSub if true, will load files and subFolders from the folder
 // property withFileContent if true, will get the content of all files in the folder, Be careful with big files
-
-existentFolder.loadSync({ withSub: true, withFileContent: false })
 nonExistentFolder.createSync().loadSync({ withSub: true, withFileContent: true })
 
 // now the folders will have this properties
@@ -118,6 +125,12 @@ existentFolder.removeSync() // void
 // you can use toJSON method to get the instance informations in JSON
 console.log(existentFolder.toJSON()) // { ...infos }
 
+// you can make a copy from existentFolder using copy
+console.log(existentFolder.copySync('path/to/copy'))
+
+// you can move existentFolder to other path using move
+console.log(existentFolder.moveSync('path/to/move'))
+
 // you can use getFilesByPattern method to get all files in the folder that match some pattern
 // if recursive is true, will go inside subFolders too
 const recursive = true
@@ -128,6 +141,8 @@ console.log(existentFolder.getFoldersByPattern('path/to/**/folder', recursive)) 
 
 // Folder uses readable streams in async methods to not block the event loop when handling huge files content
 await existentFolder.load()
+await existentFolder.copy()
+await existentFolder.move()
 await existentFolder.remove()
 await existentFolder.create()
 ```

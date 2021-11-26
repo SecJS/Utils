@@ -11,6 +11,8 @@
 import '../../src/utils/global'
 
 import { existsSync, promises } from 'fs'
+import { File } from '../../src/Classes/File'
+import { Path } from '../../src/Classes/Path'
 
 describe('\n Folder Class Global', () => {
   // 100 MB
@@ -55,7 +57,7 @@ describe('\n Folder Class Global', () => {
       expect(error.status).toBe(500)
       expect(error.isSecJsException).toBe(true)
       expect(error.name).toBe('InternalServerException')
-      expect(error.content).toBe('Folder already exists')
+      expect(error.content).toBe('Folder big already exists')
     }
 
     try {
@@ -65,7 +67,7 @@ describe('\n Folder Class Global', () => {
       expect(error.isSecJsException).toBe(true)
       expect(error.name).toBe('InternalServerException')
       expect(error.content).toBe(
-        'Folder does not exist, use create method to create the folder',
+        'Folder non-existent does not exist, use create method to create the folder',
       )
     }
 
@@ -99,7 +101,7 @@ describe('\n Folder Class Global', () => {
       expect(error.status).toBe(500)
       expect(error.isSecJsException).toBe(true)
       expect(error.name).toBe('InternalServerException')
-      expect(error.content).toBe('Folder already exists')
+      expect(error.content).toBe('Folder big already exists')
     }
 
     try {
@@ -108,7 +110,7 @@ describe('\n Folder Class Global', () => {
       expect(error.status).toBe(500)
       expect(error.isSecJsException).toBe(true)
       expect(error.name).toBe('InternalServerException')
-      expect(error.content).toBe('Folder has been already loaded')
+      expect(error.content).toBe('Folder big has been already loaded')
     }
 
     try {
@@ -117,7 +119,7 @@ describe('\n Folder Class Global', () => {
       expect(error.status).toBe(500)
       expect(error.isSecJsException).toBe(true)
       expect(error.name).toBe('InternalServerException')
-      expect(error.content).toBe('Folder already exists')
+      expect(error.content).toBe('Folder non-existent already exists')
     }
 
     try {
@@ -126,7 +128,7 @@ describe('\n Folder Class Global', () => {
       expect(error.status).toBe(500)
       expect(error.isSecJsException).toBe(true)
       expect(error.name).toBe('InternalServerException')
-      expect(error.content).toBe('Folder has been already loaded')
+      expect(error.content).toBe('Folder non-existent has been already loaded')
     }
   })
 
@@ -163,6 +165,145 @@ describe('\n Folder Class Global', () => {
 
     expect(nonexistentFolder.files[0].base).toBe('file.txt')
     expect(nonexistentFolder.files[0].content).toBeTruthy()
+  })
+
+  it('should remove the folder and folder stats from instance', async () => {
+    await nonexistentFolder.create()
+
+    await File.createFileOfSize(nonexistentFolder.path + '/file.txt', size)
+
+    await nonexistentFolder.load({ withFileContent: true })
+
+    expect(nonexistentFolder.files[0].base).toBe('file.txt')
+    expect(nonexistentFolder.files[0].content).toBeTruthy()
+
+    await nonexistentFolder.remove()
+
+    expect(nonexistentFolder.files.length).toBe(0)
+    expect(nonexistentFolder.folders.length).toBe(0)
+    expect(existsSync(nonexistentFolder.path)).toBe(false)
+    expect(existsSync(nonexistentFolder.path + '/file.txt')).toBe(false)
+  })
+
+  it('should remove the folder and folder stats from instance', async () => {
+    await nonexistentFolder.create()
+
+    await File.createFileOfSize(nonexistentFolder.path + '/file.txt', size)
+
+    await nonexistentFolder.load({ withFileContent: true })
+
+    expect(nonexistentFolder.files[0].base).toBe('file.txt')
+    expect(nonexistentFolder.files[0].content).toBeTruthy()
+
+    await nonexistentFolder.remove()
+
+    expect(nonexistentFolder.files.length).toBe(0)
+    expect(nonexistentFolder.folders.length).toBe(0)
+    expect(existsSync(nonexistentFolder.path)).toBe(false)
+    expect(existsSync(nonexistentFolder.path + '/file.txt')).toBe(false)
+  })
+
+  it('should throw an internal server exception when trying to remove the file calling remove/removeSync again', async () => {
+    await nonexistentFolder.create()
+
+    await nonexistentFolder.load({ withFileContent: true })
+
+    await nonexistentFolder.remove()
+
+    try {
+      await nonexistentFolder.remove()
+    } catch (error) {
+      expect(error.status).toBe(500)
+      expect(error.isSecJsException).toBe(true)
+      expect(error.name).toBe('InternalServerException')
+      expect(error.content).toBe(
+        'Folder non-existent does not exist, use create method to create the folder',
+      )
+    }
+  })
+
+  it('should be able to make a copy of the folder', async () => {
+    await bigFolder.load({ withFileContent: false })
+
+    const copyBigFolderPath = Path.pwd(
+      'tests/folder-class-global-test/copy-big-folder',
+    )
+    const copyOfBigFolder = await bigFolder.copy(copyBigFolderPath, {
+      withFileContent: true,
+    })
+
+    expect(existsSync(bigFolder.path)).toBeTruthy()
+    expect(existsSync(copyOfBigFolder.path)).toBeTruthy()
+    expect(copyOfBigFolder.files[0].content).toBeTruthy()
+    expect(copyOfBigFolder.folders[0].name).toBeTruthy()
+
+    nonexistentFolder.createSync()
+
+    const copyNoExistFolderPath = Path.pwd(
+      'tests/folder-class-global-test/copy-non-existent-folder',
+    )
+    const copyOfNoExistFolder = nonexistentFolder.copySync(
+      copyNoExistFolderPath,
+    )
+
+    expect(existsSync(nonexistentFolder.path)).toBeTruthy()
+    expect(existsSync(copyOfNoExistFolder.path)).toBeTruthy()
+    expect(copyOfNoExistFolder.files.length).toBe(0)
+    expect(copyOfNoExistFolder.folders.length).toBe(0)
+  })
+
+  it('should be able to move the folder', async () => {
+    await bigFolder.load({ withFileContent: false })
+
+    const copyBigFolderPath = Path.pwd(
+      'tests/folder-class-global-test/move-big-folder',
+    )
+    const copyOfBigFolder = await bigFolder.move(copyBigFolderPath, {
+      withFileContent: true,
+    })
+
+    expect(existsSync(bigFolder.path)).toBeFalsy()
+    expect(existsSync(copyOfBigFolder.path)).toBeTruthy()
+    expect(copyOfBigFolder.files[0].content).toBeTruthy()
+    expect(copyOfBigFolder.folders[0].name).toBeTruthy()
+
+    nonexistentFolder.createSync()
+
+    const copyNoExistFolderPath = Path.pwd(
+      'tests/folder-class-global-test/move-non-existent-folder',
+    )
+    const copyOfNoExistFolder = nonexistentFolder.moveSync(
+      copyNoExistFolderPath,
+    )
+
+    expect(existsSync(nonexistentFolder.path)).toBeFalsy()
+    expect(existsSync(copyOfNoExistFolder.path)).toBeTruthy()
+    expect(copyOfNoExistFolder.files.length).toBe(0)
+    expect(copyOfNoExistFolder.folders.length).toBe(0)
+  })
+
+  it('should throw errors when trying to copy/move folder that does not exist', async () => {
+    try {
+      nonexistentFolder.copySync('any/path')
+    } catch (error) {
+      expect(error.status).toBe(500)
+      expect(error.isSecJsException).toBe(true)
+      expect(error.name).toBe('InternalServerException')
+      expect(error.content).toBe(
+        'Folder non-existent does not exist, use create method to create the folder',
+      )
+    }
+
+    try {
+      await nonexistentFolder.move('any/path')
+    } catch (error) {
+      expect(error.status).toBe(500)
+      expect(error.isSecJsException).toBe(true)
+      expect(error.name).toBe('InternalServerException')
+      expect(error.content).toBe(
+        'Folder non-existent does not exist, use create method to create the folder',
+      )
+    }
   })
 
   afterEach(async () => {

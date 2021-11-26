@@ -53,16 +53,42 @@ declare global {
 
   class File {
     static createFileOfSize(filePath: string, size: number): Promise<any>
-    constructor(filePath: string, content?: Buffer | null)
+    constructor(
+      filePath: string,
+      content?: Buffer | null,
+      mockedValues?: boolean,
+      isCopy?: boolean,
+    )
+
     toJSON(): FileJsonContract
     createSync(): File
     create(): Promise<File>
     loadSync(options?: { withContent?: boolean }): File
     load(options?: { withContent?: boolean }): Promise<File>
-    getContentSync(): Buffer
-    getContent(): Promise<Buffer>
-    removeSync(): File
+    getContentSync(options?: { saveContent?: boolean }): Buffer
+    getContent(options?: { saveContent?: boolean }): Promise<Buffer>
+    removeSync(): void
     remove(): Promise<void>
+    copySync(
+      newFilePath: string,
+      options?: { withContent?: boolean; mockedValues?: boolean },
+    ): File
+
+    copy(
+      newFilePath: string,
+      options?: { withContent?: boolean; mockedValues?: boolean },
+    ): Promise<File>
+
+    moveSync(
+      filePath: string,
+      options?: { withContent?: boolean; mockedValues?: boolean },
+    ): File
+
+    move(
+      filePath: string,
+      options?: { withContent?: boolean; mockedValues?: boolean },
+    ): Promise<File>
+
     get dir(): string
     get name(): string
     get base(): string
@@ -79,9 +105,13 @@ declare global {
     get originalBase(): string
     get originalPath(): string
     /**
-     * fileExists - If true means the file has been created or already exists
+     * _fileExists - If true means the file has been created or already exists
      */
     get fileExists(): boolean
+    /**
+     * _isCopy - If true means the file is not a copy from other file.
+     */
+    get isCopy(): boolean
     /**
      * _originalFileExists - If true means the file already exists when creating the instance
      */
@@ -100,8 +130,44 @@ declare global {
       withFileContent?: boolean
     }): Promise<Folder>
 
-    removeSync(): Folder
+    removeSync(): void
     remove(): Promise<void>
+    copySync(
+      newFolderPath: string,
+      options?: {
+        withSub?: boolean
+        withFileContent?: boolean
+        mockedValues?: boolean
+      },
+    ): Folder
+
+    copy(
+      newFolderPath: string,
+      options?: {
+        withSub?: boolean
+        withFileContent?: boolean
+        mockedValues?: boolean
+      },
+    ): Promise<Folder>
+
+    moveSync(
+      folderPath: string,
+      options?: {
+        withSub?: boolean
+        withFileContent?: boolean
+        mockedValues?: boolean
+      },
+    ): Folder
+
+    move(
+      folderPath: string,
+      options?: {
+        withSub?: boolean
+        withFileContent?: boolean
+        mockedValues?: boolean
+      },
+    ): Promise<Folder>
+
     getFilesByPattern(pattern: string, recursive?: boolean): File[]
     getFoldersByPattern(pattern: string, recursive?: boolean): Folder[]
     get dir(): string
