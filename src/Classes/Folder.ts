@@ -543,7 +543,7 @@ export class Folder {
   }
 
   private static getSubFiles(folders: Folder[], pattern = null): File[] {
-    if (pattern) pattern = isAbsolute(pattern) ? pattern : Path.pwd(pattern)
+    if (pattern) pattern = isAbsolute(pattern) ? pattern : Path.noBuild().pwd(pattern)
 
     const files = []
 
@@ -569,7 +569,7 @@ export class Folder {
     recursive: boolean,
     pattern = null,
   ): Folder[] {
-    if (pattern) pattern = isAbsolute(pattern) ? pattern : Path.pwd(pattern)
+    if (pattern) pattern = isAbsolute(pattern) ? pattern : Path.noBuild().pwd(pattern)
 
     const subFolders = []
 
@@ -609,7 +609,7 @@ export class Folder {
 
   private static parsePath(folderPath: string) {
     const { dir, name } = parse(
-      isAbsolute(folderPath) ? folderPath : Path.pwd(folderPath),
+      isAbsolute(folderPath) ? folderPath : Path.noBuild().pwd(folderPath),
     )
 
     return { dir, name, path: dir + '/' + name }

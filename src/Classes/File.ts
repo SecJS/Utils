@@ -530,7 +530,7 @@ export class File {
 
   private static parsePath(filePath: string) {
     const { base, dir, root } = parse(
-      isAbsolute(filePath) ? filePath : Path.pwd(filePath),
+      isAbsolute(filePath) ? filePath : Path.noBuild().pwd(filePath),
     )
 
     const baseArray = base.split('.')
