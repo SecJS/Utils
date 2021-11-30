@@ -647,7 +647,7 @@ export class Folder {
       const name = resolve(path, dirent.name)
 
       if (dirent.isDirectory()) {
-        folders.push(new Folder(name).load())
+        folders.push(new Folder(name).load({ withFileContent }))
 
         return
       }
