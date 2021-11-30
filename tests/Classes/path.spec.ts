@@ -51,10 +51,11 @@ describe('\n Path Class', () => {
     expect(Path.nodeCwdPath()).toBe(myMainDistPath)
     expect(Path.changeBuild('/test').nodeCwdPath()).toBe(myMainPath + '/test')
 
-    Path.changeBuild('/dist').switchBuild()
+    Path.changeBuild('/dist').switchBuild().switchEnvVerify()
 
-    process.env.NODE_TS = 'true'
+    process.env.NODE_TS = 'false'
     expect(Path.nodeCwdPath()).toBe(myMainDistPath)
+    expect(Path.noBuild().nodeCwdPath()).toBe(myMainPath)
 
     Path.switchEnvVerify()
 

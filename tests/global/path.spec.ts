@@ -8,6 +8,7 @@
  */
 
 import '../../src/utils/global'
+import { Path } from '../../src/Classes/Path'
 
 describe('\n Path Class Global', () => {
   it('should get application pwd path', () => {
@@ -51,10 +52,11 @@ describe('\n Path Class Global', () => {
     expect(Path.nodeCwdPath()).toBe(myMainDistPath)
     expect(Path.changeBuild('/test').nodeCwdPath()).toBe(myMainPath + '/test')
 
-    Path.changeBuild('/dist').switchBuild()
+    Path.changeBuild('/dist').switchBuild().switchEnvVerify()
 
-    process.env.NODE_TS = 'true'
+    process.env.NODE_TS = 'false'
     expect(Path.nodeCwdPath()).toBe(myMainDistPath)
+    expect(Path.noBuild().nodeCwdPath()).toBe(myMainPath)
 
     Path.switchEnvVerify()
 
