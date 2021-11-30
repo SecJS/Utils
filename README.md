@@ -134,10 +134,10 @@ console.log(existentFolder.moveSync('path/to/move'))
 // you can use getFilesByPattern method to get all files in the folder that match some pattern
 // if recursive is true, will go inside subFolders too
 const recursive = true
-console.log(existentFolder.getFilesByPattern('path/to/**/*.ts', recursive)) // [...files instance]
+console.log(existentFolder.getFilesByPattern('**/*.ts', recursive)) // [...files instance]
 
 // you can use getFoldersByPattern method to get all folders in the folder that match some pattern
-console.log(existentFolder.getFoldersByPattern('path/to/**/folder', recursive)) // [...folders instance]
+console.log(existentFolder.getFoldersByPattern('**', recursive)) // [...folders instance]
 
 // Folder uses readable streams in async methods to not block the event loop when handling huge files content
 await existentFolder.load()
@@ -156,22 +156,31 @@ await existentFolder.create()
 ```ts
 import { Path } from '@secjs/utils'
 
-// pwd method will depend if you NODE_ENV environment variable is set.
-// if you are using ci, testing or ts-development, pwd will return like this:
+// If NODE_TS is set to true, Path.pwd will always return without the build folder in the end of the path
 Path.pwd() // '/home/your/computer/path/your-project-name'
 
-// if your NODE_ENV is not set, or you are using a diffrent value from ci, testing or ts-development,
-// your pwd will return like this:
+// If NODE_TS is set to false, Path.pwd will always return with the build folder in the end of the path
 Path.pwd() // '/home/your/computer/path/your-project-name/dist'
 
-// you can change your buildFolder name using forBuildFolder method
-Path.forBuild('build').pwd()
+// You can use the method switchEnvVerify to turn off the NODE_TS environment variable verification
+Path.switchEnvVerify()
+
+// You can change the default build folder name using changeBuild method
+Path.changeBuild('build') 
 // '/home/your/computer/path/your-project-name/build'
 
-Path.pwd('/src/') // '/home/your/computer/path/your-project-name/src'
+// you can change your build folder name using forBuild method too
+Path.forBuild('buildd').pwd()
+// '/home/your/computer/path/your-project-name/buildd'
 
-Path.public() // '/home/your/computer/path/your-project-name/public'
-Path.assets() // '/home/your/computer/path/your-project-name/public/assets'
+Path.pwd('/src/') // '/home/your/computer/path/your-project-name/build/src'
+
+// You can use switchBuild to turn on or turn off the forceBuild parameter
+// forceBuild on
+Path.switchBuild().public() // '/home/your/computer/path/your-project-name/build/public'
+
+// forceBuild off
+Path.switchBuild().assets() // '/home/your/computer/path/your-project-name/public/assets'
 ```
 
 ---

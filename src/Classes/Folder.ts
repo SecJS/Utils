@@ -504,12 +504,14 @@ export class Folder {
     const files = []
 
     this._files.forEach(file => {
-      if (minimatch(file.path, Path.pwd(pattern))) {
+      if (minimatch(file.path, `${this.path}/${pattern}`)) {
         files.push(file)
       }
 
       if (recursive) {
-        files.push(...Folder.getSubFiles(this._folders, pattern))
+        files.push(
+          ...Folder.getSubFiles(this._folders, `${this.path}/${pattern}`),
+        )
       }
     })
 
@@ -526,12 +528,14 @@ export class Folder {
     const folders = []
 
     this._folders.forEach(folder => {
-      if (minimatch(folder.path, Path.pwd(pattern))) {
+      if (minimatch(folder.path, `${this.path}/${pattern}`)) {
         folders.push(folder)
       }
 
       if (recursive && folder.folders.length) {
-        folders.push(...Folder.getSubFolders(folder, recursive))
+        folders.push(
+          ...Folder.getSubFolders(folder, recursive, `${this.path}/${pattern}`),
+        )
       }
     })
 
@@ -539,11 +543,13 @@ export class Folder {
   }
 
   private static getSubFiles(folders: Folder[], pattern = null): File[] {
+    if (pattern) pattern = isAbsolute(pattern) ? pattern : Path.pwd(pattern)
+
     const files = []
 
     folders.forEach(folder => {
       folder.files.forEach(file => {
-        if (pattern && minimatch(file.path, Path.pwd(pattern))) {
+        if (pattern && minimatch(file.path, pattern)) {
           files.push(file)
         }
 
@@ -563,10 +569,12 @@ export class Folder {
     recursive: boolean,
     pattern = null,
   ): Folder[] {
+    if (pattern) pattern = isAbsolute(pattern) ? pattern : Path.pwd(pattern)
+
     const subFolders = []
 
     folder.folders.forEach(folder => {
-      if (pattern && minimatch(folder.path, Path.pwd(pattern))) {
+      if (pattern && minimatch(folder.path, pattern)) {
         subFolders.push(folder)
       }
 
