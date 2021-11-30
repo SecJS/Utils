@@ -13,6 +13,7 @@ import '../../src/utils/global'
 import { existsSync, promises } from 'fs'
 import { File } from '../../src/Classes/File'
 import { Path } from '../../src/Classes/Path'
+import { Folder } from '../../src/Classes/Folder'
 
 describe('\n Folder Class Global', () => {
   // 100 MB
@@ -304,6 +305,23 @@ describe('\n Folder Class Global', () => {
         'Folder non-existent does not exist, use create method to create the folder',
       )
     }
+  })
+
+  it('should get all files and folders that match the pattern but without a root file in path', async () => {
+    const path = bigFolderPath + '/folder'
+
+    const folder = new Folder(path).createSync()
+    new Folder(path + '/A').createSync()
+    new Folder(path + '/B').createSync()
+    new Folder(path + '/C').createSync()
+
+    await File.createFileOfSize(path + '/A/' + 'file.txt', 1024 * 1024)
+    await File.createFileOfSize(path + '/B/' + 'file.txt', 1024 * 1024)
+    await File.createFileOfSize(path + '/C/' + 'file.txt', 1024 * 1024)
+
+    const files = folder.loadSync().getFilesByPattern('**/*.txt', true)
+
+    expect(files.length).toBe(3)
   })
 
   afterEach(async () => {
