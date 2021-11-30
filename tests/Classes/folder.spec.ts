@@ -303,6 +303,23 @@ describe('\n Folder Class', () => {
     }
   })
 
+  it('should get all files and folders that match the pattern but without a root file in path', async () => {
+    const path = bigFolderPath + '/folder'
+
+    const folder = new Folder(path).createSync()
+    new Folder(path + '/A').createSync()
+    new Folder(path + '/B').createSync()
+    new Folder(path + '/C').createSync()
+
+    await File.createFileOfSize(path + '/A/' + 'file.txt', 1024 * 1024)
+    await File.createFileOfSize(path + '/B/' + 'file.txt', 1024 * 1024)
+    await File.createFileOfSize(path + '/C/' + 'file.txt', 1024 * 1024)
+
+    const files = folder.loadSync().getFilesByPattern('**/*.txt', true)
+
+    expect(files.length).toBe(3)
+  })
+
   afterEach(async () => {
     await promises.rmdir(bigFolder.dir, { recursive: true })
     await promises.rmdir(nonexistentFolder.dir, { recursive: true })
