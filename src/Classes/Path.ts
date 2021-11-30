@@ -19,6 +19,12 @@ export class Path {
     return this
   }
 
+  static switchBuild() {
+    this._forceBuild = !this._forceBuild
+
+    return this
+  }
+
   static switchEnvVerify() {
     this._verifyNodeEnv = !this._verifyNodeEnv
 
@@ -27,12 +33,6 @@ export class Path {
 
   static changeBuild(name: string) {
     this._defaultBuild = name
-
-    return this
-  }
-
-  static forceBuild() {
-    this._forceBuild = true
 
     return this
   }
@@ -51,13 +51,17 @@ export class Path {
     if (this._forceBuild) {
       cwdNodePath += this.adjustSlashes(this._defaultBuild)
 
-      this._forceBuild = false
+      return cwdNodePath
     }
 
-    if (!this._forceBuild && this._verifyNodeEnv) {
-      if (['ci', 'testing', 'ts-development'].includes(process.env.NODE_ENV)) {
-        cwdNodePath += this.adjustSlashes(this._defaultBuild)
-      }
+    if (
+      !this._forceBuild &&
+      this._verifyNodeEnv &&
+      process.env.NODE_TS === 'true'
+    ) {
+      cwdNodePath += this.adjustSlashes(this._defaultBuild)
+
+      return cwdNodePath
     }
 
     return this.adjustSlashes(cwdNodePath)

@@ -135,22 +135,22 @@ describe('\n Folder Class', () => {
   })
 
   it('should get all files and folders that match the pattern', async () => {
-    const files = bigFolder
-      .loadSync()
-      .getFilesByPattern('tests/folder-class-test/**/*.txt', true)
+    const files = bigFolder.loadSync().getFilesByPattern('**/*.txt', true)
 
     expect(files.length).toBe(3)
 
     files.forEach(file => expect(file.extension).toBe('.txt'))
 
-    const folders = bigFolder.getFoldersByPattern(
-      'tests/folder-class-test/big/*',
-      true,
-    )
+    const folders = bigFolder.getFoldersByPattern('*', true)
 
-    expect(folders.length).toBe(2)
+    expect(folders.length).toBe(1)
     expect(folders[0].name).toBe('hello')
-    expect(folders[1].name).toBe('nice')
+
+    const folderSubFolder = bigFolder.getFoldersByPattern('**', true)
+
+    expect(folderSubFolder.length).toBe(2)
+    expect(folderSubFolder[0].name).toBe('hello')
+    expect(folderSubFolder[1].name).toBe('nice')
   })
 
   it('should load all the files and subFolders with the files content', async () => {

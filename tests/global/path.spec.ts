@@ -44,22 +44,20 @@ describe('\n Path Class Global', () => {
     const myMainPath = process.cwd()
     const myMainDistPath = process.cwd() + '/dist'
 
-    expect(Path.forceBuild().nodeCwdPath()).toBe(myMainDistPath)
+    Path.switchBuild()
+
+    expect(Path.nodeCwdPath()).toBe(myMainDistPath)
     expect(Path.forBuild('build').nodeCwdPath()).toBe(myMainPath + '/build')
-    expect(Path.forceBuild().nodeCwdPath()).toBe(myMainDistPath)
-    expect(Path.forceBuild().changeBuild('/test').nodeCwdPath()).toBe(
-      myMainPath + '/test',
-    )
+    expect(Path.nodeCwdPath()).toBe(myMainDistPath)
+    expect(Path.changeBuild('/test').nodeCwdPath()).toBe(myMainPath + '/test')
 
-    Path.changeBuild('/dist')
+    Path.changeBuild('/dist').switchBuild()
 
-    process.env.NODE_ENV = 'testing'
+    process.env.NODE_TS = 'true'
     expect(Path.nodeCwdPath()).toBe(myMainDistPath)
 
-    process.env.NODE_ENV = 'ts-development'
-    expect(Path.nodeCwdPath()).toBe(myMainDistPath)
+    Path.switchEnvVerify()
 
-    process.env.NODE_ENV = 'production'
     expect(Path.nodeCwdPath()).toBe(myMainPath)
   })
 })
