@@ -11,7 +11,13 @@ export class Path {
   private static _tempBuild = null
   private static _forceBuild = false
   private static _defaultBuild = 'dist'
-  private static _verifyNodeEnv = true
+  private static _verifyNodeEnv = false
+
+  static noBuild() {
+    this._tempBuild = '/'
+
+    return this
+  }
 
   static forBuild(name: string) {
     this._tempBuild = name
@@ -57,7 +63,7 @@ export class Path {
     if (
       !this._forceBuild &&
       this._verifyNodeEnv &&
-      process.env.NODE_TS === 'true'
+      process.env.NODE_TS === 'false'
     ) {
       cwdNodePath += this.adjustSlashes(this._defaultBuild)
 
