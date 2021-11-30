@@ -27,6 +27,7 @@ import { lookup } from 'mime-types'
 import { randomBytes } from 'crypto'
 import { parse, isAbsolute } from 'path'
 import { InternalServerException } from '@secjs/exceptions'
+import { FileContract } from '@secjs/contracts'
 
 export interface FileJsonContract {
   dir: string
@@ -96,6 +97,13 @@ export class File {
       throw new InternalServerException(
         'File does not exist, please provide a content as second parameter in File constructor',
       )
+  }
+
+  toContract(): FileContract {
+    return {
+      path: this.path,
+      value: this.getContentSync(),
+    }
   }
 
   toJSON(): FileJsonContract {

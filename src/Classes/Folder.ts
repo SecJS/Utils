@@ -25,6 +25,7 @@ import { Parser } from './Parser'
 import { randomBytes } from 'crypto'
 import { isAbsolute, join, parse, resolve } from 'path'
 import { InternalServerException } from '@secjs/exceptions'
+import { DirectoryContract } from '@secjs/contracts'
 
 export interface FolderJsonContract {
   dir: string
@@ -73,6 +74,14 @@ export class Folder {
     this._folderExists = this._originalFolderExists
 
     this.createFolderValues(mockedValues)
+  }
+
+  toContract(): DirectoryContract {
+    return {
+      path: this.path,
+      files: this.files.map(file => file.toContract()),
+      folders: this.folders.map(folder => folder.toContract()),
+    }
   }
 
   toJSON(): FolderJsonContract {

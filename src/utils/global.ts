@@ -9,6 +9,7 @@
 
 import { unset as unsetFn } from '../Functions/unset'
 import { Path as PathInstance } from '../Classes/Path'
+import { DirectoryContract, FileContract } from '@secjs/contracts'
 import { File as FileInstance, FileJsonContract } from '../Classes/File'
 import { Folder as FolderInstance, FolderJsonContract } from '../Classes/Folder'
 
@@ -69,6 +70,7 @@ declare global {
       isCopy?: boolean,
     )
 
+    toContract(): FileContract
     toJSON(): FileJsonContract
     createSync(): File
     create(): Promise<File>
@@ -199,6 +201,8 @@ declare global {
      * @param isCopy Default is false
      */
     constructor(folderPath: string, mockedValues?: boolean, isCopy?: boolean)
+
+    toContract(): DirectoryContract
     toJSON(): FolderJsonContract
     createSync(): Folder
     create(): Promise<Folder>
