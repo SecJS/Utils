@@ -78,6 +78,7 @@ export class Folder {
 
   toContract(): DirectoryContract {
     return {
+      name: this.name,
       path: this.path,
       files: this.files.map(file => file.toContract()),
       folders: this.folders.map(folder => folder.toContract()),

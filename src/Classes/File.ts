@@ -101,6 +101,7 @@ export class File {
 
   toContract(): FileContract {
     return {
+      name: this.name,
       path: this.path,
       value: this.getContentSync(),
     }
