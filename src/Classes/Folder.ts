@@ -76,11 +76,11 @@ export class Folder {
     this.createFolderValues(mockedValues)
   }
 
-  toContract(): DirectoryContract {
+  toContract(buffer = false): DirectoryContract {
     return {
       name: this.name,
-      files: this.files.map(file => file.toContract()),
-      folders: this.folders.map(folder => folder.toContract()),
+      files: this.files.map(file => file.toContract(buffer)),
+      folders: this.folders.map(folder => folder.toContract(buffer)),
     }
   }
 

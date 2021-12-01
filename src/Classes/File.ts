@@ -99,10 +99,12 @@ export class File {
       )
   }
 
-  toContract(): FileContract {
+  toContract(buffer = false): FileContract {
+    const value = this.getContentSync()
+
     return {
       base: this.base,
-      value: this.getContentSync().toString(),
+      value: buffer ? value : value.toString(),
     }
   }
 

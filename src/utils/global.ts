@@ -70,7 +70,7 @@ declare global {
       isCopy?: boolean,
     )
 
-    toContract(): FileContract
+    toContract(buffer?: boolean): FileContract
     toJSON(): FileJsonContract
     createSync(): File
     create(): Promise<File>
@@ -202,7 +202,7 @@ declare global {
      */
     constructor(folderPath: string, mockedValues?: boolean, isCopy?: boolean)
 
-    toContract(): DirectoryContract
+    toContract(buffer?: boolean): DirectoryContract
     toJSON(): FolderJsonContract
     createSync(): Folder
     create(): Promise<Folder>
