@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import logger from '../utils/logger'
+import { debugFn } from '../utils/debug'
 
 import {
   createWriteStream,
@@ -212,7 +212,7 @@ export class File {
     if (options.withContent) {
       // 200mb
       if (fileStat.size >= 2e8) {
-        logger.debug(
+        debugFn(
           `Be careful, a file with ${this._fileSize} has been loaded in heap memory`,
         )
       }
@@ -264,7 +264,7 @@ export class File {
 
         // 200mb
         if (fileStat.size >= 2e8) {
-          logger.debug(
+          debugFn(
             `Be careful, a file with ${this._fileSize} has been loaded in heap memory`,
           )
         }
