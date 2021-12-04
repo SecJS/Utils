@@ -5,7 +5,7 @@ import Chalk from 'chalk'
 function format(message: any) {
   const pid = Chalk.hex('#7059C1')(`[SecJS Debugger] - PID: ${process.pid}`)
   const timestamp = getTimestamp()
-  const messageCtx = Chalk.hex('#ffe600')(`[Environment] `)
+  const messageCtx = Chalk.hex('#ffe600')(`[Utils] `)
 
   return `${pid} - ${timestamp} ${messageCtx}${Chalk.hex('#7059C1')(message)}`
 }
