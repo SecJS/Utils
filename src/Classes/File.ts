@@ -95,7 +95,7 @@ export class File {
 
     if (!this._originalFileExists && !this._content)
       throw new InternalServerException(
-        'File does not exist, please provide a content as second parameter in File constructor',
+        `File ${this._originalBase} does not exist, please provide a content as second parameter in File constructor to create the file`,
       )
   }
 
