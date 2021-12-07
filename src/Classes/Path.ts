@@ -11,7 +11,7 @@ export class Path {
   private static _tempBuild = null
   private static _forceBuild = false
   private static _defaultBuild = 'dist'
-  private static _verifyNodeEnv = false
+  private static _verifyNodeEnv = true
 
   static noBuild() {
     this._tempBuild = '/'
