@@ -30,5 +30,5 @@ export function paginate(
     last: `${pagination.resourceUrl}?page=${totalPages}&limit=${meta.itemsPerPage}`,
   }
 
-  return { data, meta, links }
+  return { meta, links, data }
 }
