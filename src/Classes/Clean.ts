@@ -1,24 +1,15 @@
+/**
+ * @secjs/utils
+ *
+ * (c) João Lenon <lenon@secjs.com.br>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+import { Is } from './Is'
+
 export class Clean {
-  static isEmpty(data: any | any[] | string): boolean {
-    if (!data) {
-      return true
-    }
-
-    if (data instanceof Object && !Array.isArray(data)) {
-      return !Object.keys(data).length
-    }
-
-    if (Array.isArray(data)) {
-      return !data.length
-    }
-
-    if (typeof data === 'string') {
-      return !data
-    }
-
-    return false
-  }
-
   /**
    * Clean falsy values from array
    *
@@ -34,7 +25,7 @@ export class Clean {
     return array.filter((item, i) => {
       let returnItem = !!item
 
-      if (removeEmpty && this.isEmpty(item)) {
+      if (removeEmpty && Is.Empty(item)) {
         returnItem = false
       }
 
@@ -68,7 +59,7 @@ export class Clean {
     cleanInsideArrays = false,
   ): any {
     Object.keys(object).forEach(prop => {
-      if (removeEmpty && this.isEmpty(object[prop])) {
+      if (removeEmpty && Is.Empty(object[prop])) {
         delete object[prop]
 
         return

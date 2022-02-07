@@ -16,7 +16,7 @@ import {
   readdirSync,
   statSync,
   promises,
-  rmdirSync,
+  rmSync,
 } from 'fs'
 
 import { File } from './File'
@@ -54,6 +54,12 @@ export class Folder {
       (accumulator, { size }) => accumulator + size,
       0,
     )
+  }
+
+  static async safeRemove(dir: string): Promise<void> {
+    try {
+      await promises.rm(dir, { recursive: true })
+    } catch (err) {}
   }
 
   /**
@@ -156,12 +162,12 @@ export class Folder {
       )
     }
 
-    const fileStat = statSync(this._path)
+    const folderStat = statSync(this._path)
 
-    this._createdAt = fileStat.birthtime
-    this._accessedAt = fileStat.atime
-    this._modifiedAt = fileStat.mtime
-    this._folderSize = Parser.bytesToSize(fileStat.size, 4)
+    this._createdAt = folderStat.birthtime
+    this._accessedAt = folderStat.atime
+    this._modifiedAt = folderStat.mtime
+    this._folderSize = Parser.sizeToByte(folderStat.size)
 
     if (options.withSub) {
       this.loadSubSync(
@@ -208,7 +214,7 @@ export class Folder {
     this._createdAt = folderStat.birthtime
     this._accessedAt = folderStat.atime
     this._modifiedAt = folderStat.mtime
-    this._folderSize = Parser.bytesToSize(folderStat.size, 4)
+    this._folderSize = Parser.sizeToByte(folderStat.size)
 
     if (options.withSub) {
       await this.loadSub(
@@ -237,7 +243,7 @@ export class Folder {
     this._files = []
     this._folders = []
 
-    rmdirSync(this._path, { recursive: true })
+    rmSync(this._path, { recursive: true })
   }
 
   async remove(): Promise<void> {
@@ -256,7 +262,7 @@ export class Folder {
     this._files = []
     this._folders = []
 
-    await promises.rmdir(this._path, { recursive: true })
+    await promises.rm(this._path, { recursive: true })
   }
 
   /**

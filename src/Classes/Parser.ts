@@ -1,3 +1,15 @@
+/**
+ * @secjs/utils
+ *
+ * (c) João Lenon <lenon@secjs.com.br>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+import ms from 'ms'
+import bytes from 'bytes'
+
 import { InternalServerException } from '@secjs/exceptions'
 
 export class Parser {
@@ -10,6 +22,45 @@ export class Parser {
    */
   static stringToArray(string: string, separator: string): string[] {
     return string.split(separator).map(index => index.trim())
+  }
+
+  /**
+   * Parse an array to a string base on options
+   *
+   * @return The string
+   * @param values The array of string
+   * @param options { separator?: string, pairSeparator?: string, lastSeparator?: string }
+   */
+  static arrayToString(
+    values: string[],
+    options?: {
+      separator?: string
+      pairSeparator?: string
+      lastSeparator?: string
+    },
+  ): string {
+    if (values.length === 0) {
+      return ''
+    }
+
+    if (values.length === 1) {
+      return values[0]
+    }
+
+    if (values.length === 2) {
+      return `${values[0]}${options?.pairSeparator || ' and '}${values[1]}`
+    }
+
+    const normalized = Object.assign(
+      { separator: ', ', lastSeparator: ' and ' },
+      options,
+    )
+
+    return (
+      values.slice(0, -1).join(normalized.separator) +
+      normalized.lastSeparator +
+      values[values.length - 1]
+    )
   }
 
   /**
@@ -70,25 +121,6 @@ export class Parser {
   }
 
   /**
-   * bytesToSize creates a string based on the bytes size
-   *
-   * @param bytes - The number of bytes
-   * @param decimals - The number of decimals to be showed
-   * @return formattedSize - Return the formatted value based on the size (100 MB, 1 GB, etc)
-   */
-  static bytesToSize(bytes: number, decimals = 2) {
-    if (bytes === 0) return '0 Bytes'
-
-    const k = 1024
-    const dm = decimals < 0 ? 0 : decimals
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
-  }
-
-  /**
    * linkToHref parses all links inside the string to HTML link with <a href= .../>
    *
    * @param string - The string with links inside
@@ -98,5 +130,47 @@ export class Parser {
     const regex = /(https?:\/\/[^\s]+)/g
 
     return string.replace(regex, '<a href="$1">$1</a>')
+  }
+
+  /**
+   * sizeToBytes parses a number to Byte format
+   *
+   * @param value - The string/number
+   * @param options - The options from formatting
+   * @return Return the byte value format in string
+   */
+  static sizeToByte(value: number, options?: bytes.BytesOptions): string {
+    return bytes.format(value, options)
+  }
+
+  /**
+   * byteToSize parses a byte format to number
+   *
+   * @param byte - The string/number
+   * @return Return the number from byte value
+   */
+  static byteToSize(byte: string): number {
+    return bytes.parse(byte)
+  }
+
+  /**
+   * timeToMs parses a string to MS format
+   *
+   * @param value - The string
+   * @return Return the number in ms
+   */
+  static timeToMs(value: string): number {
+    return ms(value)
+  }
+
+  /**
+   * msToTime parses an MS number to time format
+   *
+   * @param value - The number
+   * @param long - Will return the time format in long form example: 2 days
+   * @return Return the time format of the MS value
+   */
+  static msToTime(value: number, long = false): string {
+    return ms(value, { long })
   }
 }
