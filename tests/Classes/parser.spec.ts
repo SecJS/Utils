@@ -13,6 +13,22 @@ describe('\n Parser Class', () => {
     expect(parsedArray).toStrictEqual(['hello', 'peopleee'])
   })
 
+  it('should parse array to string based on options', () => {
+    expect(Parser.arrayToString(['1', '2', '3', '4'])).toBe('1, 2, 3 and 4')
+    expect(
+      Parser.arrayToString(['1', '2', '3', '4', '5', '6'], {
+        separator: '|',
+        lastSeparator: '|',
+      }),
+    ).toBe('1|2|3|4|5|6')
+
+    expect(
+      Parser.arrayToString(['1', '2'], {
+        pairSeparator: '-',
+      }),
+    ).toBe('1-2')
+  })
+
   it('should parse json to form data', () => {
     const json = {
       name: 'lenon',
@@ -40,5 +56,39 @@ describe('\n Parser Class', () => {
       'this is a string with one link - https://joao.com and other link https://joaolenon.com and https://lenon.com'
 
     expect(Parser.linkToHref(string)).toBeTruthy()
+  })
+
+  it('should parse the number to byte format and byte format to number', async () => {
+    // size to byte
+    expect(Parser.sizeToByte(1024)).toBe('1KB')
+    expect(Parser.sizeToByte(1048576)).toBe('1MB')
+    expect(Parser.sizeToByte(1073741824)).toBe('1GB')
+    expect(Parser.sizeToByte(1099511627776)).toBe('1TB')
+    expect(Parser.sizeToByte(1125899906842624)).toBe('1PB')
+
+    // byte to size
+    expect(Parser.byteToSize('1KB')).toBe(1024)
+    expect(Parser.byteToSize('1MB')).toBe(1048576)
+    expect(Parser.byteToSize('1GB')).toBe(1073741824)
+    expect(Parser.byteToSize('1TB')).toBe(1099511627776)
+    expect(Parser.byteToSize('1PB')).toBe(1125899906842624)
+  })
+
+  it('should parse the string to ms format and ms format to string', async () => {
+    // time to ms
+    expect(Parser.timeToMs('2 days')).toBe(172800000)
+    expect(Parser.timeToMs('1d')).toBe(86400000)
+    expect(Parser.timeToMs('10h')).toBe(36000000)
+    expect(Parser.timeToMs('-10h')).toBe(-36000000)
+    expect(Parser.timeToMs('1 year')).toBe(31557600000)
+    expect(Parser.timeToMs('-1 year')).toBe(-31557600000)
+
+    // ms to time
+    expect(Parser.msToTime(172800000, true)).toBe('2 days')
+    expect(Parser.msToTime(86400000)).toBe('1d')
+    expect(Parser.msToTime(36000000)).toBe('10h')
+    expect(Parser.msToTime(-36000000)).toBe('-10h')
+    expect(Parser.msToTime(31557600000, true)).toBe('365 days')
+    expect(Parser.msToTime(-31557600000, true)).toBe('-365 days')
   })
 })

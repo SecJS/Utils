@@ -7,9 +7,10 @@
  * file that was distributed with this source code.
  */
 
-import { existsSync, promises } from 'fs'
+import { existsSync } from 'fs'
 import { Path } from '../../src/Classes/Path'
 import { File } from '../../src/Classes/File'
+import { Folder } from '../../src/Classes/Folder'
 
 describe('\n File Class', () => {
   let bigFile: File = null
@@ -79,7 +80,7 @@ describe('\n File Class', () => {
     nonexistentFile.loadSync()
 
     expect(nonexistentFile.content).toBeTruthy()
-    expect(nonexistentFile.fileSize.includes('Bytes')).toBe(true)
+    expect(nonexistentFile.fileSize.includes('B')).toBe(true)
   })
 
   it('should throw an internal server exception when trying to reload/recreate the file', async () => {
@@ -280,8 +281,8 @@ describe('\n File Class', () => {
   })
 
   afterEach(async () => {
-    await promises.rmdir(bigFile.dir, { recursive: true })
-    await promises.rmdir(nonexistentFile.dir, { recursive: true })
+    await Folder.safeRemove(bigFile.dir)
+    await Folder.safeRemove(nonexistentFile.dir)
 
     bigFile = null
     nonexistentFile = null

@@ -65,6 +65,12 @@ export class File {
     })
   }
 
+  static async safeRemove(filePath: string): Promise<void> {
+    try {
+      await promises.rm(filePath, { recursive: false })
+    } catch (err) {}
+  }
+
   /**
    * Constructor
    *
@@ -207,7 +213,7 @@ export class File {
     this._createdAt = fileStat.birthtime
     this._accessedAt = fileStat.atime
     this._modifiedAt = fileStat.mtime
-    this._fileSize = Parser.bytesToSize(fileStat.size, 4)
+    this._fileSize = Parser.sizeToByte(fileStat.size)
 
     if (options.withContent) {
       // 200mb
@@ -249,7 +255,7 @@ export class File {
     this._accessedAt = fileStat.atime
     this._modifiedAt = fileStat.mtime
     this._createdAt = fileStat.birthtime
-    this._fileSize = Parser.bytesToSize(fileStat.size, 4)
+    this._fileSize = Parser.sizeToByte(fileStat.size)
 
     if (!options.withContent) return this
 

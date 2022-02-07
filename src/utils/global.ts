@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import { unset as unsetFn } from '../Functions/unset'
+import { Is as IsInstance } from '../Classes/Is'
 import { Path as PathInstance } from '../Classes/Path'
 import { DirectoryContract, FileContract } from '@secjs/contracts'
 import { File as FileInstance, FileJsonContract } from '../Classes/File'
@@ -16,19 +16,38 @@ import { Folder as FolderInstance, FolderJsonContract } from '../Classes/Folder'
 const _global = global as any
 
 // Classes
+_global.Is = IsInstance
 _global.Path = PathInstance
 _global.File = FileInstance
 _global.Folder = FolderInstance
-
-// Functions
-_global.unset = unsetFn
 
 export {}
 
 declare global {}
 
 declare global {
-  function unset(object: any): void
+  class Is {
+    static Empty(value: string): boolean
+    static Cep(cep: string | number): boolean
+    static Cpf(cpf: string | number): boolean
+    static Cpnj(cnpj: string | number): boolean
+    static Undefined(value: any): value is undefined
+    static Null(value: any): value is null
+    static Boolean(value: any): value is boolean
+    static Buffer(value: any): value is Buffer
+    static Number(value: any): value is number
+    static String(value: any): value is string
+    static Object(value: any): boolean
+    static Date(value: any): value is Date
+    static Array(value: any): value is any[]
+    static Regexp(value: any): value is RegExp
+    static Error(value: any): boolean
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    static Function(value: any): value is Function
+    static Class(value: any): boolean
+    static Integer(value: any): value is number
+    static Float(value: any): value is number
+  }
 
   class Path {
     static nodeCwdPath(): string
@@ -54,6 +73,7 @@ declare global {
 
   class File {
     static createFileOfSize(filePath: string, size: number): Promise<any>
+    static safeRemove(filePath: string): Promise<void>
 
     /**
      * Constructor
@@ -192,6 +212,7 @@ declare global {
 
   class Folder {
     static folderSize(folderPath: string): Promise<number>
+    static safeRemove(dir: string): Promise<void>
 
     /**
      * Constructor

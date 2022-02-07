@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-import { existsSync, promises } from 'fs'
+import { existsSync } from 'fs'
 import { Path } from '../../src/Classes/Path'
 import { Folder } from '../../src/Classes/Folder'
 import { File } from '../../src/Classes/File'
@@ -82,13 +82,13 @@ describe('\n Folder Class', () => {
 
     expect(bigFolder.files.length).toBeTruthy()
     expect(bigFolder.folders.length).toBeTruthy()
-    expect(bigFolder.folderSize.includes('KB')).toBe(true)
+    expect(bigFolder.folderSize.includes('B')).toBe(true)
 
     nonexistentFolder.loadSync()
 
     expect(nonexistentFolder.files.length).toBe(0)
     expect(nonexistentFolder.folders.length).toBe(0)
-    expect(nonexistentFolder.folderSize.includes('KB')).toBe(true)
+    expect(nonexistentFolder.folderSize.includes('B')).toBe(true)
   })
 
   it('should throw an internal server exception when trying to reload/recreate the file', async () => {
@@ -321,8 +321,8 @@ describe('\n Folder Class', () => {
   })
 
   afterEach(async () => {
-    await promises.rmdir(bigFolder.dir, { recursive: true })
-    await promises.rmdir(nonexistentFolder.dir, { recursive: true })
+    await Folder.safeRemove(bigFolder.dir)
+    await Folder.safeRemove(nonexistentFolder.dir)
 
     bigFolder = null
     nonexistentFolder = null

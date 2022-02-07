@@ -88,6 +88,10 @@ await existentFile.move()
 await existentFile.remove()
 await existentFile.create()
 await existentFile.getContent()
+
+// You can use safeRemove method to delete the file without any exception if it does no exists
+
+await File.safeRemove(existentFile.path)
 ```
 
 ---
@@ -145,6 +149,93 @@ await existentFolder.copy()
 await existentFolder.move()
 await existentFolder.remove()
 await existentFolder.create()
+
+// You can use safeRemove method to delete the folder without any exception if it does no exists
+
+await Folder.safeRemove(existentFile.path)
+```
+
+---
+
+### Is
+
+> Use Is to validate if value is from some type or is empty, is uuid, is cpf, is cep, etc...
+
+```ts
+import { Is } from '@secjs/utils'
+
+// Is class is a validator. It validates if the value matches the name of the function and returns a boolean
+
+Is.Empty('') // true
+Is.Empty([]) // true
+Is.Empty([1]) // false
+Is.Empty({}) // true
+Is.Empty({ hello: 'world' }) // false
+Is.Empty(' ') // true
+Is.Empty('hello') // false
+
+Is.Uuid('not-valid-uuid') // false
+Is.Cep('not-valid-cep') // false
+Is.Cpf('not-valid-cpf') // false
+Is.Cnpj('not-valid-cnpj') // false
+
+Is.String('value') // true
+Is.Undefined('value') // false
+Is.Null('value') // false
+Is.Boolean('value') // false
+Is.Buffer('value') // false
+Is.Number('value') // false
+Is.Object('value') // false
+Is.Date('value') // false
+Is.Array('value') // false
+Is.Regexp('value') // false
+Is.Error('value') // false
+Is.Function('value') // false
+Is.Class('value') // false
+Is.Integer('value') // false
+Is.Float('value') // false
+```
+
+---
+
+### String
+
+> Use String to generate random strings, normalizations and case changes
+
+```ts
+import { String } from '@secjs/utils'
+
+// With String you can change the case of strings
+
+const string = 'Hello world'
+const capitalize = true
+
+String.toCamelCase(string) // 'helloWorld'
+String.toPascalCase(string) // 'HelloWorld'
+String.toSnakeCase(string) // 'hello_world'
+String.toDotCase(string) // 'hello.world'
+String.toSentenceCase(string) // 'Hello world'
+String.toNoCase(string) // 'hello world'
+String.toDashCase(string) // 'hello-world'
+String.toDashCase(string, capitalize) // 'Hello-World'
+
+// You can generate random strings by size and random hexadecimal colors
+
+String.generateRandom(10) // 'GpXuZScThi'
+String.generateRandomColor() // '#d5063b'
+
+// You can put a string in plural or in singular and in ordinal number
+
+String.pluralize(string) // 'Hello worlds'
+String.singularize(String.pluralize(string)) // 'Hello world'
+String.ordinalize('1') // '1st'
+String.ordinalize('2') // '2nd'
+String.ordinalize('3') // '3rd'
+String.ordinalize('10') // '10th'
+
+// And you can also normalize base64 string
+
+String.normalizeBase64('+++///===') // '---___'
 ```
 
 ---
@@ -376,10 +467,27 @@ console.log(isUuid) // true
 ```ts
 import { Parser } from '@secjs/utils'
 
+// Convert a string to array using a separator
+
 const string1 = '1,2,3'
-const parsed1 = Parser.stringToArray(string1)
+const separator = ','
+const parsed1 = Parser.stringToArray(string1, separator)
 
 console.log(parsed1) // ['1', '2', '3']
+```
+
+```ts
+// Convert an array to string using separators
+
+Parser.arrayToString(['1', '2', '3', '4']) // '1, 2, 3 and 4' 
+Parser.arrayToString(['1', '2', '3', '4'], // '1|2|3-4'
+  { separator: '|', lastSeparator: '-' }
+)
+
+// Pair separator is only for and array of two indexes
+Parser.arrayToString(['1', '2'], { // '1_2'
+  pairSeparator: '_',
+})
 ```
 
 ```ts
@@ -406,16 +514,51 @@ console.log(parsed4) // { joao: 'joao', email: 'lenonsec7@gmail.com' }
 ```
 
 ```ts
-const bytes = 1024*1024*1024 // 1GB
-const decimals = 4
+const message = 'Link: https://google.com'
+  
+// Convert url to and HTML href
 
-Parser.bytesToSize(bytes, decimals) // Example: 1.0932 GB
+console.log(Parser.linkToHref(message)) // Link: <a href="https://google.com">https://google.com</a>
 ```
 
 ```ts
-const message = 'Link: https://google.com'
+// Convert number size to bytes
 
-console.log(urlify(message)) // Link: <a href="https://google.com">https://google.com</a>
+Parser.sizeToByte(1024) // '1KB'
+Parser.sizeToByte(1048576) // '1MB'
+Parser.sizeToByte(1073741824) // '1GB'
+Parser.sizeToByte(1099511627776) // '1TB'
+Parser.sizeToByte(1125899906842624) // '1PB'
+
+// Convert bytes to number size
+
+Parser.byteToSize('1KB') // 1024
+Parser.byteToSize('1MB') // 1048576
+Parser.byteToSize('1GB') // 1073741824
+Parser.byteToSize('1TB') // 1099511627776
+Parser.byteToSize('1PB') // 1125899906842624
+```
+
+```ts
+// Convert time string to ms
+
+Parser.timeToMs('2 days') // 172800000
+Parser.timeToMs('1d') // 86400000
+Parser.timeToMs('10h') // 36000000
+Parser.timeToMs('-10h') // -36000000
+Parser.timeToMs('1 year') // 31557600000
+Parser.timeToMs('-1 year') // -31557600000
+
+// Convert ms to time string
+
+const long = true 
+
+Parser.msToTime(172800000, long) // '2 days'
+Parser.msToTime(86400000) // 1d
+Parser.msToTime(36000000) // 10h
+Parser.msToTime(-36000000) // -10h
+Parser.msToTime(31557600000, long) // 1 year
+Parser.msToTime(-31557600000, long) // -1 year
 ```
 
 ---
@@ -494,18 +637,6 @@ import { download } from '@secjs/utils'
 
 ---
 
-### randomColor
-
-> Use randomColor to generate a random Hexadecimal color
-
-```js
-import { randomColor } from '@secjs/utils'
-
-console.log(randomColor()) // #7059c1
-```
-
----
-
 ### scheduler
 
 > Use scheduler to execute some function based on MS
@@ -566,20 +697,6 @@ console.log(paginate(array, total, pagination))
 
 ---
 
-### random
-
-> Use random to generate random strings by the length you want using crypto
-
-```js
-import { random } from '@secjs/utils'
-
-const randomStringWith10Chars = await random(10)
-
-console.log(randomStringWith10Chars) // qwiortlkps
-```
-
----
-
 ### sleep
 
 > Use sleep to let you code sleep for sometime
@@ -615,44 +732,6 @@ const coordinate2 {
 const distance = await kmRadius(coordinate1, coordinate2)
 
 console.log(distance) // The distance in Kilometers (KM)
-```
-
----
-
-### isCpf
-
-> Validate if is a valid CPF Document or not.
-
-```js
-import { isCpf } from '@secjs/utils'
-
-// CPF (911.881.600-28) Generated using https://4devs.com.br
-
-console.log(isCpf(91188160028)) // true
-console.log(isCpf("91188160028")) // true
-console.log(isCpf("911.881.600-28")) // true
-
-console.log(isCpf("911.881.600-29")) // false
-console.log(isCpf("000.000.000-00")) // false
-```
-
----
-
-### isCnpj
-
-> Validate if is a valid CNPJ Document or not.
-
-```js
-import { isCnpj } from '@secjs/utils'
-
-// CNPJ (77.111.157/0001-19) Generated using https://4devs.com.br
-
-console.log(isCnpj(77111157000119)) // true
-console.log(isCnpj("77111157000119")) // true
-console.log(isCnpj("77.111.157/0001-19")) // true
-
-console.log(isCnpj("77.111.157/0001-20")) // false
-console.log(isCnpj("00.000.000/0000-00")) // false
 ```
 
 ---

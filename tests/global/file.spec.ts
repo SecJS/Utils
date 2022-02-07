@@ -9,8 +9,9 @@
 
 import '../../src/utils/global'
 
-import { existsSync, promises } from 'fs'
+import { existsSync } from 'fs'
 import { Path } from '../../src/Classes/Path'
+import { Folder } from '../../src/Classes/Folder'
 
 describe('\n File Class Global', () => {
   let bigFile: File = null
@@ -82,7 +83,7 @@ describe('\n File Class Global', () => {
     nonexistentFile.loadSync()
 
     expect(nonexistentFile.content).toBeTruthy()
-    expect(nonexistentFile.fileSize.includes('Bytes')).toBe(true)
+    expect(nonexistentFile.fileSize.includes('B')).toBe(true)
   })
 
   it('should throw an internal server exception when trying to reload/recreate the file', async () => {
@@ -287,10 +288,10 @@ describe('\n File Class Global', () => {
   })
 
   afterEach(async () => {
-    await promises.rmdir(bigFile.dir, { recursive: true })
-    await promises.rmdir(nonexistentFile.dir, { recursive: true })
+    await Folder.safeRemove(bigFile.dir)
+    await Folder.safeRemove(nonexistentFile.dir)
 
-    unset(bigFile)
-    unset(nonexistentFile)
+    bigFile = null
+    nonexistentFile = null
   })
 })
