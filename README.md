@@ -484,7 +484,7 @@ Parser.arrayToString(['1', '2', '3', '4'], // '1|2|3-4'
   { separator: '|', lastSeparator: '-' }
 )
 
-// Pair separator is only for and array of two indexes
+// Pair separator is only for two indexes arrays
 Parser.arrayToString(['1', '2'], { // '1_2'
   pairSeparator: '_',
 })
