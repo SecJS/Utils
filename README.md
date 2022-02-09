@@ -178,6 +178,9 @@ Is.Uuid('not-valid-uuid') // false
 Is.Cep('not-valid-cep') // false
 Is.Cpf('not-valid-cpf') // false
 Is.Cnpj('not-valid-cnpj') // false
+Is.Async(() => {}) // false
+Is.Async(async () => {}) // true
+Is.Async(() => { new Promise((resolve => resolve())) }) // true
 
 Is.String('value') // true
 Is.Undefined('value') // false

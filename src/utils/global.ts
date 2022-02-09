@@ -31,6 +31,7 @@ declare global {
     static Cep(cep: string | number): boolean
     static Cpf(cpf: string | number): boolean
     static Cpnj(cnpj: string | number): boolean
+    static Async(value: any): boolean
     static Undefined(value: any): value is undefined
     static Null(value: any): value is null
     static Boolean(value: any): value is boolean

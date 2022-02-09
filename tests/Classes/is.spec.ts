@@ -22,6 +22,14 @@ describe('\n Is Class', () => {
     expect(Is.Cpf('529.461.090-62')).toBe(true)
   })
 
+  it('should verify if is a valid async function', async () => {
+    expect(Is.Async(0)).toBe(false)
+    expect(Is.Async('')).toBe(false)
+    expect(Is.Async(() => '')).toBe(false)
+    expect(Is.Async(async () => '')).toBe(true)
+    expect(Is.Async(() => new Promise(resolve => resolve))).toBe(true)
+  })
+
   it('should verify if is a valid cnpj', async () => {
     expect(Is.Cnpj(0)).toBe(false)
     expect(Is.Cnpj('')).toBe(false)

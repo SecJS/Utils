@@ -124,6 +124,22 @@ export class Is {
   }
 
   /**
+   * Verify if is an async function
+   *
+   * @param value The value
+   * @return true or false
+   */
+  static Async(value: any) {
+    const fnString = value.toString().trim()
+
+    const validation = !!(
+      fnString.match(/^async/) || fnString.match(/return _ref[^.]*\.apply/)
+    )
+
+    return validation || fnString.includes('new Promise(')
+  }
+
+  /**
    * Verify if value is undefined
    *
    * @param value The value
