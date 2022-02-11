@@ -9,6 +9,7 @@
 
 import kindOf from 'kind-of'
 
+import { isIP } from 'net'
 import { validate } from 'uuid'
 import { isCpf, isCep, isCnpj } from 'validator-brazil'
 
@@ -59,6 +60,16 @@ export class Is {
 
   static isUuid(value: string): boolean {
     return validate(value)
+  }
+
+  /**
+   * Ip verify if value is empty
+   *
+   * @param value The value
+   * @return Return true/false
+   */
+  static Ip(value: string): boolean {
+    return isIP(value) !== 0
   }
 
   /**

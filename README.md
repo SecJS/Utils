@@ -174,6 +174,7 @@ Is.Empty({ hello: 'world' }) // false
 Is.Empty(' ') // true
 Is.Empty('hello') // false
 
+Is.Ip('not-valid-ip') // false
 Is.Uuid('not-valid-uuid') // false
 Is.Cep('not-valid-cep') // false
 Is.Cpf('not-valid-cpf') // false

@@ -27,6 +27,7 @@ declare global {}
 
 declare global {
   class Is {
+    static Ip(value: string): boolean
     static Empty(value: string): boolean
     static Cep(cep: string | number): boolean
     static Cpf(cpf: string | number): boolean
