@@ -2,19 +2,6 @@ import { Json } from '../../src/Classes/Json'
 import { sleep } from '../../src/Functions/sleep'
 
 describe('\n Json Class', () => {
-  it('should verify if the array is an array of objects', async () => {
-    const data = [
-      {
-        hello: 'hello',
-        world: 'world',
-      },
-    ]
-
-    expect(Json.isArrayOfObjects(data)).toBe(true)
-    expect(Json.isArrayOfObjects([])).toBe(false)
-    expect(Json.isArrayOfObjects([1, 2, 3])).toBe(false)
-  })
-
   it('should return a deep copy from the object', async () => {
     const object = {
       test: 'hello',

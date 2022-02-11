@@ -198,6 +198,10 @@ Is.Function('value') // false
 Is.Class('value') // false
 Is.Integer('value') // false
 Is.Float('value') // false
+
+Is.ArrayOfObjects('') // false
+Is.ArrayOfObjects([1, 2, 3]) // false
+Is.ArrayOfObjects([{ hello: 'world' }]) // true
 ```
 
 ---
@@ -287,19 +291,6 @@ Path.switchBuild().assets() // '/home/your/computer/path/your-project-name/publi
 ```ts
 import { Json } from '@secjs/utils'
 
-const data = [
-  {
-    hello: 'hello',
-    world: 'world',
-  },
-]
-
-Json.isArrayOfObjects(data) // true
-Json.isArrayOfObjects([]) // false
-Json.isArrayOfObjects([1, 2, 3]) // false
-```
-
-```ts
 const textWithJsons = 'string with a Json inside of it {"text":"hello"} and one more Json {"hello":"world"}'
 
 Json.getJson(textWithJsons) // ['{"text":"hello"}', '{"hello":"world"}']

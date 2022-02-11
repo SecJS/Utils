@@ -69,6 +69,9 @@ export class Is {
    * @return Return true/false
    */
   static Ip(value: string): boolean {
+    // Removes http/https and port/route values
+    value = value.replace(/^https?:\/\//, '').split(':')[0]
+
     return isIP(value) !== 0
   }
 
@@ -299,5 +302,19 @@ export class Is {
    */
   static Float(value: number): value is number {
     return value !== (value | 0)
+  }
+
+  /**
+   * Verify if value is Array of objects
+   *
+   * @param value The value
+   * @return true or false
+   */
+  static ArrayOfObjects(value: any | any[]): boolean {
+    if (!value.length) return false
+
+    const results = value.map(v => Is.Object(v))
+
+    return !results.includes(false)
   }
 }

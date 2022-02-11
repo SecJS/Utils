@@ -31,7 +31,7 @@ export class Clean {
 
       if (
         typeof item === 'object' &&
-        !Array.isArray(item) &&
+        !Is.Array(item) &&
         cleanInsideObjects &&
         returnItem
       ) {
@@ -65,7 +65,7 @@ export class Clean {
         return
       }
 
-      if (Array.isArray(object[prop]) && cleanInsideArrays) {
+      if (Is.Array(object[prop]) && cleanInsideArrays) {
         this.cleanArray(object[prop], removeEmpty, true)
       }
 
