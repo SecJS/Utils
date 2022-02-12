@@ -56,42 +56,71 @@ export class String {
   }
 
   /**
-   * toSnakeCase transforms the string to snakeCase
+   * toSnakeCase transforms the string to snake_case
    *
    * @param value The string
-   * @return Return the word in snakeCase
+   * @param capitalize If true will transform to Snake_Case
+   * @return Return the word in snake_case
    */
-  static toSnakeCase(value: string): string {
+  static toSnakeCase(value: string, capitalize?: boolean): string {
+    if (capitalize) {
+      return changeCase.snakeCase(value, {
+        transform: changeCase.capitalCaseTransform,
+      })
+    }
+
     return changeCase.snakeCase(value)
   }
 
   /**
-   * toPascalCase transforms the string to pascalCase
+   * toConstantCase transforms the string to CONSTANT_CASE
    *
    * @param value The string
-   * @return Return the word in pascalCase
+   * @return Return the word in CONSTANT_CASE
+   */
+  static toConstantCase(value: string): string {
+    return changeCase.constantCase(value)
+  }
+
+  /**
+   * toPascalCase transforms the string to PascalCase
+   *
+   * @param value The string
+   * @return Return the word in PascalCase
    */
   static toPascalCase(value: string): string {
     return changeCase.pascalCase(value)
   }
 
   /**
-   * toSentenceCase transforms the string to sentenceCase
+   * toSentenceCase transforms the string to Sentence case
    *
    * @param value The string
-   * @return Return the word in sentenceCase
+   * @param capitalize If true will transform to Capital Case
+   * @return Return the word in Sentence case
    */
-  static toSentenceCase(value: string): string {
+  static toSentenceCase(value: string, capitalize?: boolean): string {
+    if (capitalize) {
+      return changeCase.capitalCase(value)
+    }
+
     return changeCase.sentenceCase(value)
   }
 
   /**
-   * toDotCase transforms the string to dotCase
+   * toDotCase transforms the string to dot.case
    *
    * @param value The string
-   * @return Return the word in dotCase
+   * @param capitalize If true will transform to Dot.Case
+   * @return Return the word in dot.case
    */
-  static toDotCase(value: string): string {
+  static toDotCase(value: string, capitalize?: boolean): string {
+    if (capitalize) {
+      return changeCase.dotCase(value, {
+        transform: changeCase.capitalCaseTransform,
+      })
+    }
+
     return changeCase.dotCase(value)
   }
 
@@ -99,18 +128,18 @@ export class String {
    * toNoCase removes all sorted cases from string
    *
    * @param value The string
-   * @return Return the word with noCase
+   * @return Return the word with no case
    */
   static toNoCase(value: string): string {
     return changeCase.noCase(value)
   }
 
   /**
-   * toDashCase transforms a string to dashCase
+   * toDashCase transforms a string to dash-case
    *
    * @param value The string
-   * @param capitalize If true will transform to headerCase
-   * @return Return the word in dashCase
+   * @param capitalize If true will transform to Header-Case
+   * @return Return the word in dash-case
    */
   static toDashCase(value: string, capitalize?: boolean): string {
     if (capitalize) {

@@ -220,12 +220,16 @@ const capitalize = true
 
 String.toCamelCase(string) // 'helloWorld'
 String.toPascalCase(string) // 'HelloWorld'
-String.toSnakeCase(string) // 'hello_world'
-String.toDotCase(string) // 'hello.world'
-String.toSentenceCase(string) // 'Hello world'
 String.toNoCase(string) // 'hello world'
+String.toConstantCase(string) // HELLO_WORLD
 String.toDashCase(string) // 'hello-world'
 String.toDashCase(string, capitalize) // 'Hello-World'
+String.toDotCase(string) // 'hello.world'
+String.toDotCase(string, capitalize) // 'Hello.World'
+String.toSnakeCase(string) // 'hello_world'
+String.toSnakeCase(string, capitalize) // 'Hello_World'
+String.toSentenceCase(string) // 'Hello world'
+String.toSentenceCase(string, capitalize) // 'Hello World'
 
 // You can generate random strings by size and random hexadecimal colors
 
@@ -554,6 +558,22 @@ Parser.msToTime(36000000) // 10h
 Parser.msToTime(-36000000) // -10h
 Parser.msToTime(31557600000, long) // 1 year
 Parser.msToTime(-31557600000, long) // -1 year
+```
+
+```ts
+// Convert status code to reason
+
+Parser.statusCodeToReason(200) // OK
+Parser.statusCodeToReason('201') // CREATED
+Parser.statusCodeToReason(404) // NOT_FOUND
+Parser.statusCodeToReason('500') // INTERNAL_SERVER_ERROR
+
+// Convert reason to status code
+
+Parser.reasonToStatusCode('OK') // 200
+Parser.reasonToStatusCode('created') // 201
+Parser.reasonToStatusCode('NOT_found') // 404
+Parser.reasonToStatusCode('internal server error') // 500
 ```
 
 ---

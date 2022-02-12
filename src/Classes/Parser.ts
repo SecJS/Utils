@@ -10,7 +10,9 @@
 import ms from 'ms'
 import bytes from 'bytes'
 
+import { getReasonPhrase, getStatusCode } from 'http-status-codes'
 import { InternalServerException } from '@secjs/exceptions'
+import { String } from './String'
 
 export class Parser {
   /**
@@ -172,5 +174,29 @@ export class Parser {
    */
   static msToTime(value: number, long = false): string {
     return ms(value, { long })
+  }
+
+  /**
+   * statusCodeToReason parses the status code number to it reason in string
+   *
+   * @param status - The status code
+   * @return Return the status code reason
+   */
+  static statusCodeToReason(status: string | number): string {
+    return String.toConstantCase(getReasonPhrase(status))
+  }
+
+  /**
+   * reasonToStatusCode parses the reason in string to it status code number
+   *
+   * @param reason - The status code reason
+   * @return Return the status code number
+   */
+  static reasonToStatusCode(reason: string): number {
+    reason = String.toSentenceCase(reason, true)
+
+    if (reason === 'Ok') reason = 'OK'
+
+    return getStatusCode(reason)
   }
 }

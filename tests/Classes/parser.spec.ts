@@ -91,4 +91,18 @@ describe('\n Parser Class', () => {
     expect(Parser.msToTime(31557600000, true)).toBe('365 days')
     expect(Parser.msToTime(-31557600000, true)).toBe('-365 days')
   })
+
+  it('should parse the status code to reason and reason to status code', async () => {
+    // status code to reason
+    expect(Parser.statusCodeToReason(200)).toBe('OK')
+    expect(Parser.statusCodeToReason('201')).toBe('CREATED')
+    expect(Parser.statusCodeToReason(401)).toBe('UNAUTHORIZED')
+    expect(Parser.statusCodeToReason(500)).toBe('INTERNAL_SERVER_ERROR')
+
+    // reason to status code
+    expect(Parser.reasonToStatusCode('ok')).toBe(200)
+    expect(Parser.reasonToStatusCode('Created')).toBe(201)
+    expect(Parser.reasonToStatusCode('unauthorized')).toBe(401)
+    expect(Parser.reasonToStatusCode('INTERNAL_SERVER_ERROR')).toBe(500)
+  })
 })
