@@ -2,6 +2,14 @@ import { Is } from '../../src/Classes/Is'
 import { InternalServerException } from '@secjs/exceptions'
 
 describe('\n Is Class', () => {
+  it('should verify if is a valid json string', async () => {
+    expect(Is.Json('')).toBeFalsy()
+    expect(Is.Json('Hello')).toBeFalsy()
+    expect(Is.Json('[]')).toBeTruthy()
+    expect(Is.Json('{}')).toBeTruthy()
+    expect(Is.Json(JSON.stringify({ hello: 'world' }))).toBeTruthy()
+  })
+
   it('should verify if is a valid ip address', async () => {
     expect(Is.Ip('')).toBeFalsy()
     expect(Is.Ip(' ')).toBeFalsy()

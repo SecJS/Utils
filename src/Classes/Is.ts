@@ -63,6 +63,22 @@ export class Is {
   }
 
   /**
+   * Json verify if value is valid Json string
+   *
+   * @param value The value
+   * @return Return true/false
+   */
+  static Json(value: string): boolean {
+    try {
+      JSON.parse(value)
+
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+
+  /**
    * Ip verify if value is empty
    *
    * @param value The value
