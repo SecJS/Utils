@@ -33,6 +33,7 @@ describe('\n Numbers Class', () => {
   })
 
   it('should generate a random integer between two integer values', () => {
-    expect(Number)
+    expect(Number.randomIntFromInterval(0, 0)).toBeFalsy()
+    expect(Number.randomIntFromInterval(1, 10)).toBeTruthy()
   })
 })

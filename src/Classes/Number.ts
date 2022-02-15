@@ -9,7 +9,7 @@
 
 import { Parser } from './Parser'
 
-export class Numbers {
+export class Number {
   /**
    * Get the higher number from an array of numbers
    *

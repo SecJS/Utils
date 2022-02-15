@@ -3,6 +3,7 @@
     "baseUrl": ".",
     "esModuleInterop": true,
     "module": "commonjs",
+    "moduleResolution": "Node",
     "declaration": true,
     "noImplicitAny": false,
     "skipLibCheck": true,
