@@ -9,7 +9,7 @@
 
 import { Parser } from './Parser'
 
-export class Numbers {
+export class Number {
   /**
    * Get the higher number from an array of numbers
    *
@@ -72,5 +72,16 @@ export class Numbers {
    */
   static arrayAverage(array: number[]): number {
     return array.reduce((acc, curr) => acc + curr, 0) / array.length
+  }
+
+  /**
+   * Generate a random integer from a determined interval of numbers
+   *
+   * @param min The min number
+   * @param max The max number
+   * @return A random number between min and max
+   */
+  static randomIntFromInterval(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1) + min)
   }
 }

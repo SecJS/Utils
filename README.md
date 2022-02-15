@@ -421,24 +421,33 @@ await blacklist.remove('192.168.0.2', filePath) // void
 
 ---
 
-### Numbers
+### Number
 
-> Use Numbers to manipulate numbers the best way
+> Use Number to manipulate numbers the best way
 
 ```js
-import { Numbers } from '@secjs/utils'
+import { Number } from '@secjs/utils'
 
 const arrayOfNumbers = [2, 4]
 const stringNumber = "Hello my name is João, I'm 20 year old!"
 
-console.log(Numbers.getLower(arrayOfNumbers)) // 2
-console.log(Numbers.getHigher(arrayOfNumbers)) // 4
+// Get the lower/higher number from the array
+console.log(Number.getLower(arrayOfNumbers)) // 2
+console.log(Number.getHigher(arrayOfNumbers)) // 4
 
-console.log(Numbers.extractNumber(stringNumber)) // '20'
-console.log(Numbers.extractNumbers(stringNumber)) // ['20']
+// Extract numbers from strings
+console.log(Number.extractNumber(stringNumber)) // '20'
+console.log(Number.extractNumbers(stringNumber)) // ['20']
 
-console.log(Numbers.argsAverage(2, 4)) // 3
-console.log(Numbers.arrayAverage(arrayOfNumbers)) // 3
+// Return the average from infinite parameters or array of numbers
+console.log(Number.argsAverage(2, 4)) // 3
+console.log(Number.arrayAverage(arrayOfNumbers)) // 3
+
+// Generate random integers values between interval
+console.log(Number.randomIntFromInterval(1, 1)) // 1
+console.log(Number.randomIntFromInterval(1, 2)) // 1
+console.log(Number.randomIntFromInterval(1, 2)) // 2
+console.log(Number.randomIntFromInterval(1, 10)) // 8
 ```
 
 ---
@@ -604,6 +613,33 @@ const object2 = {
 
 console.log(Clean.cleanObject(object)) // { number1: "number", number4: 1 }
 console.log(Clean.cleanArraysInObject(object2)) // { number2: [{ number1: "number", number4: 1 }]}
+```
+
+---
+
+### Debug
+
+> Use Debug to generate debug logs in SecJS format
+
+```js
+import { Debug } from '@secjs/utils'
+
+const context = 'API'
+const namespace = 'api:main'
+
+const debug = new Debug(context, namespace)
+
+// You can still change the context/namespace of the instance in runtime
+debug
+  .buildContext(context)
+  .buildNamespace(namespace)
+  .log('Hello World!') // api:main [SecJS Debugger] - PID: 85580 - 02/15/2022, 11:47:56 AM [API] Hello World! +0ms
+
+// You can log objects too, it will be converted to string in the formatter
+debug
+  .buildContext('Object')
+  .buildNamespace('api:object')
+  .log({ hello: 'world' }) // api:object [SecJS Debugger] - PID: 85770 - 02/15/2022, 11:53:48 AM [Object] {"hello":"world"} +0ms
 ```
 
 ---
