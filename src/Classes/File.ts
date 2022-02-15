@@ -7,8 +7,6 @@
  * file that was distributed with this source code.
  */
 
-import { debugFn } from '../utils/debug'
-
 import {
   createWriteStream,
   createReadStream,
@@ -22,12 +20,13 @@ import {
 } from 'fs'
 
 import { Path } from './Path'
+import { Debug } from './Debug'
 import { Parser } from './Parser'
 import { lookup } from 'mime-types'
 import { randomBytes } from 'crypto'
 import { parse, isAbsolute } from 'path'
-import { InternalServerException } from '@secjs/exceptions'
 import { FileContract } from '@secjs/contracts'
+import { InternalServerException } from '@secjs/exceptions'
 
 export interface FileJsonContract {
   dir: string
@@ -50,6 +49,8 @@ export interface FileJsonContract {
 }
 
 export class File {
+  private debug = new Debug('File', 'api:utils')
+
   static async createFileOfSize(filePath: string, size: number) {
     const { dir, path } = File.parsePath(filePath)
 
@@ -218,8 +219,8 @@ export class File {
     if (options.withContent) {
       // 200mb
       if (fileStat.size >= 2e8) {
-        debugFn(
-          `Be careful, a file with ${this._fileSize} has been loaded in heap memory`,
+        this.debug.log(
+          `Be careful, the file ${this._base} with ${this._fileSize} has been loaded in heap memory`,
         )
       }
 
@@ -270,8 +271,8 @@ export class File {
 
         // 200mb
         if (fileStat.size >= 2e8) {
-          debugFn(
-            `Be careful, a file with ${this._fileSize} has been loaded in heap memory`,
+          this.debug.log(
+            `Be careful, the file ${this._base} with ${this._fileSize} has been loaded in heap memory`,
           )
         }
 
