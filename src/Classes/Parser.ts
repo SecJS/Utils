@@ -10,9 +10,12 @@
 import ms from 'ms'
 import bytes from 'bytes'
 
-import { getReasonPhrase, getStatusCode } from 'http-status-codes'
-import { InternalServerException } from '@secjs/exceptions'
+import { Is } from './Is'
 import { String } from './String'
+import { InternalServerException } from '@secjs/exceptions'
+import { getReasonPhrase, getStatusCode } from 'http-status-codes'
+import { DBUrlParserContract } from '../Contracts/DBUrlParserContract'
+import { homedir } from 'os'
 
 export class Parser {
   /**
@@ -198,5 +201,84 @@ export class Parser {
     if (reason === 'Ok') reason = 'OK'
 
     return getStatusCode(reason)
+  }
+
+  /**
+   * dbUrlToConnectionObj parses the database connection url to connection object
+   *
+   * @param url - The database url
+   * @return Return the connection object
+   */
+  static dbUrlToConnectionObj(url: string): DBUrlParserContract {
+    const urlRegexp = /^([^:\\/\s]+):\/\/((.*):(.*)@|)(.*)(:(.*)|)\/(.*)(\?(.+))?/
+    const matcher = url.match(urlRegexp)
+
+    const connectionObject: DBUrlParserContract = {
+      protocol: matcher[1],
+      user: null,
+      password: null,
+      host: null,
+      port: null,
+      database: matcher[8],
+      options: {},
+    }
+
+    if (matcher[5].includes(',')) {
+      connectionObject.host = matcher[5].split(',')
+    } else {
+      connectionObject.host = matcher[5]
+
+      if (matcher[5].includes(':')) {
+        const [h, p] = matcher[5].split(':')
+
+        connectionObject.host = h
+        connectionObject.port = parseInt(p)
+      }
+    }
+
+    if (connectionObject.database.includes('?')) {
+      const [database, options] = connectionObject.database.split('?')
+
+      connectionObject.database = database
+      connectionObject.options = this.formDataToJson(options)
+    }
+
+    if (matcher[3]) connectionObject.user = matcher[3]
+    if (matcher[4]) connectionObject.password = matcher[4]
+
+    return connectionObject
+  }
+
+  /**
+   * connectionObjToDbUrl parses the database connection object to connection url
+   *
+   * @param object - The database connection object
+   * @return Return the connection url
+   */
+  static connectionObjToDbUrl(object: DBUrlParserContract): string {
+    const { protocol, user, password, host, port, database, options } = object
+
+    let url = `${protocol}://`
+
+    if (user || password) {
+      if (user) url = url.concat(user)
+      if (password) url = url.concat(`:${password}`)
+
+      url = url.concat('@')
+    }
+
+    if (Is.Array(host)) {
+      url = url.concat(host.join(','))
+    } else {
+      url = url.concat(host)
+
+      if (port) url = url.concat(`:${port}`)
+    }
+
+    url = url.concat(`/${database}`)
+
+    if (!Is.Empty(options)) url = url.concat(`?${this.jsonToFormData(options)}`)
+
+    return url
   }
 }

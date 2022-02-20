@@ -105,4 +105,117 @@ describe('\n Parser Class', () => {
     expect(Parser.reasonToStatusCode('unauthorized')).toBe(401)
     expect(Parser.reasonToStatusCode('INTERNAL_SERVER_ERROR')).toBe(500)
   })
+
+  it('should parse the complete database url to object and object to complete database url', async () => {
+    const url =
+      'postgresql://postgres:root@127.0.0.1:5432/postgres?paramOne=1&paramTwo=2&paramThree=3'
+
+    // database url to connection object
+    const connectionObject = Parser.dbUrlToConnectionObj(url)
+
+    expect(connectionObject.protocol).toBe('postgresql')
+    expect(connectionObject.user).toBe('postgres')
+    expect(connectionObject.password).toBe('root')
+    expect(connectionObject.host).toBe('127.0.0.1')
+    expect(connectionObject.port).toBe(5432)
+    expect(connectionObject.database).toBe('postgres')
+    expect(connectionObject.options).toEqual({
+      paramOne: '1',
+      paramTwo: '2',
+      paramThree: '3',
+    })
+
+    // connection object to database url
+    const connectionUrl = Parser.connectionObjToDbUrl(connectionObject)
+
+    expect(connectionUrl).toBe(url)
+  })
+
+  it('should parse the without auth database url to object and object to without auth database url', async () => {
+    const url = 'postgresql://127.0.0.1:5432/postgres'
+
+    // database url to connection object
+    const connectionObject = Parser.dbUrlToConnectionObj(url)
+
+    expect(connectionObject.protocol).toBe('postgresql')
+    expect(connectionObject.user).toBe(null)
+    expect(connectionObject.password).toBe(null)
+    expect(connectionObject.host).toBe('127.0.0.1')
+    expect(connectionObject.port).toBe(5432)
+    expect(connectionObject.database).toBe('postgres')
+    expect(connectionObject.options).toEqual({})
+
+    // connection object to database url
+    const connectionUrl = Parser.connectionObjToDbUrl(connectionObject)
+
+    expect(connectionUrl).toBe(url)
+  })
+
+  it('should parse the without auth and port database url to object and object to without auth and port database url', async () => {
+    const url = 'postgresql://127.0.0.1/postgres?options=10&test=10'
+
+    // database url to connection object
+    const connectionObject = Parser.dbUrlToConnectionObj(url)
+
+    expect(connectionObject.protocol).toBe('postgresql')
+    expect(connectionObject.user).toBe(null)
+    expect(connectionObject.password).toBe(null)
+    expect(connectionObject.host).toBe('127.0.0.1')
+    expect(connectionObject.port).toBe(null)
+    expect(connectionObject.database).toBe('postgres')
+    expect(connectionObject.options).toEqual({
+      options: '10',
+      test: '10',
+    })
+
+    // connection object to database url
+    const connectionUrl = Parser.connectionObjToDbUrl(connectionObject)
+
+    expect(connectionUrl).toBe(url)
+  })
+
+  it('should parse the without auth, port and options database url to object and object to without auth, port and options database url', async () => {
+    const url = 'postgresql://127.0.0.1/postgres'
+
+    // database url to connection object
+    const connectionObject = Parser.dbUrlToConnectionObj(url)
+
+    expect(connectionObject.protocol).toBe('postgresql')
+    expect(connectionObject.user).toBe(null)
+    expect(connectionObject.password).toBe(null)
+    expect(connectionObject.host).toBe('127.0.0.1')
+    expect(connectionObject.port).toBe(null)
+    expect(connectionObject.database).toBe('postgres')
+    expect(connectionObject.options).toEqual({})
+
+    // connection object to database url
+    const connectionUrl = Parser.connectionObjToDbUrl(connectionObject)
+
+    expect(connectionUrl).toBe(url)
+  })
+
+  it('should parse the cluster database url to object and object to cluster database url', async () => {
+    const url =
+      'postgresql://postgres:root@127.0.0.1:5432,127.0.0.1:5433,127.0.0.1:5434/postgres'
+
+    // database url to connection object
+    const connectionObject = Parser.dbUrlToConnectionObj(url)
+
+    expect(connectionObject.protocol).toBe('postgresql')
+    expect(connectionObject.user).toBe('postgres')
+    expect(connectionObject.password).toBe('root')
+    expect(connectionObject.host).toEqual([
+      '127.0.0.1:5432',
+      '127.0.0.1:5433',
+      '127.0.0.1:5434',
+    ])
+    expect(connectionObject.port).toBe(null)
+    expect(connectionObject.database).toBe('postgres')
+    expect(connectionObject.options).toEqual({})
+
+    // connection object to database url
+    const connectionUrl = Parser.connectionObjToDbUrl(connectionObject)
+
+    expect(connectionUrl).toBe(url)
+  })
 })

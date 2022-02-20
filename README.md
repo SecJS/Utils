@@ -586,6 +586,37 @@ Parser.reasonToStatusCode('NOT_found') // 404
 Parser.reasonToStatusCode('internal server error') // 500
 ```
 
+```ts
+const url =
+  'postgresql://postgres:root@127.0.0.1:5432/postgres?paramOne=1&paramTwo=2&paramThree=3'
+
+// Convert database connection url to connection object
+const connectionObject = Parser.dbUrlToConnectionObj(url)
+
+/** connectionObject result
+ * {
+ *   protocol: 'postgresql',
+ *   user: 'postgres',
+ *   password: 'root',
+ *   host: '127.0.0.1',
+ *   port: 5432,
+ *   database: 'postgres',
+ *   options: {
+ *     paramOne: '1',
+ *     paramTwo: '2',
+ *     paramThree: '3',
+ *   }
+ * }
+ */
+
+// Convert connection object to database connection url
+const connectionUrl = Parser.connectionObjToDbUrl(connectionObject)
+
+/** connectionUrl result
+ * postgresql://postgres:root@127.0.0.1:5432/postgres?paramOne=1&paramTwo=2&paramThree=3
+ */
+```
+
 ---
 
 ### Clean
@@ -765,18 +796,18 @@ await sleep(2000) // Your code will stop in this line for two seconds
 
 > Find out what's the distance between a coordinate to other
 
-```js
+```ts
 import { kmRadius, ICoordinate } from '@secjs/utils'
 
 // Use type number for more precision,
 // but you can use string to,
 // kmRadius will handle it with Parser.
-const coordinate1 {
+const coordinate1 = {
  latitude: -25.4858841,
  longitude: -54.564615,
 } as ICoordinate // ICoordinate will force numbers
 
-const coordinate2 {
+const coordinate2 = {
  latitude: '-54.564615',
  longitude: '-25.4858841',
 }

@@ -1,3 +1,5 @@
+export * from './src/Contracts/DBUrlParserContract'
+
 export * from './src/Classes/Is'
 export * from './src/Classes/Json'
 export * from './src/Classes/Path'
