@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+import { cloneDeep } from 'lodash'
+
 export class Json {
   /**
    * Deep copy any object properties without reference
@@ -14,16 +16,8 @@ export class Json {
    * @param object The object to be copied
    * @return A copy from object without any reference
    */
-  static copy<T>(object: T): T {
-    const copy: any = {}
-
-    for (const i in object) {
-      const item = object[i]
-      copy[i] =
-        item != null && typeof item === 'object' ? this.copy(item) : item
-    }
-
-    return copy
+  static copy<T = any>(object: T): T {
+    return cloneDeep(object)
   }
 
   /**
