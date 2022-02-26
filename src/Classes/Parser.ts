@@ -272,7 +272,8 @@ export class Parser {
     } else {
       url = url.concat(host)
 
-      if (port) url = url.concat(`:${port}`)
+      // If port exists and host does not include more than one host
+      if (port && !host.includes(',')) url = url.concat(`:${port}`)
     }
 
     url = url.concat(`/${database}`)
