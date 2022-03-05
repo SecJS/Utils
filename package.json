@@ -1,6 +1,6 @@
 {
   "name": "@secjs/utils",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "description": "",
   "license": "MIT",
   "author": "João Lenon",
@@ -18,7 +18,6 @@
     "nodejs"
   ],
   "devDependencies": {
-    "@secjs/contracts": "1.2.1",
     "@secjs/exceptions": "1.0.4",
     "@types/bytes": "3.1.1",
     "@types/debug": "4.1.5",

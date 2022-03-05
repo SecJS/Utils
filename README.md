@@ -29,7 +29,7 @@ The intention behind this repository is to always maintain a `Utils` package wit
 > it keeps as dev dependency because one day `@secjs/core` will install everything once.
 
 ```bash
-npm install @secjs/contracts @secjs/exceptions
+npm install @secjs/exceptions
 ```
 
 > Then you can install the package using:
@@ -741,8 +741,7 @@ scheduler(func, 3000) // scheduler function will execute the func every 3 second
 > Use paginate get meta and links from for response
 
 ```js
-import { paginate } from '@secjs/utils'
-import { PaginationContract } from '@secjs/contracts'
+import { paginate, PaginationContract } from '@secjs/utils'
 
 const filters = {
   where: { id: 1 }

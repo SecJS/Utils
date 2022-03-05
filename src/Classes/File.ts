@@ -25,7 +25,7 @@ import { Parser } from './Parser'
 import { lookup } from 'mime-types'
 import { randomBytes } from 'crypto'
 import { parse, isAbsolute } from 'path'
-import { FileContract } from '@secjs/contracts'
+import { FileContract } from '../Contracts/FileContract'
 import { InternalServerException } from '@secjs/exceptions'
 
 export interface FileJsonContract {

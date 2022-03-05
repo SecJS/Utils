@@ -1,10 +1,13 @@
-import { PaginatedResponse, PaginationContract } from '@secjs/contracts'
+import {
+  PaginatedResponse,
+  PaginationContract,
+} from '../Contracts/PaginationContract'
 
 export function paginate(
   data: any[],
   total: number,
   pagination: PaginationContract,
-): PaginatedResponse<any> {
+): PaginatedResponse {
   const totalPages = Math.ceil(total / pagination.limit)
 
   const meta = {
