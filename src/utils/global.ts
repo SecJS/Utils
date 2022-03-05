@@ -9,7 +9,8 @@
 
 import { Is as IsInstance } from '../Classes/Is'
 import { Path as PathInstance } from '../Classes/Path'
-import { DirectoryContract, FileContract } from '@secjs/contracts'
+import { FileContract } from '../Contracts/FileContract'
+import { DirectoryContract } from '../Contracts/DirectoryContract'
 import { File as FileInstance, FileJsonContract } from '../Classes/File'
 import { Folder as FolderInstance, FolderJsonContract } from '../Classes/Folder'
 

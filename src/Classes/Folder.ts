@@ -25,7 +25,7 @@ import { Parser } from './Parser'
 import { randomBytes } from 'crypto'
 import { isAbsolute, join, parse, resolve } from 'path'
 import { InternalServerException } from '@secjs/exceptions'
-import { DirectoryContract } from '@secjs/contracts'
+import { DirectoryContract } from '../Contracts/DirectoryContract'
 
 export interface FolderJsonContract {
   dir: string
