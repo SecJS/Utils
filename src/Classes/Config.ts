@@ -25,7 +25,7 @@ export class Config {
       keys.forEach(key => (config = config[key]))
     }
 
-    if (!config) config = defaultValue
+    if (config === undefined) config = defaultValue
 
     return config
   }
@@ -53,10 +53,13 @@ export class Config {
       throw new InternalServerException(content)
     }
 
-    if (Config.configs.get(name)) return
+    if (Config.configs.has(name)) return
     if (base.includes('.map') || base.includes('.d.ts')) return
 
-    const file = new File(`${dir}/${base}`).loadSync()
+    const fileExtension = process.env.NODE_TS === 'true' ? 'ts' : 'js'
+    const fileBase = `${name}.${fileExtension}`
+
+    const file = new File(`${dir}/${fileBase}`).loadSync()
     const fileContent = file.getContentSync().toString()
 
     if (
@@ -87,6 +90,6 @@ export class Config {
     }
 
     Config.debug.log(`Loading ${name} configuration file`)
-    Config.configs.set(name, require(`${dir}/${name}`).default)
+    Config.configs.set(name, require(file.path).default)
   }
 }
