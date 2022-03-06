@@ -30,7 +30,20 @@ export class Config {
     return config
   }
 
-  // Load the configuration file on demand
+  clear() {
+    Config.configs.clear()
+  }
+
+  safeLoad(path: string) {
+    const { name } = parse(path)
+
+    if (Config.configs.has(name)) {
+      return
+    }
+
+    return this.load(path)
+  }
+
   load(path: string, callNumber = 0) {
     const { dir, name, base } = parse(path)
 
@@ -75,9 +88,5 @@ export class Config {
 
     Config.debug.log(`Loading ${name} configuration file`)
     Config.configs.set(name, require(`${dir}/${name}`).default)
-  }
-
-  clear() {
-    Config.configs.clear()
   }
 }

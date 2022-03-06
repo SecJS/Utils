@@ -328,6 +328,9 @@ console.log(Config.get('database.database')) // 'secjs'
 // You can call load again and you will never lose the previous states
 config.load('example.ts')
 
+// You can also use safeLoad to not reload files that were already loaded
+config.safeLoad('app.ts') // Will just return without errors, but app.ts will not be reloaded.
+
 console.log(Config.get('app.name')) // 'secjs'
 ```
 
