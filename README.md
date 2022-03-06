@@ -289,6 +289,71 @@ Path.switchBuild().assets() // '/home/your/computer/path/your-project-name/publi
 
 ---
 
+### Config
+
+> Handle configurations files values inside your application ecosystem
+
+```ts
+// First you need to create your configuration file using the file template
+
+// app.ts
+export default {
+  name: 'secjs'
+}
+
+// database.ts
+export default {
+  host: '127.0.0.1',
+  port: Env('PORT', 5432),
+  // You can use Config.get inside this config files and Config class will handle it for you
+  database: Config.get('app.name')
+}
+```
+
+> Loading configuration files and get then
+
+```ts
+// To load configuration files you need to create a instance of Config
+const config = new Config()
+
+// Loading database.ts will automatic load app.ts, because database.ts depends on app.ts
+config.load('database.ts')
+
+// So now we can get information of both
+
+console.log(Config.get('app.name')) // 'secjs'
+console.log(Config.get('database.port')) // 5432
+console.log(Config.get('database.database')) // 'secjs'
+
+// You can call load again and you will never lose the previous states
+config.load('example.ts')
+
+console.log(Config.get('app.name')) // 'secjs'
+```
+
+> Be careful with Config.get() in configuration files ⚠️🛑
+
+```ts
+// Lets create this two configuration files as example
+
+// recursive-errorA.ts
+export default {
+  // Here we are using a property from recursive-errorB
+  recursive: Config.get('recursive-errorB.recursive')
+}
+
+// recursive-errorB.ts
+export default {
+  // And here we are using a property from recursive-errorA
+  recursive: Config.get('recursive-errorA.recursive')
+}
+
+// If you try to load any of this two files you will get an error from Config class
+// Config class will start going file to file and she cant resolve any of then because one depends on the other
+```
+
+---
+
 ### Json
 
 > Use Json to parse json without errors, deep copy, observeChanges inside objects and more.

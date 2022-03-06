@@ -15,7 +15,6 @@ import { String } from './String'
 import { InternalServerException } from '@secjs/exceptions'
 import { getReasonPhrase, getStatusCode } from 'http-status-codes'
 import { DBUrlParserContract } from '../Contracts/DBUrlParserContract'
-import { homedir } from 'os'
 
 export class Parser {
   /**

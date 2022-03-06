@@ -1,6 +1,6 @@
 {
   "name": "@secjs/utils",
-  "version": "1.7.3",
+  "version": "1.7.4",
   "description": "",
   "license": "MIT",
   "author": "João Lenon",
@@ -9,7 +9,7 @@
   "homepage": "https://github.com/SecJS/Utils#readme",
   "scripts": {
     "build": "tsc",
-    "test": "jest --verbose",
+    "test": "NODE_TS=true jest --verbose",
     "test:debug": "DEBUG=* jest --verbose",
     "lint:fix": "eslint \"{src,tests}/**/*.ts\" --fix"
   },

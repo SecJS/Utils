@@ -14,6 +14,7 @@ export * from './src/Classes/Folder'
 export * from './src/Classes/Parser'
 export * from './src/Classes/String'
 export * from './src/Classes/Number'
+export * from './src/Classes/Config'
 export * from './src/Classes/Blacklist'
 
 export * from './src/Functions/sleep'
