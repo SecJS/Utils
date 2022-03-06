@@ -33,6 +33,14 @@ describe('\n Config Class', () => {
     expect(Config.get('test-ondemand.hello')).toBe(true)
   })
 
+  it('should be able to load configuration file without extension', async () => {
+    const config = new Config()
+
+    config.load(Path.tests('stubs/no-extension'))
+
+    expect(Config.get('no-extension.extension')).toBe(false)
+  })
+
   it('should throw an error when file is trying to use Config.get() to get information from other config file but this config file is trying to use Config.get() to this same file', async () => {
     try {
       new Config().load(Path.tests('stubs/infinite-callA.ts'))

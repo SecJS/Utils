@@ -331,6 +331,10 @@ config.load('example.ts')
 // You can also use safeLoad to not reload files that were already loaded
 config.safeLoad('app.ts') // Will just return without errors, but app.ts will not be reloaded.
 
+// And you can also load an configuration file without extension. 
+// Config class will verify the Env NODE_TS to get the .js or .ts extension file
+config.safeLoad('app')
+
 console.log(Config.get('app.name')) // 'secjs'
 ```
 
