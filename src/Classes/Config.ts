@@ -64,7 +64,8 @@ export class Config {
 
     if (
       !fileContent.includes('export default') &&
-      !fileContent.includes('module.exports')
+      !fileContent.includes('module.exports') &&
+      !fileContent.includes('exports.default')
     ) {
       throw new InternalServerException(
         `Config file ${base} is not normalized because it is not exporting a default value`,
