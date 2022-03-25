@@ -38,7 +38,7 @@ npm install @secjs/exceptions
 npm install @secjs/utils
 ```
 
-## Classes Usage
+## Helpers Usage
 
 ### File
 
@@ -249,6 +249,50 @@ String.ordinalize('10') // '10th'
 // And you can also normalize base64 string
 
 String.normalizeBase64('+++///===') // '---___'
+```
+
+---
+
+### Exception
+
+> Use exception to extend the Error object and create custom exceptions
+
+```ts
+import { Exception } from '@secjs/utils'
+
+const content = 'An error has ocurred in your application!'
+const status = 500
+const code = 'APPLICATION_ERROR'
+const help = 'Delete your code and start again'
+
+const exception = new Exception(content, status, code, help)
+
+const withStack = true
+console.log(exception.toJSON(withStack))
+
+/**
+ * {
+ *   code: 'APPLICATION_ERROR',
+ *   status: 500,
+ *   content: 'An error has ocurred in your application!',
+ *   help: 'Delete your code and start again',
+ *   stack: ...,
+ * }
+ */
+```
+
+> Extending Exception helper
+
+```ts
+import { Exception } from '@secjs/utils'
+
+export class InternalServerException extends Exception {
+  public constructor(content = 'An internal server error has ocurred', status = 500) {
+    super(content, status)
+  }
+}
+
+throw new InternalServerException()
 ```
 
 ---
@@ -747,7 +791,16 @@ debug
 
 ---
 
-## Functions Usage
+## Utils Usage
+
+### global
+
+> Add Is, Path, File, Folder and Config to global variables.
+
+```ts
+// Will add the types and the helpers to global
+import '@secjs/utils/src/Utils/global'
+```
 
 ### getBranch
 

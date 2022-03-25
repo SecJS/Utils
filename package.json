@@ -1,24 +1,24 @@
 {
   "name": "@secjs/utils",
-  "version": "1.7.7",
+  "version": "1.7.9",
   "description": "",
   "license": "MIT",
-  "author": "João Lenon",
+  "author": "João Lenon <lenonSec7@gmail.com>",
   "repository": "https://github.com/SecJS/Utils.git",
   "bugs": "https://github.com/SecJS/Utils/issues",
   "homepage": "https://github.com/SecJS/Utils#readme",
   "scripts": {
     "build": "tsc",
-    "test": "NODE_TS=true jest --verbose",
+    "test": "NODE_TS=true NODE_ENV=testing jest --verbose",
     "test:debug": "DEBUG=* jest --verbose",
     "lint:fix": "eslint \"{src,tests}/**/*.ts\" --fix"
   },
   "keywords": [
     "utils",
+    "helpers",
     "nodejs"
   ],
   "devDependencies": {
-    "@secjs/exceptions": "1.0.4",
     "@types/bytes": "3.1.1",
     "@types/debug": "4.1.5",
     "@types/jest": "27.0.1",
