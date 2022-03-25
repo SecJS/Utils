@@ -15,6 +15,7 @@ export * from './src/Helpers/Parser'
 export * from './src/Helpers/String'
 export * from './src/Helpers/Number'
 export * from './src/Helpers/Config'
+export * from './src/Helpers/Exception'
 export * from './src/Helpers/Blacklist'
 
 export * from './src/Utils/sleep'
