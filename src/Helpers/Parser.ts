@@ -12,7 +12,6 @@ import bytes from 'bytes'
 
 import { Is } from './Is'
 import { String } from './String'
-import { InternalServerException } from '@secjs/exceptions'
 import { getReasonPhrase, getStatusCode } from 'http-status-codes'
 import { DBUrlParserContract } from '../Contracts/DBUrlParserContract'
 import { InvalidStringNumberException } from '../Exceptions/InvalidStringNumberException'

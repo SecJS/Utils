@@ -25,15 +25,6 @@ The intention behind this repository is to always maintain a `Utils` package wit
 
 ## Installation
 
-> To use the high potential from this package you need to install first this other packages from SecJS,
-> it keeps as dev dependency because one day `@secjs/core` will install everything once.
-
-```bash
-npm install @secjs/exceptions
-```
-
-> Then you can install the package using:
-
 ```bash
 npm install @secjs/utils
 ```

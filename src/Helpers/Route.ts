@@ -8,7 +8,6 @@
  */
 
 import { Parser } from './Parser'
-import { InternalServerException } from '@secjs/exceptions'
 import { DifferentRoutesException } from '../Exceptions/DifferentRoutesException'
 
 export class Route {

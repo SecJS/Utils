@@ -1,5 +1,5 @@
 import { Is } from '../../src/Helpers/Is'
-import { InternalServerException } from '@secjs/exceptions'
+import { Exception } from '../../src/Helpers/Exception'
 
 describe('\n Is Class', () => {
   it('should verify if is a valid json string', async () => {
@@ -122,7 +122,7 @@ describe('\n Is Class', () => {
     expect(Is.Error(0)).toBeFalsy()
     expect(Is.Error('')).toBeFalsy()
     expect(Is.Error(new Error())).toBeTruthy()
-    expect(Is.Error(new InternalServerException())).toBeTruthy()
+    expect(Is.Error(new Exception('Test'))).toBeTruthy()
   })
 
   it('should verify if is a valid function', async () => {
@@ -139,7 +139,7 @@ describe('\n Is Class', () => {
   it('should verify if is a valid class', async () => {
     expect(Is.Class(0)).toBeFalsy()
     expect(Is.Class('')).toBeFalsy()
-    expect(Is.Class(InternalServerException)).toBeTruthy()
+    expect(Is.Class(Exception)).toBeTruthy()
   })
 
   it('should verify if is a valid integer', async () => {
