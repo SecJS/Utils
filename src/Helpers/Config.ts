@@ -52,7 +52,6 @@ export class Config {
       throw new RecursiveConfigException(base, name)
     }
 
-    if (Config.configs.has(name)) return
     if (base.includes('.map') || base.includes('.d.ts')) return
 
     const fileExtension = process.env.NODE_TS === 'true' ? 'ts' : 'js'
