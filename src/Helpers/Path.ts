@@ -7,20 +7,22 @@
  * file that was distributed with this source code.
  */
 
+import { normalize, sep } from 'path'
+
 export class Path {
   private static _tempBuild = null
   private static _forceBuild = false
-  private static _defaultBuild = 'dist'
+  private static _defaultBuild = `${sep}dist`
   private static _verifyNodeEnv = true
 
   static noBuild() {
-    this._tempBuild = '/'
+    this._tempBuild = sep
 
     return this
   }
 
   static forBuild(name: string) {
-    this._tempBuild = name
+    this._tempBuild = normalize(`${sep}${name}`)
 
     return this
   }
@@ -38,7 +40,7 @@ export class Path {
   }
 
   static changeBuild(name: string) {
-    this._defaultBuild = name
+    this._defaultBuild = normalize(`${sep}${name}`)
 
     return this
   }
@@ -47,17 +49,17 @@ export class Path {
     let cwdNodePath = process.cwd()
 
     if (this._tempBuild) {
-      cwdNodePath += this.adjustSlashes(this._tempBuild)
+      cwdNodePath += this._tempBuild
 
       this._tempBuild = null
 
-      return cwdNodePath
+      return this.removeSlashFromEnd(cwdNodePath)
     }
 
     if (this._forceBuild) {
-      cwdNodePath += this.adjustSlashes(this._defaultBuild)
+      cwdNodePath += this._defaultBuild
 
-      return cwdNodePath
+      return this.removeSlashFromEnd(cwdNodePath)
     }
 
     if (
@@ -65,76 +67,77 @@ export class Path {
       this._verifyNodeEnv &&
       process.env.NODE_TS === 'false'
     ) {
-      cwdNodePath += this.adjustSlashes(this._defaultBuild)
+      cwdNodePath += this._defaultBuild
 
-      return cwdNodePath
+      return this.removeSlashFromEnd(cwdNodePath)
     }
 
-    return this.adjustSlashes(cwdNodePath)
+    return this.removeSlashFromEnd(cwdNodePath)
   }
 
-  static pwd(subPath = '/') {
-    return `${this.nodeCwdPath()}${this.adjustSlashes(subPath)}`
+  static pwd(subPath = sep) {
+    const pwd = normalize(`${this.nodeCwdPath()}${sep}${normalize(subPath)}`)
+
+    return this.removeSlashFromEnd(pwd)
   }
 
-  static app(subPath = '/') {
-    return this.pwd('app' + this.adjustSlashes(subPath))
+  static app(subPath = sep) {
+    return this.pwd('app' + sep + normalize(subPath))
   }
 
-  static logs(subPath = '/') {
-    return this.storage('logs' + this.adjustSlashes(subPath))
+  static logs(subPath = sep) {
+    return this.storage('logs' + sep + normalize(subPath))
   }
 
-  static start(subPath = '/') {
-    return this.pwd('start' + this.adjustSlashes(subPath))
+  static start(subPath = sep) {
+    return this.pwd('start' + sep + normalize(subPath))
   }
 
-  static views(subPath = '/') {
-    return this.resources('views' + this.adjustSlashes(subPath))
+  static views(subPath = sep) {
+    return this.resources('views' + sep + normalize(subPath))
   }
 
-  static config(subPath = '/') {
-    return this.pwd('config' + this.adjustSlashes(subPath))
+  static config(subPath = sep) {
+    return this.pwd('config' + sep + normalize(subPath))
   }
 
-  static tests(subPath = '/') {
-    return this.pwd('tests' + this.adjustSlashes(subPath))
+  static tests(subPath = sep) {
+    return this.pwd('tests' + sep + normalize(subPath))
   }
 
-  static public(subPath = '/') {
-    return this.pwd('public' + this.adjustSlashes(subPath))
+  static public(subPath = sep) {
+    return this.pwd('public' + sep + normalize(subPath))
   }
 
-  static assets(subPath = '/') {
-    return this.public('assets' + this.adjustSlashes(subPath))
+  static assets(subPath = sep) {
+    return this.public('assets' + sep + normalize(subPath))
   }
 
-  static storage(subPath = '/') {
-    return this.pwd('storage' + this.adjustSlashes(subPath))
+  static storage(subPath = sep) {
+    return this.pwd('storage' + sep + normalize(subPath))
   }
 
-  static database(subPath = '/') {
-    return this.pwd('database' + this.adjustSlashes(subPath))
+  static database(subPath = sep) {
+    return this.pwd('database' + sep + normalize(subPath))
   }
 
-  static locales(subPath = '/') {
-    return this.resources('locales' + this.adjustSlashes(subPath))
+  static locales(subPath = sep) {
+    return this.resources('locales' + sep + normalize(subPath))
   }
 
-  static resources(subPath = '/') {
-    return this.pwd('resources' + this.adjustSlashes(subPath))
+  static resources(subPath = sep) {
+    return this.pwd('resources' + sep + normalize(subPath))
   }
 
-  static providers(subPath = '/') {
-    return this.pwd('providers' + this.adjustSlashes(subPath))
+  static providers(subPath = sep) {
+    return this.pwd('providers' + sep + normalize(subPath))
   }
 
-  private static adjustSlashes(path: string) {
-    let subPathArray = path.split('/')
+  private static removeSlashFromEnd(path: string) {
+    if (path.endsWith(sep)) {
+      return path.slice(0, -1)
+    }
 
-    subPathArray = subPathArray.filter(p => p !== '')
-    subPathArray.unshift('')
-
-    return subPathArray.join('/')
+    return path
   }
 }
