@@ -475,7 +475,7 @@ console.log(sortedValue) // a, b or c
 
 > Use Route to manipulate paths, getParams, getQueryParams, create route matcher RegExp etc.
 
-```js
+`````jsts`
 import { Route } from '@secjs/utils'
 
 const absolutePath = '/tests/:id/users/:user_id'
@@ -500,7 +500,7 @@ regExpMatcher.test(Route.removeQueryParams(path)) // true
 
 > Use Blacklist to add, find and remove values from a blacklist/whitelist file
 
-```js
+`````jsts`
 import { Blacklist } from '@secjs/utils'
 
 const blacklist = new Blacklist()
@@ -532,7 +532,7 @@ await blacklist.remove('192.168.0.2', filePath) // void
 
 > Use Number to manipulate numbers the best way
 
-```js
+`````jsts`
 import { Number } from '@secjs/utils'
 
 const arrayOfNumbers = [2, 4]
@@ -563,7 +563,7 @@ console.log(Number.randomIntFromInterval(1, 10)) // 8
 
 > Generate UUID tokens using a prefix, and validate it to using uuidv4 lib
 
-```js
+`````jsts`
 import { Token } from '@secjs/utils'
 
 // Do not use the char "-", it would break token.verify() method
@@ -730,7 +730,7 @@ const connectionUrl = Parser.connectionObjToDbUrl(connectionObject)
 
 > Use Clean to clean arrays and objects
 
-```js
+`````jsts`
 import { Clean } from '@secjs/utils'
 
 const array = [null, undefined, 1, "number"]
@@ -759,7 +759,7 @@ console.log(Clean.cleanArraysInObject(object2)) // { number2: [{ number1: "numbe
 
 > Use Debug to generate debug logs in SecJS format
 
-```js
+`````jsts`
 import { Debug } from '@secjs/utils'
 
 const context = 'API'
@@ -797,7 +797,7 @@ import '@secjs/utils/src/Utils/global'
 
 > Get the actual git branch that the project is running or not a repository.
 
-```js
+`````jsts`
 import { getBranch } from '@secjs/utils'
 
 await getBranch() // master || Not a repository
@@ -809,7 +809,7 @@ await getBranch() // master || Not a repository
 
 > Get the actual commit id from the local repository.
 
-```js
+`````jsts`
 import { getCommitId } from '@secjs/utils'
 
 await getCommitId() // the commit sha || Not a repository
@@ -821,7 +821,7 @@ await getCommitId() // the commit sha || Not a repository
 
 > Download an archive/image to determined path.
 
-```js
+`````jsts`
 import { download } from '@secjs/utils'
 
 ;(async function () {
@@ -840,7 +840,7 @@ import { download } from '@secjs/utils'
 
 > Use scheduler to execute some function based on MS
 
-```js
+`````jsts`
 import { scheduler } from '@secjs/utils'
 
 const func = () => {
@@ -856,7 +856,7 @@ scheduler(func, 3000) // scheduler function will execute the func every 3 second
 
 > Use paginate get meta and links from for response
 
-```js
+`````jsts`
 import { paginate, PaginationContract } from '@secjs/utils'
 
 const filters = {
@@ -895,11 +895,27 @@ console.log(paginate(array, total, pagination))
 
 ---
 
+### resolveModule
+
+> Use resolveModule to resolve the module export type
+
+```ts
+import { resolveModule } from '@secjs/utils'
+
+export function testExport() {}
+const testExportFn = resolveModule(await import('./path/to/testExport'))
+
+export default function testDefaultExport() {}
+const testDefaultExportFn = resolveModule(await import('./path/to/testDefaultExport'))
+```
+
+---
+
 ### sleep
 
 > Use sleep to let you code sleep for sometime
 
-```js
+```ts
 import { sleep } from '@secjs/utils'
 
 await sleep(2000) // Your code will stop in this line for two seconds
