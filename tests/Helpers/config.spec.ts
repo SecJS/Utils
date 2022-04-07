@@ -15,7 +15,7 @@ describe('\n Config Class', () => {
     const config = new Config()
 
     config.clear()
-    config.load(Path.tests('stubs/test.ts'))
+    await config.load(Path.tests('stubs/test.ts'))
   })
 
   it('should be able to get configurations values from Config class', async () => {
@@ -27,7 +27,7 @@ describe('\n Config Class', () => {
   it('should be able to create a load chain when a configuration uses other configuration', async () => {
     const config = new Config()
 
-    config.load(Path.tests('stubs/test-ondemand.ts'))
+    await config.load(Path.tests('stubs/test-ondemand.ts'))
 
     expect(Config.get('sub-test.sub')).toBe(true)
     expect(Config.get('test-ondemand.hello')).toBe(true)
@@ -36,14 +36,14 @@ describe('\n Config Class', () => {
   it('should be able to load configuration file without extension', async () => {
     const config = new Config()
 
-    config.load(Path.tests('stubs/no-extension'))
+    await config.load(Path.tests('stubs/no-extension'))
 
     expect(Config.get('no-extension.extension')).toBe(false)
   })
 
   it('should throw an error when file is trying to use Config.get() to get information from other config file but this config file is trying to use Config.get() to this same file', async () => {
     try {
-      new Config().load(Path.tests('stubs/infinite-callA.ts'))
+      await new Config().load(Path.tests('stubs/infinite-callA.ts'))
     } catch (err) {
       expect(err.name).toBe('RecursiveConfigException')
       expect(err.status).toBe(500)
@@ -55,7 +55,7 @@ describe('\n Config Class', () => {
 
   it('should throw an error when trying to load a file that is not normalized', async () => {
     try {
-      new Config().load(Path.tests('stubs/test-error.ts'))
+      await new Config().load(Path.tests('stubs/test-error.ts'))
     } catch (err) {
       expect(err.name).toBe('ConfigFileNotNormalizedException')
       expect(err.status).toBe(500)

@@ -35,7 +35,7 @@ export class Config {
     Config.configs.clear()
   }
 
-  safeLoad(path: string) {
+  async safeLoad(path: string) {
     const { name } = parse(path)
 
     if (Config.configs.has(name)) {
@@ -45,7 +45,7 @@ export class Config {
     return this.load(path)
   }
 
-  load(path: string, callNumber = 0) {
+  async load(path: string, callNumber = 0) {
     const { dir, name, base } = parse(path)
 
     if (callNumber > 500) {
@@ -82,11 +82,11 @@ export class Config {
         // If configuration already exists continue the loop
         if (Config.configs.has(fileName)) continue
 
-        this.load(filePath, callNumber + 1)
+        await this.load(filePath, callNumber + 1)
       }
     }
 
     Config.debug.log(`Loading ${name} configuration file`)
-    Config.configs.set(name, require(file.path).default)
+    Config.configs.set(name, (await import(file.path)).default)
   }
 }

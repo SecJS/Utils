@@ -1,7 +1,7 @@
 import { promisify } from 'util'
+import { exec as ChildProcessExec } from 'child_process'
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const exec = promisify(require('child_process').exec)
+const exec = promisify(ChildProcessExec)
 
 /**
  * Get the actual commit HEAD from the repository

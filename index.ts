@@ -1,3 +1,5 @@
+/* eslint-disable import/export */
+
 export * from './src/Contracts/FileContract'
 export * from './src/Contracts/PaginationContract'
 export * from './src/Contracts/DBUrlParserContract'
