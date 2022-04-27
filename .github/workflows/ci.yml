@@ -1,4 +1,4 @@
-name: CI Utils
+name: CI
 
 on:
   pull_request:
@@ -6,26 +6,44 @@ on:
       - main
 
 jobs:
-  build:
-
-    runs-on: ubuntu-18.04
-
+  linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version:
+          - 14.15.4
+          - 17.x
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
-      - uses: actions/setup-node@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
         with:
-          node-version: '14.x'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: ${{ matrix.node-version }}
 
-      - name: Download dependencies
+      - name: Install dependencies
         run: npm install
+      - name: Run tests
+        run: npm run test:coverage
 
-      - name: Verify project lint and try to fix it
-        run: npm run lint:fix
+  windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        node-version:
+          - 14.15.4
+          - 17.x
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 
-      - name: Run the tests from project
-        run: npm run test
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm run test:coverage

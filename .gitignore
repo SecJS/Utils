@@ -24,6 +24,7 @@ lib-cov
 
 # Coverage directory used by tools like istanbul
 coverage
+Coverage
 *.lcov
 
 # nyc test coverage
@@ -124,4 +125,3 @@ out
 
 # MacOS folder mapper file
 .DS_Store
-.Coverage
