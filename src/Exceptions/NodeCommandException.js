@@ -9,14 +9,14 @@
 
 import { Exception } from '#src/Exception'
 
-export class NodeExecException extends Exception {
+export class NodeCommandException extends Exception {
   /**
-   * Creates a new instance of NodeExecException.
+   * Creates a new instance of NodeCommandException.
    *
    * @param {string} command
    * @param {string?} stdout
    * @param {string?} stderr
-   * @return {NodeExecException}
+   * @return {NodeCommandException}
    */
   constructor(command, stdout, stderr) {
     const content = `Error has occurred when executing the command "${command}"`

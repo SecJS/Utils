@@ -10,8 +10,8 @@
 import { Exec } from '#src/Exec'
 import { Path } from '#src/Path'
 import { File } from '#src/File'
-import { NodeExecException } from '#src/Exceptions/NodeExecException'
 import { Folder } from '#src/Folder'
+import { NodeCommandException } from '#src/Exceptions/NodeCommandException'
 
 describe('\n ExecTest', () => {
   it('should be able to sleep the code for some ms', async () => {
@@ -27,7 +27,7 @@ describe('\n ExecTest', () => {
   it('should throw an node exec exception when command fails', async () => {
     const useCase = async () => await Exec.command('echo "error thrown" && exit 255')
 
-    await expect(useCase).rejects.toThrow(NodeExecException)
+    await expect(useCase).rejects.toThrow(NodeCommandException)
   })
 
   it('should be able to execute a command that throws errors and ignore it', async () => {

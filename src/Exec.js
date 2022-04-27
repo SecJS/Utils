@@ -15,7 +15,7 @@ import { exec as childProcessExec } from 'node:child_process'
 
 import { File } from '#src/File'
 import { Options } from '#src/Options'
-import { NodeExecException } from '#src/Exceptions/NodeExecException'
+import { NodeCommandException } from '#src/Exceptions/NodeCommandException'
 
 const exec = promisify(childProcessExec)
 
@@ -38,7 +38,7 @@ export class Exec {
    * @param {{
    *   ignoreErrors?: boolean
    * }?} options
-   * @throws {NodeExecException}
+   * @throws {NodeCommandException}
    * @return {Promise<{ stdout: string, stderr: string }>}
    */
   static async command(command, options) {
@@ -55,7 +55,7 @@ export class Exec {
         return { stdout: error.stdout, stderr: error.stderr }
       }
 
-      throw new NodeExecException(command, error.stdout, error.stderr)
+      throw new NodeCommandException(command, error.stdout, error.stderr)
     }
   }
 
