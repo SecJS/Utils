@@ -41,6 +41,8 @@ describe('\n PathTest', () => {
     expect(Path.tests()).toBe(mainPath.concat(sep, 'tests'))
     expect(Path.vmTmp()).toBeTruthy()
     expect(Path.vmHome()).toBeTruthy()
+    expect(Path.this().endsWith('Unit')).toBeTruthy()
+    expect(Path.this('../../').endsWith('tests')).toBeFalsy()
   })
 
   it('should get the sub paths of app main path', () => {
@@ -93,16 +95,6 @@ describe('\n PathTest', () => {
     const mainPath = process.cwd().concat(sep, 'providers')
 
     expect(Path.facades()).toBe(mainPath.concat(sep, 'Facades'))
-  })
-
-  it('should be able to concat any path before the main path', () => {
-    const mainPath = process.cwd()
-
-    expect(Path.pwd('/', 'build')).toBe(`${mainPath}${sep}build`)
-    expect(Path.app('/', 'build')).toBe(`${mainPath}${sep}build${sep}app`)
-    expect(Path.console('/', 'build')).toBe(`${mainPath}${sep}build${sep}app${sep}Console`)
-    expect(Path.vmTmp('/', 'build')).toBeTruthy()
-    expect(Path.vmHome('/', 'build')).toBeTruthy()
   })
 
   it('should be able to set a default before path in Path class', () => {

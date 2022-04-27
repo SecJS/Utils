@@ -438,59 +438,61 @@ export declare class Parser {
 export declare class Path {
   static defaultBeforePath: string
 
-  static pwd(subPath?: string, beforePath?: string): string
+  static pwd(subPath?: string): string
 
-  static app(subPath?: string, beforePath?: string): string
+  static app(subPath?: string): string
 
-  static bootstrap(subPath?: string, beforePath?: string): string
+  static bootstrap(subPath?: string): string
 
-  static config(subPath?: string, beforePath?: string): string
+  static config(subPath?: string): string
 
-  static database(subPath?: string, beforePath?: string): string
+  static database(subPath?: string): string
 
-  static lang(subPath?: string, beforePath?: string): string
+  static lang(subPath?: string): string
 
-  static nodeModules(subPath?: string, beforePath?: string): string
+  static nodeModules(subPath?: string): string
 
-  static providers(subPath?: string, beforePath?: string): string
+  static providers(subPath?: string): string
 
-  static public(subPath?: string, beforePath?: string): string
+  static public(subPath?: string): string
 
-  static resources(subPath?: string, beforePath?: string): string
+  static resources(subPath?: string): string
 
-  static routes(subPath?: string, beforePath?: string): string
+  static routes(subPath?: string): string
 
-  static storage(subPath?: string, beforePath?: string): string
+  static storage(subPath?: string): string
 
-  static tests(subPath?: string, beforePath?: string): string
+  static tests(subPath?: string): string
 
-  static logs(subPath?: string, beforePath?: string): string
+  static logs(subPath?: string): string
 
-  static views(subPath?: string, beforePath?: string): string
+  static views(subPath?: string): string
 
-  static assets(subPath?: string, beforePath?: string): string
+  static assets(subPath?: string): string
 
-  static locales(subPath?: string, beforePath?: string): string
+  static locales(subPath?: string): string
 
-  static facades(subPath?: string, beforePath?: string): string
+  static facades(subPath?: string): string
 
-  static stubs(subPath?: string, beforePath?: string): string
+  static stubs(subPath?: string): string
 
-  static http(subPath?: string, beforePath?: string): string
+  static http(subPath?: string): string
 
-  static console(subPath?: string, beforePath?: string): string
+  static console(subPath?: string): string
 
-  static services(subPath?: string, beforePath?: string): string
+  static services(subPath?: string): string
 
-  static migrations(subPath?: string, beforePath?: string): string
+  static migrations(subPath?: string): string
 
-  static seeders(subPath?: string, beforePath?: string): string
+  static seeders(subPath?: string): string
 
-  static bin(subPath?: string, beforePath?: string): string
+  static bin(subPath?: string): string
 
-  static vmTmp(subPath?: string, beforePath?: string): string
+  static vmTmp(subPath?: string): string
 
-  static vmHome(subPath?: string, beforePath?: string): string
+  static vmHome(subPath?: string): string
+
+  static this(subPath?: string, stackIndex?: number): string
 }
 
 export declare class Route {

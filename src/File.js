@@ -7,7 +7,6 @@
  * file that was distributed with this source code.
  */
 
-import callSite from 'callsite'
 import prependFile from 'prepend-file'
 
 import {
@@ -25,13 +24,14 @@ import {
 
 import { lookup } from 'mime-types'
 import { randomBytes } from 'node:crypto'
-import { dirname, isAbsolute, parse, resolve, sep } from 'node:path'
+import { isAbsolute, parse, sep } from 'node:path'
 
 import { Json } from '#src/Json'
 import { Debug } from '#src/Debug'
 import { Parser } from '#src/Parser'
 import { Options } from '#src/Options'
 import { NotFoundFileException } from '#src/Exceptions/NotFoundFileException'
+import { Path } from '#src/Path'
 
 export class File {
   /**
@@ -186,10 +186,7 @@ export class File {
    */
   static #parsePath(filePath) {
     if (!isAbsolute(filePath)) {
-      const stack = callSite()
-      const requester = dirname(stack[2].getFileName()).concat(sep)
-
-      filePath = resolve(requester.concat(filePath))
+      filePath = Path.this(filePath, 3)
     }
 
     const { base, dir, root } = parse(filePath)

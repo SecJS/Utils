@@ -7,7 +7,6 @@
  * file that was distributed with this source code.
  */
 
-import callSite from 'callsite'
 import minimatch from 'minimatch'
 
 import {
@@ -20,21 +19,14 @@ import {
 } from 'node:fs'
 
 import { randomBytes } from 'node:crypto'
-import {
-  dirname,
-  isAbsolute,
-  join,
-  normalize,
-  parse,
-  resolve,
-  sep,
-} from 'node:path'
+import { isAbsolute, join, parse, resolve, sep } from 'node:path'
 
 import { Json } from '#src/Json'
 import { File } from '#src/File'
 import { Parser } from '#src/Parser'
 import { Options } from '#src/Options'
 import { NotFoundFolderException } from '#src/Exceptions/NotFoundFolderException'
+import { Path } from '#src/Path'
 
 export class Folder {
   /**
@@ -239,10 +231,7 @@ export class Folder {
    */
   static #parsePath(folderPath) {
     if (!isAbsolute(folderPath)) {
-      const stack = callSite()
-      const requester = dirname(stack[2].getFileName()).concat(sep)
-
-      folderPath = resolve(requester.concat(normalize(folderPath)))
+      folderPath = Path.this(folderPath, 3)
     }
 
     const { dir, name, ext } = parse(folderPath)
