@@ -1,3 +1,12 @@
+/**
+ * @secjs/utils
+ *
+ * (c) João Lenon <lenonSec7@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 export declare interface ExceptionJSON {
   code?: string
   name: string
@@ -115,7 +124,7 @@ export declare class Debug {
 export declare class Exception extends Error {
   constructor(content?: string, status?: number, code?: string, help?: string)
 
-  toJSON(stack: boolean): ExceptionJSON
+  toJSON(stack?: boolean): ExceptionJSON
 
   prettify(options?: {
     prefix?: string

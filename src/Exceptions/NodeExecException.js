@@ -1,5 +1,5 @@
 /**
- * @secjs/esm
+ * @secjs/utils
  *
  * (c) João Lenon <lenonSec7@gmail.com>
  *

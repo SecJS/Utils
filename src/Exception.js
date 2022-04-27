@@ -1,5 +1,5 @@
 /**
- * @secjs/esm
+ * @secjs/utils
  *
  * (c) João Lenon <lenonSec7@gmail.com>
  *
@@ -8,6 +8,7 @@
  */
 
 import Youch from 'youch'
+import chalk from 'chalk'
 import changeCase from 'change-case'
 import YouchTerminal from 'youch-terminal'
 
@@ -113,8 +114,16 @@ export class Exception extends Error {
       displayMainFrameOnly: false,
     })
 
+    const message = `${chalk.yellow.bold('MESSAGE')}\n   ${this.message}`
+    const help = ` ${chalk.green.bold('HELP')}\n   ${this.help}`
+
     this.name = this.code
-    this.message = `Message: ${this.message}\n Help: ${this.help}`
+
+    if (this.help) {
+      this.message = `${message}\n\n${help}`
+    } else {
+      this.message = `${message}`
+    }
 
     const jsonResponse = await new Youch(this, {}).toJSON()
 
