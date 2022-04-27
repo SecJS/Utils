@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+import { sep } from 'node:path'
+
 import { Path } from '#src/Path'
 import { File } from '#src/File'
 import { Folder } from '#src/Folder'
@@ -64,7 +66,7 @@ describe('\n FolderTest', () => {
     expect(bigFolder.path).toBe(bigFolderPath)
     expect(bigFolder.originalPath).toBe(bigFolderPath)
     expect(bigFolder.originalFolderExists).toBe(true)
-    expect(bigFolder.dir).toBe(bigFolderPath.replace('/bigFolder', ''))
+    expect(bigFolder.dir).toBe(bigFolderPath.replace(`${sep}bigFolder`, ''))
 
     expect(nonexistentFolder.path).toBeTruthy()
     expect(nonexistentFolder.originalFolderExists).toBe(false)
@@ -222,14 +224,14 @@ describe('\n FolderTest', () => {
   })
 
   it('should get all files/folders that match the pattern', async () => {
-    const path = bigFolderPath + '/folder'
+    const path = bigFolderPath.concat(sep, 'folder')
 
-    await File.createFileOfSize(path + '/file.txt', 1024 * 1024)
+    await File.createFileOfSize(path.concat('/file.txt'), 1024 * 1024)
 
-    new Folder(path + '/A').loadSync()
-    new Folder(path + '/A' + '/B').loadSync()
+    new Folder(path.concat('/A')).loadSync()
+    new Folder(path.concat('/A', '/B')).loadSync()
 
-    await File.createFileOfSize(path + '/A' + '/B' + '/file.txt', 1024 * 1024)
+    await File.createFileOfSize(path.concat('/A', '/B', '/file.txt'), 1024 * 1024)
 
     const folder = new Folder(path)
 
@@ -241,14 +243,14 @@ describe('\n FolderTest', () => {
   })
 
   it('should be able to get all files/folders without any pattern', async () => {
-    const path = bigFolderPath + '/folder'
+    const path = bigFolderPath.concat(sep, 'folder')
 
-    await File.createFileOfSize(path + '/file.txt', 1024 * 1024)
+    await File.createFileOfSize(path.concat('/file.txt'), 1024 * 1024)
 
-    new Folder(path + '/A').loadSync()
-    new Folder(path + '/A' + '/B').loadSync()
+    new Folder(path.concat('/A')).loadSync()
+    new Folder(path.concat('/A', '/B')).loadSync()
 
-    await File.createFileOfSize(path + '/A' + '/B' + '/file.txt', 1024 * 1024)
+    await File.createFileOfSize(path.concat('/A', '/B', '/file.txt'), 1024 * 1024)
 
     const folder = new Folder(path)
 
@@ -260,19 +262,21 @@ describe('\n FolderTest', () => {
   })
 
   it('should get all files/folders recursively that match the pattern', async () => {
-    const path = bigFolderPath + '/folder'
+    const path = bigFolderPath.concat(sep, 'folder')
 
-    await new Folder(path + '/A').load({ withSub: false })
-    new Folder(path + '/B').loadSync({ withSub: false })
-    new Folder(path + '/C').loadSync()
-    new Folder(path + '/C' + '/D').loadSync()
-    new Folder(path + '/C' + '/D' + '/E').loadSync()
+    await new Folder(path.concat('/A')).load({ withSub: false })
+    new Folder(path.concat('/B')).loadSync({ withSub: false })
+    new Folder(path.concat('/C')).loadSync()
+    new Folder(path.concat('/C', '/D')).loadSync()
+    new Folder(path.concat('/C', '/D', '/E')).loadSync()
 
-    await File.createFileOfSize(path + '/A' + '/file.txt', 1024 * 1024)
-    await File.createFileOfSize(path + '/B' + '/file.txt', 1024 * 1024)
-    await File.createFileOfSize(path + '/C' + '/file.txt', 1024 * 1024)
-    await File.createFileOfSize(path + '/C' + '/D' + '/file.txt', 1024 * 1024)
-    await File.createFileOfSize(path + '/C' + '/D' + '/E' + '/file.txt', 1024 * 1024)
+    const size = 1024 * 1024
+
+    await File.createFileOfSize(path.concat('/A', '/file.txt'), size)
+    await File.createFileOfSize(path.concat('/B', '/file.txt'), size)
+    await File.createFileOfSize(path.concat('/C', '/file.txt'), size)
+    await File.createFileOfSize(path.concat('/C', '/D', '/file.txt'), size)
+    await File.createFileOfSize(path.concat('/C', '/D', '/E', '/file.txt'), size)
 
     const folder = new Folder(path)
 
@@ -284,19 +288,21 @@ describe('\n FolderTest', () => {
   })
 
   it('should be able to get all files/folders recursively without any pattern', async () => {
-    const path = bigFolderPath + '/folder'
+    const path = bigFolderPath.concat(sep, 'folder')
 
-    await new Folder(path + '/A').load({ withSub: false })
-    new Folder(path + '/B').loadSync({ withSub: false })
-    new Folder(path + '/C').loadSync()
-    new Folder(path + '/C' + '/D').loadSync()
-    new Folder(path + '/C' + '/D' + '/E').loadSync()
+    await new Folder(path.concat('/A')).load({ withSub: false })
+    new Folder(path.concat('/B')).loadSync({ withSub: false })
+    new Folder(path.concat('/C')).loadSync()
+    new Folder(path.concat('/C', '/D')).loadSync()
+    new Folder(path.concat('/C', '/D', '/E')).loadSync()
 
-    await File.createFileOfSize(path + '/A' + '/file.txt', 1024 * 1024)
-    await File.createFileOfSize(path + '/B' + '/file.txt', 1024 * 1024)
-    await File.createFileOfSize(path + '/C' + '/file.txt', 1024 * 1024)
-    await File.createFileOfSize(path + '/C' + '/D' + '/file.txt', 1024 * 1024)
-    await File.createFileOfSize(path + '/C' + '/D' + '/E' + '/file.txt', 1024 * 1024)
+    const size = 1024 * 1024
+
+    await File.createFileOfSize(path.concat('/A', '/file.txt'), size)
+    await File.createFileOfSize(path.concat('/B', '/file.txt'), size)
+    await File.createFileOfSize(path.concat('/C', '/file.txt'), size)
+    await File.createFileOfSize(path.concat('/C', '/D', '/file.txt'), size)
+    await File.createFileOfSize(path.concat('/C', '/D', '/E', '/file.txt'), size)
 
     const folder = new Folder(path)
 
