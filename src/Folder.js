@@ -20,7 +20,15 @@ import {
 } from 'node:fs'
 
 import { randomBytes } from 'node:crypto'
-import { dirname, isAbsolute, join, parse, resolve, sep } from 'node:path'
+import {
+  dirname,
+  isAbsolute,
+  join,
+  normalize,
+  parse,
+  resolve,
+  sep,
+} from 'node:path'
 
 import { Json } from '#src/Json'
 import { File } from '#src/File'
@@ -234,12 +242,12 @@ export class Folder {
       const stack = callSite()
       const requester = dirname(stack[2].getFileName()).concat(sep)
 
-      folderPath = resolve(requester.concat(folderPath))
+      folderPath = resolve(requester.concat(normalize(folderPath)))
     }
 
     const { dir, name, ext } = parse(folderPath)
 
-    let path = dir.concat('/', name)
+    let path = dir.concat(sep, name)
 
     if (ext) {
       path = path.concat(ext)

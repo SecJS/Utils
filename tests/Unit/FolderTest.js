@@ -30,12 +30,12 @@ describe('\n FolderTest', () => {
   beforeEach(async () => {
     await Folder.safeRemove(Path.storage())
 
-    await File.createFileOfSize(bigFolderPath + '/file.txt', size)
+    await File.createFileOfSize(bigFolderPath.concat('/file.txt'), size)
 
     bigFolder = new Folder(bigFolderPath)
 
-    await File.createFileOfSize(bigFolderPath + '/hello/file.txt', size)
-    await File.createFileOfSize(bigFolderPath + '/hello/nice/file.txt', size)
+    await File.createFileOfSize(bigFolderPath.concat('/hello/file.txt'), size)
+    await File.createFileOfSize(bigFolderPath.concat('/hello/nice/file.txt'), size)
 
     nonexistentFolder = new Folder(nonexistentFolderPath)
   })
