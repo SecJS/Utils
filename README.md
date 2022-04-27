@@ -73,17 +73,34 @@ console.log(existentFile.copySync('path/to/copy.txt'))
 // you can move existentFile to other path using move
 console.log(existentFile.moveSync('path/to/move.txt'))
 
+// you can add content to the end of the file with append
+console.log(existentFile.appendSync(Buffer.from('Content\n')))
+
+// you can add content to the top of the file with prepend
+console.log(existentFile.prependSync(Buffer.from('Content\n')))
+
 // File uses readable streams in async methods to not block the event loop when handling huge files content
 await existentFile.load()
 await existentFile.copy()
 await existentFile.move()
 await existentFile.remove()
 await existentFile.create()
+await existentFile.append()
+await existentFile.prepend()
 await existentFile.getContent()
 
 // You can use safeRemove method to delete the file without any exception if it does no exists
-
 await File.safeRemove(existentFile.path)
+
+// You can use isFileSync to verify if path is a file or directory
+await File.isFileSync('package.json')
+
+// You can use existsSync to verify if file exists
+await File.existsSync('package.json')
+
+// You can use createFileOfSize to create a fake file with determined size
+// 100MB
+await File.createFileOfSize('fake.js', 1024 * 1024 * 100)
 ```
 
 ---
@@ -143,8 +160,13 @@ await existentFolder.remove()
 await existentFolder.create()
 
 // You can use safeRemove method to delete the folder without any exception if it does no exists
-
 await Folder.safeRemove(existentFile.path)
+
+// You can use isFolderSync to verify if path directory or file
+await Folder.isFolderSync('path/to/folder')
+
+// You can use existsSync to verify if folders exists
+await Folder.existsSync('path/to/folder')
 ```
 
 ---
@@ -275,6 +297,8 @@ console.log(exception.toJSON(withStack))
  *   stack: ...,
  * }
  */
+
+console.log(await exception.prettify()) // Pretty exception log using Youch API
 ```
 
 > Extending Exception helper
@@ -300,31 +324,16 @@ throw new InternalServerException()
 ```ts
 import { Path } from '@secjs/utils'
 
-// If NODE_TS is set to true, Path.pwd will always return without the build folder in the end of the path
-Path.pwd() // '/home/your/computer/path/your-project-name'
+const subPath = '/hello'
 
-// If NODE_TS is set to false, Path.pwd will always return with the build folder in the end of the path
-Path.pwd() // '/home/your/computer/path/your-project-name/dist'
+Path.pwd(subPath, beforePath) // '/home/your/computer/path/your-project-name/hello'
 
-// You can use the method switchEnvVerify to turn off the NODE_TS environment variable verification
-Path.switchEnvVerify()
+// You can set a default before path for most Path methods 
+Path.defaultBeforePath = 'build'
 
-// You can change the default build folder name using changeBuild method
-Path.changeBuild('build')
-// '/home/your/computer/path/your-project-name/build'
-
-// you can change your build folder name using forBuild method too
-Path.forBuild('buildd').pwd()
-// '/home/your/computer/path/your-project-name/buildd'
+Path.pwd(subPath, beforePath) // '/home/your/computer/path/your-project-name/build/hello'
 
 Path.pwd('/src/') // '/home/your/computer/path/your-project-name/build/src'
-
-// You can use switchBuild to turn on or turn off the forceBuild parameter
-// forceBuild on
-Path.switchBuild().public() // '/home/your/computer/path/your-project-name/build/public'
-
-// forceBuild off
-Path.switchBuild().assets() // '/home/your/computer/path/your-project-name/public/assets'
 ```
 
 ---
@@ -370,10 +379,6 @@ config.load('example.ts')
 
 // You can also use safeLoad to not reload files that were already loaded
 config.safeLoad('app.ts') // Will just return without errors, but app.ts will not be reloaded.
-
-// And you can also load an configuration file without extension. 
-// Config class will verify the Env NODE_TS to get the .js or .ts extension file
-config.safeLoad('app')
 
 console.log(Config.get('app.name')) // 'secjs'
 ```
@@ -480,7 +485,7 @@ console.log(sortedValue) // a, b or c
 
 > Use Route to manipulate paths, getParams, getQueryParams, create route matcher RegExp etc.
 
-`````jsts`
+```ts
 import { Route } from '@secjs/utils'
 
 const absolutePath = '/tests/:id/users/:user_id'
@@ -497,39 +502,6 @@ const regExpMatcher = Route.createMatcher(absolutePath) // /^(?:\/tests\b)(?:\/[
 
 regExpMatcher.test(path) // false - because of queryParams
 regExpMatcher.test(Route.removeQueryParams(path)) // true
-
-```
-
----
-
-### Blacklist
-
-> Use Blacklist to add, find and remove values from a blacklist/whitelist file
-
-`````jsts`
-import { Blacklist } from '@secjs/utils'
-
-const blacklist = new Blacklist()
-
-const filePath = 'blacklist.txt'
-
-await blacklist.add('192.168.0.1', filePath) // void
-
-// blacklist.txt value
-// 192.168.0.1
-
-await blacklist.add('192.168.0.2', filePath) // void
-
-// blacklist.txt value
-// 192.168.0.1
-// 192.168.0.2
-
-const valueFound = await blacklist.find('192.168.0.2', filePath) // Will return the value - 192.168.0.2
-
-await blacklist.remove('192.168.0.2', filePath) // void
-
-// blacklist.txt value
-// 192.168.0.1
 ```
 
 ---
@@ -538,7 +510,7 @@ await blacklist.remove('192.168.0.2', filePath) // void
 
 > Use Number to manipulate numbers the best way
 
-`````jsts`
+```ts
 import { Number } from '@secjs/utils'
 
 const arrayOfNumbers = [2, 4]
@@ -568,9 +540,9 @@ console.log(Number.randomIntFromInterval(1, 10)) // 8
 
 ### Token
 
-> Generate UUID tokens using a prefix, and validate it to using uuidv4 lib
+> Generate U UID tokens using a prefix, and validate it to using uuidv4 lib
 
-`````jsts`
+```ts
 import { Token } from '@secjs/utils'
 
 // Do not use the char "-", it would break token.verify() method
@@ -737,7 +709,7 @@ const connectionUrl = Parser.connectionObjToDbUrl(connectionObject)
 
 > Use Clean to clean arrays and objects
 
-`````jsts`
+```ts
 import { Clean } from '@secjs/utils'
 
 const array = [null, undefined, 1, "number"]
@@ -745,15 +717,15 @@ const array = [null, undefined, 1, "number"]
 console.log(Clean.cleanArray(array)) // [1, "number"]
 
 const object = {
-number1: "number",
-number2: null,
-number3: undefined,
-number4: 1,
+  number1: "number",
+  number2: null,
+  number3: undefined,
+  number4: 1,
 }
 
 const object2 = {
-number1: null,
-number2: [object],
+  number1: null,
+  number2: [object],
 }
 
 console.log(Clean.cleanObject(object)) // { number1: "number", number4: 1 }
@@ -767,7 +739,7 @@ console.log(Clean.cleanArraysInObject(object2)) // { number2: [{ number1: "numbe
 
 > Use Debug to generate debug logs in SecJS format
 
-`````jsts`
+```ts
 import { Debug } from '@secjs/utils'
 
 const context = 'API'

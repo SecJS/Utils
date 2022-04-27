@@ -35,6 +35,3 @@ export * from '#src/Exceptions/NotFoundFolderException'
 export * from '#src/Exceptions/OrdinalNanException'
 export * from '#src/Exceptions/RecursiveConfigException'
 export * from '#src/Exceptions/RouteMatchException'
-
-// TODO Update docs
-// TODO Create .d.ts files
