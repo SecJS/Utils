@@ -7,100 +7,102 @@
  * file that was distributed with this source code.
  */
 
+import { sep } from 'node:path'
+
 import { Path } from '#src/Path'
 
 describe('\n PathTest', () => {
   it('should get pwd path', () => {
     const mainPath = process.cwd()
-    const srcPath = mainPath.concat('/src')
-    const srcAppPath = srcPath.concat('/app')
+    const srcPath = mainPath.concat(sep, 'src')
+    const srcAppPath = srcPath.concat(sep, 'app')
 
     expect(Path.pwd()).toBe(mainPath)
-    expect(Path.pwd('/src')).toBe(srcPath)
-    expect(Path.pwd('/src/')).toBe(srcPath)
-    expect(Path.pwd('///src///')).toBe(srcPath)
-    expect(Path.pwd('///src///app///')).toBe(srcAppPath)
+    expect(Path.pwd(sep.concat('src'))).toBe(srcPath)
+    expect(Path.pwd(sep.concat('src', sep))).toBe(srcPath)
+    expect(Path.pwd(sep.concat(sep, sep, 'src', sep, sep, sep))).toBe(srcPath)
+    expect(Path.pwd(sep.concat(sep, sep, 'src', sep, sep, sep, 'app', sep, sep, sep))).toBe(srcAppPath)
   })
 
   it('should get the main application paths', () => {
     const mainPath = process.cwd()
 
-    expect(Path.app()).toBe(mainPath.concat('/app'))
-    expect(Path.bootstrap()).toBe(mainPath.concat('/bootstrap'))
-    expect(Path.config()).toBe(mainPath.concat('/config'))
-    expect(Path.database()).toBe(mainPath.concat('/database'))
-    expect(Path.lang()).toBe(mainPath.concat('/lang'))
-    expect(Path.nodeModules()).toBe(mainPath.concat('/node_modules'))
-    expect(Path.providers()).toBe(mainPath.concat('/providers'))
-    expect(Path.public()).toBe(mainPath.concat('/public'))
-    expect(Path.resources()).toBe(mainPath.concat('/resources'))
-    expect(Path.routes()).toBe(mainPath.concat('/routes'))
-    expect(Path.storage()).toBe(mainPath.concat('/storage'))
-    expect(Path.tests()).toBe(mainPath.concat('/tests'))
-    expect(Path.vmTmp().startsWith('/')).toBeTruthy()
-    expect(Path.vmHome().startsWith('/')).toBeTruthy()
+    expect(Path.app()).toBe(mainPath.concat(sep, 'app'))
+    expect(Path.bootstrap()).toBe(mainPath.concat(sep, 'bootstrap'))
+    expect(Path.config()).toBe(mainPath.concat(sep, 'config'))
+    expect(Path.database()).toBe(mainPath.concat(sep, 'database'))
+    expect(Path.lang()).toBe(mainPath.concat(sep, 'lang'))
+    expect(Path.nodeModules()).toBe(mainPath.concat(sep, 'node_modules'))
+    expect(Path.providers()).toBe(mainPath.concat(sep, 'providers'))
+    expect(Path.public()).toBe(mainPath.concat(sep, 'public'))
+    expect(Path.resources()).toBe(mainPath.concat(sep, 'resources'))
+    expect(Path.routes()).toBe(mainPath.concat(sep, 'routes'))
+    expect(Path.storage()).toBe(mainPath.concat(sep, 'storage'))
+    expect(Path.tests()).toBe(mainPath.concat(sep, 'tests'))
+    expect(Path.vmTmp().startsWith(sep)).toBeTruthy()
+    expect(Path.vmHome().startsWith(sep)).toBeTruthy()
   })
 
   it('should get the sub paths of app main path', () => {
-    const mainPath = process.cwd().concat('/app')
+    const mainPath = process.cwd().concat(sep, 'app')
 
-    expect(Path.http()).toBe(mainPath.concat('/Http'))
-    expect(Path.console()).toBe(mainPath.concat('/Console'))
-    expect(Path.services()).toBe(mainPath.concat('/Services'))
+    expect(Path.http()).toBe(mainPath.concat(sep, 'Http'))
+    expect(Path.console()).toBe(mainPath.concat(sep, 'Console'))
+    expect(Path.services()).toBe(mainPath.concat(sep, 'Services'))
   })
 
   it('should get the sub paths of database main path', () => {
-    const mainPath = process.cwd().concat('/database')
+    const mainPath = process.cwd().concat(sep, 'database')
 
-    expect(Path.seeders()).toBe(mainPath.concat('/seeders'))
-    expect(Path.migrations()).toBe(mainPath.concat('/migrations'))
+    expect(Path.seeders()).toBe(mainPath.concat(sep, 'seeders'))
+    expect(Path.migrations()).toBe(mainPath.concat(sep, 'migrations'))
   })
 
   it('should get the sub paths of node_modules main path', () => {
-    const mainPath = process.cwd().concat('/node_modules')
+    const mainPath = process.cwd().concat(sep, 'node_modules')
 
-    expect(Path.bin()).toBe(mainPath.concat('/.bin'))
+    expect(Path.bin()).toBe(mainPath.concat(sep, '.bin'))
   })
 
   it('should get the sub paths of public main path', () => {
-    const mainPath = process.cwd().concat('/public')
+    const mainPath = process.cwd().concat(sep, 'public')
 
-    expect(Path.assets()).toBe(mainPath.concat('/assets'))
+    expect(Path.assets()).toBe(mainPath.concat(sep, 'assets'))
   })
 
   it('should get the sub paths of tests main path', () => {
-    const mainPath = process.cwd().concat('/tests')
+    const mainPath = process.cwd().concat(sep, 'tests')
 
-    expect(Path.stubs()).toBe(mainPath.concat('/Stubs'))
+    expect(Path.stubs()).toBe(mainPath.concat(sep, 'Stubs'))
   })
 
   it('should get the sub paths of storage main path', () => {
-    const mainPath = process.cwd().concat('/storage')
+    const mainPath = process.cwd().concat(sep, 'storage')
 
-    expect(Path.logs()).toBe(mainPath.concat('/logs'))
+    expect(Path.logs()).toBe(mainPath.concat(sep, 'logs'))
   })
 
   it('should get the sub paths of resources main path', () => {
-    const mainPath = process.cwd().concat('/resources')
+    const mainPath = process.cwd().concat(sep, 'resources')
 
-    expect(Path.views()).toBe(mainPath.concat('/views'))
-    expect(Path.locales()).toBe(mainPath.concat('/locales'))
+    expect(Path.views()).toBe(mainPath.concat(sep, 'views'))
+    expect(Path.locales()).toBe(mainPath.concat(sep, 'locales'))
   })
 
   it('should get the sub paths of providers main path', () => {
-    const mainPath = process.cwd().concat('/providers')
+    const mainPath = process.cwd().concat(sep, 'providers')
 
-    expect(Path.facades()).toBe(mainPath.concat('/Facades'))
+    expect(Path.facades()).toBe(mainPath.concat(sep, 'Facades'))
   })
 
   it('should be able to concat any path before the main path', () => {
     const mainPath = process.cwd()
 
-    expect(Path.pwd('/', 'build')).toBe(`${mainPath}/build`)
-    expect(Path.app('/', 'build')).toBe(`${mainPath}/build/app`)
-    expect(Path.console('/', 'build')).toBe(`${mainPath}/build/app/Console`)
-    expect(Path.vmTmp('/', 'build').startsWith('/')).toBeTruthy()
-    expect(Path.vmHome('/', 'build').startsWith('/')).toBeTruthy()
+    expect(Path.pwd('/', 'build')).toBe(`${mainPath}${sep}build`)
+    expect(Path.app('/', 'build')).toBe(`${mainPath}${sep}build${sep}app`)
+    expect(Path.console('/', 'build')).toBe(`${mainPath}${sep}build${sep}app${sep}Console`)
+    expect(Path.vmTmp('/', 'build').startsWith(sep)).toBeTruthy()
+    expect(Path.vmHome('/', 'build').startsWith(sep)).toBeTruthy()
   })
 
   it('should be able to set a default before path in Path class', () => {
@@ -108,10 +110,10 @@ describe('\n PathTest', () => {
 
     Path.defaultBeforePath = 'build'
 
-    expect(Path.pwd('/')).toBe(`${mainPath}/build`)
-    expect(Path.app('/')).toBe(`${mainPath}/build/app`)
-    expect(Path.console('/')).toBe(`${mainPath}/build/app/Console`)
-    expect(Path.vmTmp('/').startsWith('/')).toBeTruthy()
-    expect(Path.vmHome('/').startsWith('/')).toBeTruthy()
+    expect(Path.pwd('/')).toBe(`${mainPath}${sep}build`)
+    expect(Path.app('/')).toBe(`${mainPath}${sep}build${sep}app`)
+    expect(Path.console('/')).toBe(`${mainPath}${sep}build${sep}app${sep}Console`)
+    expect(Path.vmTmp('/').startsWith(sep)).toBeTruthy()
+    expect(Path.vmHome('/').startsWith(sep)).toBeTruthy()
   })
 })

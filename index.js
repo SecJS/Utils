@@ -38,3 +38,4 @@ export * from '#src/Exceptions/RouteMatchException'
 
 // TODO Update docs
 // TODO Create .d.ts files
+// TODO Adjust package to work on windows ci
