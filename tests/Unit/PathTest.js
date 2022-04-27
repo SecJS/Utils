@@ -101,8 +101,8 @@ describe('\n PathTest', () => {
     expect(Path.pwd('/', 'build')).toBe(`${mainPath}${sep}build`)
     expect(Path.app('/', 'build')).toBe(`${mainPath}${sep}build${sep}app`)
     expect(Path.console('/', 'build')).toBe(`${mainPath}${sep}build${sep}app${sep}Console`)
-    expect(Path.vmTmp('/', 'build').startsWith(sep)).toBeTruthy()
-    expect(Path.vmHome('/', 'build').startsWith(sep)).toBeTruthy()
+    expect(Path.vmTmp('/', 'build')).toBeTruthy()
+    expect(Path.vmHome('/', 'build')).toBeTruthy()
   })
 
   it('should be able to set a default before path in Path class', () => {
@@ -113,7 +113,7 @@ describe('\n PathTest', () => {
     expect(Path.pwd('/')).toBe(`${mainPath}${sep}build`)
     expect(Path.app('/')).toBe(`${mainPath}${sep}build${sep}app`)
     expect(Path.console('/')).toBe(`${mainPath}${sep}build${sep}app${sep}Console`)
-    expect(Path.vmTmp('/').startsWith(sep)).toBeTruthy()
-    expect(Path.vmHome('/').startsWith(sep)).toBeTruthy()
+    expect(Path.vmTmp('/')).toBeTruthy()
+    expect(Path.vmHome('/')).toBeTruthy()
   })
 })

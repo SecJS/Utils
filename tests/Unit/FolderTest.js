@@ -280,10 +280,10 @@ describe('\n FolderTest', () => {
 
     const folder = new Folder(path)
 
-    expect(folder.getFilesByPattern('**/*.txt', true).length).toBe(5)
-    expect(folder.getFoldersByPattern('**/*', true).length).toBe(5)
+    expect(folder.getFilesByPattern(`**${sep}*.txt`, true).length).toBe(5)
+    expect(folder.getFoldersByPattern(`**${sep}*`, true).length).toBe(5)
 
-    expect(folder.getFilesByPattern('*/*.txt', true).length).toBe(3)
+    expect(folder.getFilesByPattern(`*${sep}*.txt`, true).length).toBe(3)
     expect(folder.getFoldersByPattern('*', true).length).toBe(3)
   })
 
