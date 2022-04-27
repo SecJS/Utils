@@ -17,9 +17,9 @@ describe('\n StringTest', () => {
   })
 
   it('should generate random colors in hexadecimal format', async () => {
-    expect(String.generateRandomColor().at(0)).toBe('#')
-    expect(String.generateRandomColor().at(0)).toBe('#')
-    expect(String.generateRandomColor().at(0)).toBe('#')
+    expect(String.generateRandomColor()[0]).toBe('#')
+    expect(String.generateRandomColor()[0]).toBe('#')
+    expect(String.generateRandomColor()[0]).toBe('#')
   })
 
   it('should normalize a base64 string value', async () => {

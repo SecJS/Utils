@@ -227,22 +227,22 @@ export class Parser {
     const matcher = url.match(urlRegexp)
 
     const connectionObject = {
-      protocol: matcher.at(1),
+      protocol: matcher[1],
       user: null,
       password: null,
       host: null,
       port: null,
-      database: matcher.at(8),
+      database: matcher[8],
       options: {},
     }
 
-    if (matcher.at(5).includes(',')) {
-      connectionObject.host = matcher.at(5).split(',')
+    if (matcher[5].includes(',')) {
+      connectionObject.host = matcher[5].split(',')
     } else {
-      connectionObject.host = matcher.at(5)
+      connectionObject.host = matcher[5]
 
-      if (matcher.at(5).includes(':')) {
-        const [h, p] = matcher.at(5).split(':')
+      if (matcher[5].includes(':')) {
+        const [h, p] = matcher[5].split(':')
 
         connectionObject.host = h
         connectionObject.port = parseInt(p)
@@ -256,8 +256,8 @@ export class Parser {
       connectionObject.options = this.formDataToJson(options)
     }
 
-    if (matcher.at(3)) connectionObject.user = matcher.at(3)
-    if (matcher.at(4)) connectionObject.password = matcher.at(4)
+    if (matcher[3]) connectionObject.user = matcher[3]
+    if (matcher[4]) connectionObject.password = matcher[4]
 
     return connectionObject
   }

@@ -135,14 +135,14 @@ describe('\n FolderTest', () => {
 
     expect(await Folder.exists(copyOfBigFolder.path)).toBeTruthy()
 
-    expect(await File.exists(copyOfBigFolder.files.at(0).path)).toBeTruthy()
-    expect(copyOfBigFolder.files.at(0).name).toBeTruthy()
+    expect(await File.exists(copyOfBigFolder.files[0].path)).toBeTruthy()
+    expect(copyOfBigFolder.files[0].name).toBeTruthy()
 
-    expect(await Folder.exists(copyOfBigFolder.folders.at(0).path)).toBeTruthy()
-    expect(copyOfBigFolder.folders.at(0).name).toBeTruthy()
+    expect(await Folder.exists(copyOfBigFolder.folders[0].path)).toBeTruthy()
+    expect(copyOfBigFolder.folders[0].name).toBeTruthy()
 
-    expect(await File.exists(copyOfBigFolder.folders.at(0).files.at(0).path)).toBeTruthy()
-    expect(copyOfBigFolder.folders.at(0).files.at(0).name).toBeTruthy()
+    expect(await File.exists(copyOfBigFolder.folders[0].files[0].path)).toBeTruthy()
+    expect(copyOfBigFolder.folders[0].files[0].name).toBeTruthy()
 
     const copyOfNoExistFolder = await nonexistentFolder.copy(Path.storage('folders/testing/copy-non-existent-folder'))
 
@@ -159,14 +159,14 @@ describe('\n FolderTest', () => {
 
     expect(await Folder.exists(copyOfBigFolder.path)).toBeTruthy()
 
-    expect(await File.exists(copyOfBigFolder.files.at(0).path)).toBeTruthy()
-    expect(copyOfBigFolder.files.at(0).name).toBeTruthy()
+    expect(await File.exists(copyOfBigFolder.files[0].path)).toBeTruthy()
+    expect(copyOfBigFolder.files[0].name).toBeTruthy()
 
-    expect(await Folder.exists(copyOfBigFolder.folders.at(0).path)).toBeTruthy()
-    expect(copyOfBigFolder.folders.at(0).name).toBeTruthy()
+    expect(await Folder.exists(copyOfBigFolder.folders[0].path)).toBeTruthy()
+    expect(copyOfBigFolder.folders[0].name).toBeTruthy()
 
-    expect(await File.exists(copyOfBigFolder.folders.at(0).files.at(0).path)).toBeTruthy()
-    expect(copyOfBigFolder.folders.at(0).files.at(0).name).toBeTruthy()
+    expect(await File.exists(copyOfBigFolder.folders[0].files[0].path)).toBeTruthy()
+    expect(copyOfBigFolder.folders[0].files[0].name).toBeTruthy()
 
     const copyOfNoExistFolder = nonexistentFolder.copySync(Path.storage('folders/testing/copy-non-existent-folder'))
 
@@ -182,14 +182,14 @@ describe('\n FolderTest', () => {
     expect(await Folder.exists(bigFolder.path)).toBeFalsy()
     expect(await Folder.exists(moveOfBigFolder.path)).toBeTruthy()
 
-    expect(await File.exists(moveOfBigFolder.files.at(0).path)).toBeTruthy()
-    expect(moveOfBigFolder.files.at(0).name).toBeTruthy()
+    expect(await File.exists(moveOfBigFolder.files[0].path)).toBeTruthy()
+    expect(moveOfBigFolder.files[0].name).toBeTruthy()
 
-    expect(await Folder.exists(moveOfBigFolder.folders.at(0).path)).toBeTruthy()
-    expect(moveOfBigFolder.folders.at(0).name).toBeTruthy()
+    expect(await Folder.exists(moveOfBigFolder.folders[0].path)).toBeTruthy()
+    expect(moveOfBigFolder.folders[0].name).toBeTruthy()
 
-    expect(await File.exists(moveOfBigFolder.folders.at(0).files.at(0).path)).toBeTruthy()
-    expect(moveOfBigFolder.folders.at(0).files.at(0).name).toBeTruthy()
+    expect(await File.exists(moveOfBigFolder.folders[0].files[0].path)).toBeTruthy()
+    expect(moveOfBigFolder.folders[0].files[0].name).toBeTruthy()
 
     const moveOfNoExistFolder = await nonexistentFolder.move(Path.storage('folders/testing/move-non-existent-folder'))
 
@@ -206,14 +206,14 @@ describe('\n FolderTest', () => {
     expect(await Folder.exists(bigFolder.path)).toBeFalsy()
     expect(await Folder.exists(moveOfBigFolder.path)).toBeTruthy()
 
-    expect(await File.exists(moveOfBigFolder.files.at(0).path)).toBeTruthy()
-    expect(moveOfBigFolder.files.at(0).name).toBeTruthy()
+    expect(await File.exists(moveOfBigFolder.files[0].path)).toBeTruthy()
+    expect(moveOfBigFolder.files[0].name).toBeTruthy()
 
-    expect(await Folder.exists(moveOfBigFolder.folders.at(0).path)).toBeTruthy()
-    expect(moveOfBigFolder.folders.at(0).name).toBeTruthy()
+    expect(await Folder.exists(moveOfBigFolder.folders[0].path)).toBeTruthy()
+    expect(moveOfBigFolder.folders[0].name).toBeTruthy()
 
-    expect(await File.exists(moveOfBigFolder.folders.at(0).files.at(0).path)).toBeTruthy()
-    expect(moveOfBigFolder.folders.at(0).files.at(0).name).toBeTruthy()
+    expect(await File.exists(moveOfBigFolder.folders[0].files[0].path)).toBeTruthy()
+    expect(moveOfBigFolder.folders[0].files[0].name).toBeTruthy()
 
     const moveOfNoExistFolder = nonexistentFolder.moveSync(Path.storage('folders/testing/move-non-existent-folder'))
 

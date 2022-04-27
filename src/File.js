@@ -187,7 +187,7 @@ export class File {
   static #parsePath(filePath) {
     if (!isAbsolute(filePath)) {
       const stack = callSite()
-      const requester = dirname(stack.at(2).getFileName()).concat(sep)
+      const requester = dirname(stack[2].getFileName()).concat(sep)
 
       filePath = resolve(requester.concat(filePath))
     }
@@ -196,7 +196,7 @@ export class File {
 
     const baseArray = base.split('.')
 
-    const name = baseArray.splice(0, 1).at(0)
+    const name = baseArray.splice(0, 1)[0]
     const ext = baseArray.reduce((accumulator, current) => {
       return accumulator.concat('.').concat(current)
     }, '')

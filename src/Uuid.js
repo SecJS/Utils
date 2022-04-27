@@ -54,7 +54,7 @@ export class Uuid {
       return token
     }
 
-    return token.split(`${prefix}::`).at(1)
+    return token.split(`${prefix}::`)[1]
   }
 
   /**
@@ -64,7 +64,7 @@ export class Uuid {
    * @return {string|null}
    */
   static getPrefix(token) {
-    const prefix = token.split('::').at(0)
+    const prefix = token.split('::')[0]
 
     /**
      * Means that the "::" char has not been

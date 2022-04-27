@@ -232,7 +232,7 @@ export class Folder {
   static #parsePath(folderPath) {
     if (!isAbsolute(folderPath)) {
       const stack = callSite()
-      const requester = dirname(stack.at(2).getFileName()).concat(sep)
+      const requester = dirname(stack[2].getFileName()).concat(sep)
 
       folderPath = resolve(requester.concat(folderPath))
     }
