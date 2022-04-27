@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+import { sep } from 'node:path'
+
 import { Path } from '#src/Path'
 import { File } from '#src/File'
 import { Folder } from '#src/Folder'
@@ -67,7 +69,7 @@ describe('\n FileTest', () => {
     expect(bigFile.mime).toBe('text/plain')
     expect(bigFile.originalPath).toBe(bigFilePath)
     expect(bigFile.originalFileExists).toBe(true)
-    expect(bigFile.dir).toBe(bigFilePath.replace('/file.txt', ''))
+    expect(bigFile.dir).toBe(bigFilePath.replace(`${sep}file.txt`, ''))
 
     expect(nonexistentFile.base).toBeTruthy()
     expect(nonexistentFile.path).toBeTruthy()
