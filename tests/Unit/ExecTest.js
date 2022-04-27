@@ -78,6 +78,16 @@ describe('\n ExecTest', () => {
     })
   })
 
+  it('should be able to get the module first export match or default', async () => {
+    const moduleDefault = await Exec.getModule(import('../Stubs/config/app.js'))
+
+    expect(moduleDefault.name).toBe('SecJS')
+
+    const moduleFirstExport = await Exec.getModule(import('#src/Options'))
+
+    expect(moduleFirstExport.name).toBe('Options')
+  })
+
   afterEach(async () => {
     await Folder.safeRemove(Path.storage())
   })

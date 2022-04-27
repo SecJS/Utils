@@ -12,7 +12,6 @@ import { Transform } from 'node:stream'
 import { request as requestHttp } from 'node:http'
 import { request as requestHttps } from 'node:https'
 import { exec as childProcessExec } from 'node:child_process'
-
 import { File } from '#src/File'
 import { Options } from '#src/Options'
 import { NodeExecException } from '#src/Exceptions/NodeExecException'
@@ -145,5 +144,21 @@ export class Exec {
     }
 
     return { meta, links, data }
+  }
+
+  /**
+   * Get the module first export match or default.
+   *
+   * @param {any,Promise<any>} module
+   * @return {Promise<any>}
+   */
+  static async getModule(module) {
+    module = await module
+
+    if (module.default) {
+      return module.default
+    }
+
+    return module[Object.keys(module)[0]]
   }
 }
