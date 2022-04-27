@@ -39,8 +39,8 @@ describe('\n PathTest', () => {
     expect(Path.routes()).toBe(mainPath.concat(sep, 'routes'))
     expect(Path.storage()).toBe(mainPath.concat(sep, 'storage'))
     expect(Path.tests()).toBe(mainPath.concat(sep, 'tests'))
-    expect(Path.vmTmp().startsWith(sep)).toBeTruthy()
-    expect(Path.vmHome().startsWith(sep)).toBeTruthy()
+    expect(Path.vmTmp()).toBeTruthy()
+    expect(Path.vmHome()).toBeTruthy()
   })
 
   it('should get the sub paths of app main path', () => {

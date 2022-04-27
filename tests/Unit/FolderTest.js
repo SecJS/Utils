@@ -235,8 +235,8 @@ describe('\n FolderTest', () => {
 
     const folder = new Folder(path)
 
-    const files = folder.getFilesByPattern('**/*.txt')
-    const folders = folder.getFoldersByPattern('**/*')
+    const files = folder.getFilesByPattern(`**${sep}*.txt`)
+    const folders = folder.getFoldersByPattern(`**${sep}*`)
 
     expect(files.length).toBe(1)
     expect(folders.length).toBe(1)
