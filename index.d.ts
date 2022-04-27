@@ -1,3 +1,12 @@
+export declare interface ExceptionJSON {
+  code?: string
+  name: string
+  status: number
+  content: string
+  help?: string
+  stack?: any
+}
+
 export declare interface FileJSON {
   dir: string
   name: string
@@ -106,14 +115,7 @@ export declare class Debug {
 export declare class Exception extends Error {
   constructor(content?: string, status?: number, code?: string, help?: string)
 
-  toJSON(stack: boolean): {
-    code: string
-    name: string
-    status: number
-    content: string
-    help?: string
-    stack?: string
-  }
+  toJSON(stack: boolean): ExceptionJSON
 
   prettify(options?: {
     prefix?: string
