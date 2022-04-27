@@ -650,7 +650,7 @@ export class Folder {
     this.loadSync({ withSub: true, isInternalLoad: true })
 
     if (pattern) {
-      pattern = normalize(`${this.path}/${pattern}`)
+      pattern = normalize(`${this.path}${sep}${pattern}`)
     }
 
     const files = []
@@ -683,7 +683,7 @@ export class Folder {
     this.loadSync({ withSub: true, isInternalLoad: true })
 
     if (pattern) {
-      pattern = normalize(`${this.path}/${pattern}`)
+      pattern = normalize(`${this.path}${sep}${pattern}`)
     }
 
     const folders = []
