@@ -19,7 +19,8 @@
   <img alt="Commitizen" src="https://img.shields.io/badge/commitizen-friendly-brightgreen?style=for-the-badge&logo=appveyor">
 </p>
 
-The intention behind this repository is to always maintain a `Utils` package with varied functions and classes to any NodeJS project.
+The intention behind this repository is to always maintain a `Utils` package with varied functions and classes to any
+NodeJS project.
 
 <img src=".github/utils.png" width="200px" align="right" hspace="30px" vspace="100px">
 
@@ -29,7 +30,7 @@ The intention behind this repository is to always maintain a `Utils` package wit
 npm install @secjs/utils
 ```
 
-## Helpers Usage
+## Usage
 
 ### File
 
@@ -72,17 +73,34 @@ console.log(existentFile.copySync('path/to/copy.txt'))
 // you can move existentFile to other path using move
 console.log(existentFile.moveSync('path/to/move.txt'))
 
+// you can add content to the end of the file with append
+console.log(existentFile.appendSync(Buffer.from('Content\n')))
+
+// you can add content to the top of the file with prepend
+console.log(existentFile.prependSync(Buffer.from('Content\n')))
+
 // File uses readable streams in async methods to not block the event loop when handling huge files content
 await existentFile.load()
 await existentFile.copy()
 await existentFile.move()
 await existentFile.remove()
 await existentFile.create()
+await existentFile.append()
+await existentFile.prepend()
 await existentFile.getContent()
 
 // You can use safeRemove method to delete the file without any exception if it does no exists
-
 await File.safeRemove(existentFile.path)
+
+// You can use isFileSync to verify if path is a file or directory
+await File.isFileSync('package.json')
+
+// You can use existsSync to verify if file exists
+await File.existsSync('package.json')
+
+// You can use createFileOfSize to create a fake file with determined size
+// 100MB
+await File.createFileOfSize('fake.js', 1024 * 1024 * 100)
 ```
 
 ---
@@ -142,8 +160,13 @@ await existentFolder.remove()
 await existentFolder.create()
 
 // You can use safeRemove method to delete the folder without any exception if it does no exists
-
 await Folder.safeRemove(existentFile.path)
+
+// You can use isFolderSync to verify if path directory or file
+await Folder.isFolderSync('path/to/folder')
+
+// You can use existsSync to verify if folders exists
+await Folder.existsSync('path/to/folder')
 ```
 
 ---
@@ -171,9 +194,13 @@ Is.Uuid('not-valid-uuid') // false
 Is.Cep('not-valid-cep') // false
 Is.Cpf('not-valid-cpf') // false
 Is.Cnpj('not-valid-cnpj') // false
-Is.Async(() => {}) // false
-Is.Async(async () => {}) // true
-Is.Async(() => { new Promise((resolve => resolve())) }) // true
+Is.Async(() => {
+}) // false
+Is.Async(async () => {
+}) // true
+Is.Async(() => {
+  new Promise((resolve => resolve()))
+}) // true
 
 Is.String('value') // true
 Is.Undefined('value') // false
@@ -270,6 +297,8 @@ console.log(exception.toJSON(withStack))
  *   stack: ...,
  * }
  */
+
+console.log(await exception.prettify()) // Pretty exception log using Youch API
 ```
 
 > Extending Exception helper
@@ -295,31 +324,16 @@ throw new InternalServerException()
 ```ts
 import { Path } from '@secjs/utils'
 
-// If NODE_TS is set to true, Path.pwd will always return without the build folder in the end of the path
-Path.pwd() // '/home/your/computer/path/your-project-name'
+const subPath = '/hello'
 
-// If NODE_TS is set to false, Path.pwd will always return with the build folder in the end of the path
-Path.pwd() // '/home/your/computer/path/your-project-name/dist'
+Path.pwd(subPath, beforePath) // '/home/your/computer/path/your-project-name/hello'
 
-// You can use the method switchEnvVerify to turn off the NODE_TS environment variable verification
-Path.switchEnvVerify()
+// You can set a default before path for most Path methods 
+Path.defaultBeforePath = 'build'
 
-// You can change the default build folder name using changeBuild method
-Path.changeBuild('build') 
-// '/home/your/computer/path/your-project-name/build'
-
-// you can change your build folder name using forBuild method too
-Path.forBuild('buildd').pwd()
-// '/home/your/computer/path/your-project-name/buildd'
+Path.pwd(subPath, beforePath) // '/home/your/computer/path/your-project-name/build/hello'
 
 Path.pwd('/src/') // '/home/your/computer/path/your-project-name/build/src'
-
-// You can use switchBuild to turn on or turn off the forceBuild parameter
-// forceBuild on
-Path.switchBuild().public() // '/home/your/computer/path/your-project-name/build/public'
-
-// forceBuild off
-Path.switchBuild().assets() // '/home/your/computer/path/your-project-name/public/assets'
 ```
 
 ---
@@ -365,10 +379,6 @@ config.load('example.ts')
 
 // You can also use safeLoad to not reload files that were already loaded
 config.safeLoad('app.ts') // Will just return without errors, but app.ts will not be reloaded.
-
-// And you can also load an configuration file without extension. 
-// Config class will verify the Env NODE_TS to get the .js or .ts extension file
-config.safeLoad('app')
 
 console.log(Config.get('app.name')) // 'secjs'
 ```
@@ -464,7 +474,7 @@ console.log(Json.removeDuplicated(array)) // [1, 2, 4]
 
 ```ts
 const array = ['a', 'b', 'c'] // Array length = 2 (0, 1, 2)
-const sortedValue =  Json.sort(array) // Sorted value from the array, could be a, b or c
+const sortedValue = Json.sort(array) // Sorted value from the array, could be a, b or c
 
 console.log(sortedValue) // a, b or c
 ```
@@ -475,7 +485,7 @@ console.log(sortedValue) // a, b or c
 
 > Use Route to manipulate paths, getParams, getQueryParams, create route matcher RegExp etc.
 
-`````jsts`
+```ts
 import { Route } from '@secjs/utils'
 
 const absolutePath = '/tests/:id/users/:user_id'
@@ -496,43 +506,11 @@ regExpMatcher.test(Route.removeQueryParams(path)) // true
 
 ---
 
-### Blacklist
-
-> Use Blacklist to add, find and remove values from a blacklist/whitelist file
-
-`````jsts`
-import { Blacklist } from '@secjs/utils'
-
-const blacklist = new Blacklist()
-
-const filePath = 'blacklist.txt'
-
-await blacklist.add('192.168.0.1', filePath) // void
-
-// blacklist.txt value
-// 192.168.0.1
-
-await blacklist.add('192.168.0.2', filePath) // void
-
-// blacklist.txt value
-// 192.168.0.1
-// 192.168.0.2
-
-const valueFound = await blacklist.find('192.168.0.2', filePath) // Will return the value - 192.168.0.2
-
-await blacklist.remove('192.168.0.2', filePath) // void
-
-// blacklist.txt value
-// 192.168.0.1
-```
-
----
-
 ### Number
 
 > Use Number to manipulate numbers the best way
 
-`````jsts`
+```ts
 import { Number } from '@secjs/utils'
 
 const arrayOfNumbers = [2, 4]
@@ -555,15 +533,16 @@ console.log(Number.randomIntFromInterval(1, 1)) // 1
 console.log(Number.randomIntFromInterval(1, 2)) // 1
 console.log(Number.randomIntFromInterval(1, 2)) // 2
 console.log(Number.randomIntFromInterval(1, 10)) // 8
+
 ```
 
 ---
 
 ### Token
 
-> Generate UUID tokens using a prefix, and validate it to using uuidv4 lib
+> Generate U UID tokens using a prefix, and validate it to using uuidv4 lib
 
-`````jsts`
+```ts
 import { Token } from '@secjs/utils'
 
 // Do not use the char "-", it would break token.verify() method
@@ -631,7 +610,7 @@ console.log(parsed4) // { joao: 'joao', email: 'lenonsec7@gmail.com' }
 
 ```ts
 const message = 'Link: https://google.com'
-  
+
 // Convert url to and HTML href
 
 console.log(Parser.linkToHref(message)) // Link: <a href="https://google.com">https://google.com</a>
@@ -667,7 +646,7 @@ Parser.timeToMs('-1 year') // -31557600000
 
 // Convert ms to time string
 
-const long = true 
+const long = true
 
 Parser.msToTime(172800000, long) // '2 days'
 Parser.msToTime(86400000) // 1d
@@ -730,7 +709,7 @@ const connectionUrl = Parser.connectionObjToDbUrl(connectionObject)
 
 > Use Clean to clean arrays and objects
 
-`````jsts`
+```ts
 import { Clean } from '@secjs/utils'
 
 const array = [null, undefined, 1, "number"]
@@ -751,6 +730,7 @@ const object2 = {
 
 console.log(Clean.cleanObject(object)) // { number1: "number", number4: 1 }
 console.log(Clean.cleanArraysInObject(object2)) // { number2: [{ number1: "number", number4: 1 }]}
+
 ```
 
 ---
@@ -759,7 +739,7 @@ console.log(Clean.cleanArraysInObject(object2)) // { number2: [{ number1: "numbe
 
 > Use Debug to generate debug logs in SecJS format
 
-`````jsts`
+```ts
 import { Debug } from '@secjs/utils'
 
 const context = 'API'
@@ -781,175 +761,5 @@ debug
 ```
 
 ---
-
-## Utils Usage
-
-### global
-
-> Add Is, Path, File, Folder and Config to global variables.
-
-```ts
-// Will add the types and the helpers to global
-import '@secjs/utils/src/Utils/global'
-```
-
-### getBranch
-
-> Get the actual git branch that the project is running or not a repository.
-
-`````jsts`
-import { getBranch } from '@secjs/utils'
-
-await getBranch() // master || Not a repository
-```
-
----
-
-### getCommitId
-
-> Get the actual commit id from the local repository.
-
-`````jsts`
-import { getCommitId } from '@secjs/utils'
-
-await getCommitId() // the commit sha || Not a repository
-```
-
----
-
-### download
-
-> Download an archive/image to determined path.
-
-`````jsts`
-import { download } from '@secjs/utils'
-
-;(async function () {
-  const url =
-    'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/1.png'
-  const pathToSave = `${process.cwd()}/tests`
-  const imageName = '1.png'
-  
-  await download(url, imageName, pathToSave)
-})()
-```
-
----
-
-### scheduler
-
-> Use scheduler to execute some function based on MS
-
-`````jsts`
-import { scheduler } from '@secjs/utils'
-
-const func = () => {
-    console.log('Starting at...', new Date.toISOString())
-}
-
-scheduler(func, 3000) // scheduler function will execute the func every 3 seconds
-```
-
----
-
-### paginate
-
-> Use paginate get meta and links from for response
-
-`````jsts`
-import { paginate, PaginationContract } from '@secjs/utils'
-
-const filters = {
-  where: { id: 1 }
-}
-
-const pagination: PaginationContract = {
-  page: 1,
-  limit: 10,
-  resourceUrl: 'https://test/users'
-}
-
-const array = this.repository.getAll(pagination, filters)
-const total = this.repository.count(filters)
-
-console.log(paginate(array, total, pagination)) 
-
-// { 
-//    data: [{ id: 1, name: 'João Lenon' }], 
-//    meta: {
-//      itemCount: 1,
-//      totalItems: 1, 
-//      totalPages: 1,
-//      currentPage: 0,
-//      itemsPerPage: 10,
-//    }, 
-//    links: {
-//      first: 'https://test/users?limit=10',
-//      previous: 'https://test/users?page=0&limit=10',
-//      next: 'https://test/users?page=2&limit=10',
-//      last: 'https://test/users?page=1&limit=10',
-//   } 
-// }
-
-```
-
----
-
-### resolveModule
-
-> Use resolveModule to resolve the module export type
-
-```ts
-import { resolveModule } from '@secjs/utils'
-
-export function testExport() {}
-const testExportFn = resolveModule(await import('./path/to/testExport'))
-
-export default function testDefaultExport() {}
-const testDefaultExportFn = resolveModule(await import('./path/to/testDefaultExport'))
-```
-
----
-
-### sleep
-
-> Use sleep to let you code sleep for sometime
-
-```ts
-import { sleep } from '@secjs/utils'
-
-await sleep(2000) // Your code will stop in this line for two seconds
-```
-
----
-
-### kmRadius
-
-> Find out what's the distance between a coordinate to other
-
-```ts
-import { kmRadius, ICoordinate } from '@secjs/utils'
-
-// Use type number for more precision,
-// but you can use string to,
-// kmRadius will handle it with Parser.
-const coordinate1 = {
- latitude: -25.4858841,
- longitude: -54.564615,
-} as ICoordinate // ICoordinate will force numbers
-
-const coordinate2 = {
- latitude: '-54.564615',
- longitude: '-25.4858841',
-}
-
-const distance = await kmRadius(coordinate1, coordinate2)
-
-console.log(distance) // The distance in Kilometers (KM)
-```
-
----
-
-## License
 
 Made with 🖤 by [jlenon7](https://github.com/jlenon7) :wave:

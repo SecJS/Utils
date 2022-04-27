@@ -1,3 +1,4 @@
+
 node_modules/
 
 # Logs
@@ -23,6 +24,7 @@ lib-cov
 
 # Coverage directory used by tools like istanbul
 coverage
+Coverage
 *.lcov
 
 # nyc test coverage
@@ -116,19 +118,10 @@ out
 .idea
 .vscode
 
-# dotenv environment variables file
+# Environment variables file
 .env
 .env.testing
 .env.production
 
-# Build files
-*.js
-*.d.ts
-dist
-build
-
-# testing files generated here
-file-class-test
-file-class-global-test
-folder-class-test
-folder-class-global-test
+# MacOS folder mapper file
+.DS_Store
