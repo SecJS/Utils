@@ -303,7 +303,7 @@ export class Is {
   /**
    * Verify if is a valid ArrayOfObjects.
    *
-   * @param {Array} value
+   * @param {any[]} value
    * @return {boolean}
    */
   static ArrayOfObjects(value) {

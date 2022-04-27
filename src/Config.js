@@ -26,7 +26,7 @@ export class Config {
    * Get the value from configuration files.
    *
    * @param {string} key
-   * @param {any} defaultValue
+   * @param {any?} defaultValue
    * @return {any}
    */
   static get(key, defaultValue = undefined) {
@@ -59,7 +59,7 @@ export class Config {
    * Load the configuration file.
    *
    * @param {string} path
-   * @param {number} callNumber
+   * @param {number?} callNumber
    * @return {Promise<void>}
    */
   async load(path, callNumber = 0) {

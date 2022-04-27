@@ -11,9 +11,9 @@ export class Options {
   /**
    * Creates an option object with default values.
    *
-   * @param {Object} object
-   * @param {Object} defaultValues
-   * @return {Object}
+   * @param {any} object
+   * @param {any} defaultValues
+   * @return {any}
    */
   static create(object, defaultValues) {
     return Object.assign({}, defaultValues, object)

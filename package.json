@@ -18,8 +18,6 @@
     "filesystem",
     "pagination"
   ],
-  "type": "module",
-  "main": "index.js",
   "scripts": {
     "test": "npm run lint:fix && cross-env NODE_OPTIONS=--experimental-vm-modules jest --colors --verbose --runInBand",
     "test:coverage": "npm run --silent test -- --coverage",
@@ -27,15 +25,19 @@
   },
   "files": [
     "src/*.js",
+    "src/*.d.ts",
     "src/**/*.js",
-    "*.js"
+    "src/**/*.d.ts",
+    "*.js",
+    "*.d.ts"
   ],
+  "type": "module",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "exports": "./index.js",
   "imports": {
     "#src/*": "./src/*.js",
     "#tests/*": "./tests/*.js"
-  },
-  "exports": {
-    ".": "./index.js"
   },
   "dependencies": {
     "bytes": "3.1.2",
@@ -146,6 +148,9 @@
       "standard",
       "eslint:recommended",
       "plugin:prettier/recommended"
+    ],
+    "ignorePatterns": [
+      "**/*.d.ts"
     ],
     "parserOptions": {
       "ecmaVersion": "latest",

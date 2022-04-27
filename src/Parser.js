@@ -223,7 +223,7 @@ export class Parser {
     const urlRegexp =
       /^([^:\\/\s]+):\/\/((.*):(.*)@|)(.*)(:(.*)|)\/(.*)(\?(.+))?/
 
-    /** @type {Array} */
+    /** @type {any[]} */
     const matcher = url.match(urlRegexp)
 
     const connectionObject = {

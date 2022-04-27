@@ -96,7 +96,7 @@ export class Exception extends Error {
   /**
    * Prettify the error using Youch API.
    *
-   * @param {Object?} options
+   * @param {any?} options
    * @param {string?} options.prefix
    * @param {boolean?} options.hideMessage
    * @param {boolean?} options.hideErrorTitle

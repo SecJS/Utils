@@ -54,7 +54,7 @@ export class Json {
    *
    * @param {string} text
    * @param {reviver?} reviver
-   * @return {Object}
+   * @return {any}
    */
   static parse(text, reviver) {
     try {
@@ -67,10 +67,10 @@ export class Json {
   /**
    * Observe changes inside objects.
    *
-   * @param {Object} object
+   * @param {any} object
    * @param {function} func
    * @param {...any[]} args
-   * @return {Object}
+   * @return {any}
    */
   static observeChanges(object, func, ...args) {
     return new Proxy(object, {
@@ -87,7 +87,7 @@ export class Json {
   /**
    * Remove all keys from data that is not inside array keys
    *
-   * @param {Object} data
+   * @param {any} data
    * @param {any[]} keys
    * @return {any[]}
    */
@@ -128,7 +128,7 @@ export class Json {
    *
    * @param {string} key
    * @param {any?} defaultValue
-   * @param {Object} object
+   * @param {any} object
    * @return {any|undefined}
    */
   static get(object, key, defaultValue) {
