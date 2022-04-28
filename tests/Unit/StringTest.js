@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import { String } from '#src/String'
+import { String } from '#src/Helpers/String'
 import { OrdinalNanException } from '#src/Exceptions/OrdinalNanException'
 
 describe('\n StringTest', () => {

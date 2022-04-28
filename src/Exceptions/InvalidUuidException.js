@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import { Exception } from '#src/Exception'
+import { Exception } from '#src/Helpers/Exception'
 
 export class InvalidUuidException extends Exception {
   /**

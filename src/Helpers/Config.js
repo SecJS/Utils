@@ -8,9 +8,9 @@
  */
 
 import { parse } from 'node:path'
-import { File } from '#src/File'
-import { Json } from '#src/Json'
-import { Debug } from '#src/Debug'
+import { File } from '#src/Helpers/File'
+import { Json } from '#src/Helpers/Json'
+import { Debug } from '#src/Helpers/Debug'
 import { RecursiveConfigException } from '#src/Exceptions/RecursiveConfigException'
 import { ConfigNotNormalizedException } from '#src/Exceptions/ConfigNotNormalizedException'
 

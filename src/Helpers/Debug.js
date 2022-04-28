@@ -10,7 +10,7 @@
 import debug from 'debug'
 import chalk from 'chalk'
 
-import { Is } from '#src/Is'
+import { Is } from '#src/Helpers/Is'
 
 export class Debug {
   /**

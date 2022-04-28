@@ -9,7 +9,7 @@
 
 import { sep } from 'node:path'
 
-import { Path } from '#src/Path'
+import { Path } from '#src/Helpers/Path'
 
 describe('\n PathTest', () => {
   it('should get pwd path', () => {

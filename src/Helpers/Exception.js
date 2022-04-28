@@ -12,7 +12,7 @@ import chalk from 'chalk'
 import changeCase from 'change-case'
 import YouchTerminal from 'youch-terminal'
 
-import { Options } from '#src/Options'
+import { Options } from '#src/Helpers/Options'
 
 export class Exception extends Error {
   /**

@@ -8,7 +8,7 @@
  */
 
 import { v4 } from 'uuid'
-import { Uuid } from '#src/Uuid'
+import { Uuid } from '#src/Helpers/Uuid'
 import { InvalidUuidException } from '#src/Exceptions/InvalidUuidException'
 
 describe('\n UuidTest', () => {

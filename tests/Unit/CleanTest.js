@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import { Clean } from '#src/Clean'
+import { Clean } from '#src/Helpers/Clean'
 
 describe('\n CleanTest', () => {
   it('should clean all falsy/empty values from array', () => {

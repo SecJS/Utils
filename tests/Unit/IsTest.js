@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import { Exception } from '#src/Exception'
-import { Is } from '#src/Is'
+import { Exception } from '#src/Helpers/Exception'
+import { Is } from '#src/Helpers/Is'
 
 describe('\n IsTest', () => {
   it('should verify if is a valid json string', async () => {

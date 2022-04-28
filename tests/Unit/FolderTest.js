@@ -9,9 +9,9 @@
 
 import { sep } from 'node:path'
 
-import { Path } from '#src/Path'
-import { File } from '#src/File'
-import { Folder } from '#src/Folder'
+import { Path } from '#src/Helpers/Path'
+import { File } from '#src/Helpers/File'
+import { Folder } from '#src/Helpers/Folder'
 import { NotFoundFolderException } from '#src/Exceptions/NotFoundFolderException'
 
 describe('\n FolderTest', () => {

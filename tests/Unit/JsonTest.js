@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import { Json } from '#src/Json'
-import { Exec } from '#src/Exec'
+import { Json } from '#src/Helpers/Json'
+import { Exec } from '#src/Helpers/Exec'
 
 describe('\n Json Class', () => {
   it('should return a deep copy from the object', async () => {

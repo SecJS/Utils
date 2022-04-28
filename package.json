@@ -1,6 +1,6 @@
 {
   "name": "@secjs/utils",
-  "version": "1.8.7",
+  "version": "1.8.8",
   "description": "Utils functions and classes for Node.js",
   "license": "MIT",
   "author": "João Lenon <lenon@athenna.io>",
@@ -27,14 +27,12 @@
     "src/*.js",
     "src/*.d.ts",
     "src/**/*.js",
-    "src/**/*.d.ts",
-    "*.js",
-    "*.d.ts"
+    "src/**/*.d.ts"
   ],
   "type": "module",
-  "main": "./index.js",
-  "types": "./index.d.ts",
-  "exports": "./index.js",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": "./src/index.js",
   "imports": {
     "#src/*": "./src/*.js",
     "#tests/*": "./tests/*.js"

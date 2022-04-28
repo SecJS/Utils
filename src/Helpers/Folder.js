@@ -21,12 +21,12 @@ import {
 import { randomBytes } from 'node:crypto'
 import { isAbsolute, join, parse, resolve, sep } from 'node:path'
 
-import { Json } from '#src/Json'
-import { File } from '#src/File'
-import { Parser } from '#src/Parser'
-import { Options } from '#src/Options'
+import { Json } from '#src/Helpers/Json'
+import { File } from '#src/Helpers/File'
+import { Parser } from '#src/Helpers/Parser'
+import { Options } from '#src/Helpers/Options'
 import { NotFoundFolderException } from '#src/Exceptions/NotFoundFolderException'
-import { Path } from '#src/Path'
+import { Path } from '#src/Helpers/Path'
 
 export class Folder {
   /**

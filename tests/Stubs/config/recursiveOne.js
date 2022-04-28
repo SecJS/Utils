@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import { Config } from '#src/Config'
+import { Config } from '#src/Helpers/Config'
 
 export default {
   value: Config.get('recursiveTwo.value'),

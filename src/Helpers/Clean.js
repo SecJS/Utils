@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import { Is } from '#src/Is'
+import { Is } from '#src/Helpers/Is'
 
 export class Clean {
   /**

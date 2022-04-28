@@ -12,9 +12,9 @@ import bytes from 'bytes'
 
 import { getReasonPhrase, getStatusCode } from 'http-status-codes'
 
-import { Is } from '#src/Is'
-import { String } from '#src/String'
-import { Options } from '#src/Options'
+import { Is } from '#src/Helpers/Is'
+import { String } from '#src/Helpers/String'
+import { Options } from '#src/Helpers/Options'
 import { InvalidNumberException } from '#src/Exceptions/InvalidNumberException'
 
 export class Parser {

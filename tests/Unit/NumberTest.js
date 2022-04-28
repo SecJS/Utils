@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import { Number } from '#src/Number'
+import { Number } from '#src/Helpers/Number'
 
 describe('\n Numbers Class', () => {
   it('should get the higher and lower number from an array of numbers', () => {

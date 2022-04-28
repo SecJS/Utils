@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import { Path } from '#src/Path'
-import { Folder } from '#src/Folder'
-import { Config } from '#src/Config'
+import { Path } from '#src/Helpers/Path'
+import { Folder } from '#src/Helpers/Folder'
+import { Config } from '#src/Helpers/Config'
 import { RecursiveConfigException } from '#src/Exceptions/RecursiveConfigException'
 import { ConfigNotNormalizedException } from '#src/Exceptions/ConfigNotNormalizedException'
 

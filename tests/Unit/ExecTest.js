@@ -7,10 +7,10 @@
  * file that was distributed with this source code.
  */
 
-import { Exec } from '#src/Exec'
-import { Path } from '#src/Path'
-import { File } from '#src/File'
-import { Folder } from '#src/Folder'
+import { Exec } from '#src/Helpers/Exec'
+import { Path } from '#src/Helpers/Path'
+import { File } from '#src/Helpers/File'
+import { Folder } from '#src/Helpers/Folder'
 import { NodeCommandException } from '#src/Exceptions/NodeCommandException'
 
 describe('\n ExecTest', () => {
@@ -83,7 +83,7 @@ describe('\n ExecTest', () => {
 
     expect(moduleDefault.name).toBe('SecJS')
 
-    const moduleFirstExport = await Exec.getModule(import('#src/Options'))
+    const moduleFirstExport = await Exec.getModule(import('#src/Helpers/Options'))
 
     expect(moduleFirstExport.name).toBe('Options')
   })

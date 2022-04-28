@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import { Uuid } from '#src/Uuid'
-import { Route } from '#src/Route'
+import { Uuid } from '#src/Helpers/Uuid'
+import { Route } from '#src/Helpers/Route'
 import { RouteMatchException } from '#src/Exceptions/RouteMatchException'
 
 describe('\n RouteTest', () => {

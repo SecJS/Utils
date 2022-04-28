@@ -26,12 +26,12 @@ import { lookup } from 'mime-types'
 import { randomBytes } from 'node:crypto'
 import { isAbsolute, parse, sep } from 'node:path'
 
-import { Json } from '#src/Json'
-import { Debug } from '#src/Debug'
-import { Parser } from '#src/Parser'
-import { Options } from '#src/Options'
+import { Json } from '#src/Helpers/Json'
+import { Debug } from '#src/Helpers/Debug'
+import { Parser } from '#src/Helpers/Parser'
+import { Options } from '#src/Helpers/Options'
 import { NotFoundFileException } from '#src/Exceptions/NotFoundFileException'
-import { Path } from '#src/Path'
+import { Path } from '#src/Helpers/Path'
 
 export class File {
   /**

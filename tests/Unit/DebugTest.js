@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import { Debug } from '#src/Debug'
+import { Debug } from '#src/Helpers/Debug'
 
 describe('\n DebugTest', () => {
   it('should be able to create debug logs in any namespace', () => {

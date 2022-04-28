@@ -8,7 +8,7 @@
  */
 
 import { v4 } from 'uuid'
-import { Is } from '#src/Is'
+import { Is } from '#src/Helpers/Is'
 import { InvalidUuidException } from '#src/Exceptions/InvalidUuidException'
 
 export class Uuid {

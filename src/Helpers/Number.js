@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import { Parser } from '#src/Parser'
+import { Parser } from '#src/Helpers/Parser'
 
 export class Number {
   /**
