@@ -62,7 +62,8 @@ export class Number {
   }
 
   /**
-   * Extract the first number inside a string.
+   * Extract all numbers inside a string and
+   * return as a unique number.
    *
    * @param {string} string
    * @return {number}

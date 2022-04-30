@@ -7,73 +7,73 @@
  * file that was distributed with this source code.
  */
 
-import { Uuid } from '#src/Helpers/Uuid'
-import { Route } from '#src/Helpers/Route'
+import { test } from '@japa/runner'
+import { Route, Uuid } from '#src/index'
 import { RouteMatchException } from '#src/Exceptions/RouteMatchException'
 
-describe('\n RouteTest', () => {
-  it('should get query params in string format from the route', () => {
+test.group('RouteTest', () => {
+  test('should get query params in string format from the route', async ({ assert }) => {
     const path = '/users/1/posts?page=1&limit=10&created_at=1995-12-17T03:24:00'
 
-    expect(Route.getQueryString(path)).toStrictEqual('?page=1&limit=10&created_at=1995-12-17T03:24:00')
+    assert.deepEqual(Route.getQueryString(path), '?page=1&limit=10&created_at=1995-12-17T03:24:00')
   })
 
-  it('should remove all query params from the route', () => {
+  test('should remove all query params from the route', async ({ assert }) => {
     const path = '/users/1/posts?page=1&limit=10&created_at=1995-12-17T03:24:00'
 
-    expect(Route.removeQueryParams(path)).toStrictEqual('/users/1/posts')
-    expect(Route.removeQueryParams(Route.removeQueryParams(path))).toStrictEqual('/users/1/posts')
+    assert.deepEqual(Route.removeQueryParams(path), '/users/1/posts')
+    assert.deepEqual(Route.removeQueryParams(Route.removeQueryParams(path)), '/users/1/posts')
   })
 
-  it('should get query params value from any route', () => {
+  test('should get query params value from any route', async ({ assert }) => {
     const path = '/users/1/posts?page=1&limit=10&created_at=1995-12-17T03:24:00'
 
-    expect(Route.getQueryParamsValue(path)).toStrictEqual({
+    assert.deepEqual(Route.getQueryParamsValue(path), {
       page: '1',
       limit: '10',
       created_at: '1995-12-17T03:24:00',
     })
   })
 
-  it('should return an empty object/array when route doesnt have query params', () => {
+  test('should return an empty object/array when route doesnt have query params', async ({ assert }) => {
     const path = '/users/1/posts'
 
-    expect(Route.getQueryParamsName(path)).toStrictEqual([])
-    expect(Route.getQueryParamsValue(path)).toStrictEqual({})
+    assert.deepEqual(Route.getQueryParamsName(path), [])
+    assert.deepEqual(Route.getQueryParamsValue(path), {})
   })
 
-  it('should get query params names from any route', () => {
+  test('should get query params names from any route', async ({ assert }) => {
     const path = '/users/1/posts?page=1&limit=10&created_at=1995-12-17T03:24:00'
 
-    expect(Route.getQueryParamsName(path)).toStrictEqual(['page', 'limit', 'created_at'])
+    assert.deepEqual(Route.getQueryParamsName(path), ['page', 'limit', 'created_at'])
   })
 
-  it('should get params value from any route', () => {
+  test('should get params value from any route', async ({ assert }) => {
     const pathWithParams = '/users/:id/posts/:post_id?page=1&limit=10'
     const pathWithValues = '/users/1/posts/2?page=1&limit=10'
 
-    expect(Route.getParamsValue(pathWithParams, pathWithValues)).toStrictEqual({
+    assert.deepEqual(Route.getParamsValue(pathWithParams, pathWithValues), {
       id: '1',
       post_id: '2',
     })
   })
 
-  it('should throw an route match exception when routes are different', () => {
+  test('should throw an route match exception when routes are different', async ({ assert }) => {
     const pathWithParams = '/users/:id/posts/:post_id'
     const pathWithValues = '/users/1/posts/2/extra'
 
     const useCase = () => Route.getParamsValue(pathWithParams, pathWithValues)
 
-    expect(useCase).toThrow(RouteMatchException)
+    assert.throws(useCase, RouteMatchException)
   })
 
-  it('should get params names from any route', () => {
+  test('should get params names from any route', async ({ assert }) => {
     const path = '/users/:id/posts/:post_id?page=1&limit=10'
 
-    expect(Route.getParamsName(path)).toStrictEqual(['id', 'post_id'])
+    assert.deepEqual(Route.getParamsName(path), ['id', 'post_id'])
   })
 
-  it('should create a matcher RegExp to recognize the route', () => {
+  test('should create a matcher RegExp to recognize the route', async ({ assert }) => {
     const path = '/users/:id/posts/:post_id?page=1&limit=10'
 
     const pathTest1 = '/users/1/posts/tests'
@@ -82,19 +82,19 @@ describe('\n RouteTest', () => {
 
     const matcher = Route.createMatcher(path)
 
-    expect(matcher).toStrictEqual(/^(?:\/users\b)(?:\/[\w-]+)(?:\/posts\b)(?:\/[\w-]+)$/)
-    expect(matcher.test(pathTest1)).toBe(true)
-    expect(matcher.test(pathTest2)).toBe(false)
-    expect(matcher.test(pathTest3)).toBe(true)
+    assert.deepEqual(matcher, /^(?:\/users\b)(?:\/[\w-]+)(?:\/posts\b)(?:\/[\w-]+)$/)
+    assert.isTrue(matcher.test(pathTest1))
+    assert.isFalse(matcher.test(pathTest2))
+    assert.isTrue(matcher.test(pathTest3))
 
     const path2 = '/'
 
     const matcher2 = Route.createMatcher(path2)
 
-    expect(matcher2).toStrictEqual(/^[/]$/)
-    expect(matcher2.test(path2)).toBe(true)
-    expect(matcher2.test(pathTest1)).toBe(false)
-    expect(matcher2.test(pathTest2)).toBe(false)
-    expect(matcher2.test(pathTest3)).toBe(false)
+    assert.deepEqual(matcher2, /^[/]$/)
+    assert.isTrue(matcher2.test(path2))
+    assert.isFalse(matcher2.test(pathTest1))
+    assert.isFalse(matcher2.test(pathTest2))
+    assert.isFalse(matcher2.test(pathTest3))
   })
 })

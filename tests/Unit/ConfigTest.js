@@ -7,14 +7,13 @@
  * file that was distributed with this source code.
  */
 
-import { Path } from '#src/Helpers/Path'
-import { Folder } from '#src/Helpers/Folder'
-import { Config } from '#src/Helpers/Config'
+import { test } from '@japa/runner'
+import { Path, Config, Folder } from '#src/index'
 import { RecursiveConfigException } from '#src/Exceptions/RecursiveConfigException'
 import { ConfigNotNormalizedException } from '#src/Exceptions/ConfigNotNormalizedException'
 
-describe('\n ConfigTest', () => {
-  beforeEach(async () => {
+test.group('ConfigTest', group => {
+  group.each.setup(async () => {
     Config.configs.clear()
 
     const config = new Config()
@@ -25,37 +24,39 @@ describe('\n ConfigTest', () => {
     await config.safeLoad(Path.config('database.js'))
   })
 
-  it('should be able to get configurations values from Config class', async () => {
+  group.each.teardown(async () => {
+    await Folder.safeRemove(Path.config())
+  })
+
+  test('should be able to get configurations values from Config class', ({ assert }) => {
     const appName = Config.get('app.name')
 
-    expect(appName).toBe('SecJS')
+    assert.equal(appName, 'SecJS')
   })
 
-  it('should be able to create a load chain when a configuration uses other configuration', async () => {
-    expect(Config.get('database.username')).toBe('SecJS')
-    expect(Config.get('app.name')).toBe('SecJS')
+  test('should be able to create a load chain when a configuration uses other configuration', ({ assert }) => {
+    assert.equal(Config.get('app.name'), 'SecJS')
+    assert.equal(Config.get('database.username'), 'SecJS')
   })
 
-  it('should throw an error when loading a file that is trying to use Config.get() to get information from other config file but this config file is trying to use Config.get() to this same file', async () => {
+  test('should throw an error when loading a file that is trying to use Config.get() to get information from other config file but this config file is trying to use Config.get() to this same file', async ({
+    assert,
+  }) => {
     const useCase = async () => await new Config().load(Path.config('recursiveOne.js'))
 
-    await expect(useCase()).rejects.toThrow(RecursiveConfigException)
+    await assert.rejects(useCase, RecursiveConfigException)
   })
 
-  it('should throw an error when trying to load a file that is not normalized', async () => {
+  test('should throw an error when trying to load a file that is not normalized', async ({ assert }) => {
     const useCase = async () => await new Config().load(Path.config('notNormalized.js'))
 
-    await expect(useCase()).rejects.toThrow(ConfigNotNormalizedException)
+    await assert.rejects(useCase, ConfigNotNormalizedException)
   })
 
-  it('should not load .map/.d.ts files', async () => {
+  test('should not load .map/.d.ts files', async ({ assert }) => {
     await new Config().load(Path.config('app.d.ts'))
     await new Config().load(Path.config('app.js.map'))
 
-    expect(Config.get('app.name')).toBe('SecJS')
-  })
-
-  afterEach(async () => {
-    await Folder.safeRemove(Path.config())
+    assert.equal(Config.get('app.name'), 'SecJS')
   })
 })

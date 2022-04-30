@@ -16,6 +16,7 @@ export class Debug {
   /**
    * Get the timestamp ms.
    *
+   * @private
    * @return {string}
    */
   static #getTimestamp() {

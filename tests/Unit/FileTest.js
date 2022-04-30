@@ -8,13 +8,11 @@
  */
 
 import { sep } from 'node:path'
-
-import { Path } from '#src/Helpers/Path'
-import { File } from '#src/Helpers/File'
-import { Folder } from '#src/Helpers/Folder'
+import { test } from '@japa/runner'
+import { File, Path, Folder } from '#src/index'
 import { NotFoundFileException } from '#src/Exceptions/NotFoundFileException'
 
-describe('\n FileTest', () => {
+test.group('FileTest', group => {
   /** @type {File} */
   let bigFile = null
 
@@ -24,7 +22,7 @@ describe('\n FileTest', () => {
   const bigFilePath = Path.storage('files/file.txt')
   const nonexistentFilePath = Path.storage('files/non-existent.txt')
 
-  beforeEach(async () => {
+  group.each.setup(async () => {
     await File.safeRemove(bigFilePath)
     await File.safeRemove(nonexistentFilePath)
     await Folder.safeRemove(Path.storage())
@@ -35,159 +33,168 @@ describe('\n FileTest', () => {
     nonexistentFile = new File(nonexistentFilePath, Buffer.from('Content'))
   })
 
-  it('should be able to verify if path is from file or directory', async () => {
-    expect(await File.isFile('../../tests')).toBeFalsy()
-    expect(await File.isFile('../../package.json')).toBeTruthy()
+  group.each.teardown(async () => {
+    await File.safeRemove(bigFilePath)
+    await File.safeRemove(nonexistentFilePath)
+    await Folder.safeRemove(Path.storage())
 
-    expect(File.isFileSync('../../tests')).toBeFalsy()
-    expect(File.isFileSync('../../package.json')).toBeTruthy()
+    bigFile = null
+    nonexistentFile = null
   })
 
-  it('should be able to create files with mocked values', async () => {
+  test('should be able to verify if path is from file or directory', async ({ assert }) => {
+    assert.isFalse(await File.isFile('../../tests'))
+    assert.isTrue(await File.isFile('../../package.json'))
+
+    assert.isFalse(File.isFileSync('../../tests'))
+    assert.isTrue(File.isFileSync('../../package.json'))
+  })
+
+  test('should be able to create files with mocked values', async ({ assert }) => {
     const mockedFile = new File(Path.storage('files/testing/.js'), Buffer.from('Content'), true)
 
-    expect(mockedFile.name).toBeTruthy()
-    expect(mockedFile.name).not.toBe('.js')
-    expect(mockedFile.name).not.toBe('testing')
+    assert.isDefined(mockedFile.name)
+    assert.notEqual(mockedFile.name, '.js')
+    assert.notEqual(mockedFile.name, 'testing')
   })
 
-  it('should throw an error when trying to create an instance of a file that doesnt exist', async () => {
+  test('should throw an error when trying to create an instance of a file that doesnt exist', async ({ assert }) => {
     const useCase = () => new File(Path.pwd('not-found.txt'))
 
-    expect(useCase).toThrow(NotFoundFileException)
+    assert.throws(useCase, NotFoundFileException)
   })
 
-  it('should be able to generate instance of files using relative paths', async () => {
+  test('should be able to generate instance of files using relative paths', async ({ assert }) => {
     const relativePathFile = new File('../../package.json')
 
-    expect(relativePathFile.fileExists).toBe(true)
-    expect(relativePathFile.base).toBe('package.json')
+    assert.isTrue(relativePathFile.fileExists)
+    assert.equal(relativePathFile.base, 'package.json')
   })
 
-  it('should generate an instance of a file, it existing or not', async () => {
-    expect(bigFile.path).toBe(bigFilePath)
-    expect(bigFile.mime).toBe('text/plain')
-    expect(bigFile.originalPath).toBe(bigFilePath)
-    expect(bigFile.originalFileExists).toBe(true)
-    expect(bigFile.dir).toBe(bigFilePath.replace(`${sep}file.txt`, ''))
+  test('should generate an instance of a file, it existing or not', async ({ assert }) => {
+    assert.equal(bigFile.path, bigFilePath)
+    assert.equal(bigFile.mime, 'text/plain')
+    assert.equal(bigFile.originalPath, bigFilePath)
+    assert.isTrue(bigFile.originalFileExists)
+    assert.equal(bigFile.dir, bigFilePath.replace(`${sep}file.txt`, ''))
 
-    expect(nonexistentFile.base).toBeTruthy()
-    expect(nonexistentFile.path).toBeTruthy()
-    expect(nonexistentFile.mime).toBe('text/plain')
-    expect(nonexistentFile.originalFileExists).toBe(false)
-    expect(nonexistentFile.originalPath).toBe(nonexistentFilePath)
-    expect(nonexistentFile.originalBase).toBe('non-existent.txt')
+    assert.isDefined(nonexistentFile.base)
+    assert.isDefined(nonexistentFile.path)
+    assert.equal(nonexistentFile.mime, 'text/plain')
+    assert.isFalse(nonexistentFile.originalFileExists)
+    assert.equal(nonexistentFile.originalPath, nonexistentFilePath)
+    assert.equal(nonexistentFile.originalBase, 'non-existent.txt')
   })
 
-  it('should only load the bigFile because it already exists', async () => {
-    expect(bigFile.content).toBeFalsy()
-    expect(bigFile.fileExists).toBe(true)
+  test('should only load the bigFile because it already exists', async ({ assert }) => {
+    assert.isUndefined(bigFile.content)
+    assert.isTrue(bigFile.fileExists)
 
     // Load the file because it already exists.
     bigFile.loadSync({ withContent: true })
 
-    expect(bigFile.content).toBeTruthy()
-    expect(bigFile.originalFileExists).toBe(true)
-    expect(bigFile.fileSize.includes('MB')).toBe(true)
-    expect(await File.exists(bigFile.path)).toBe(true)
+    assert.isDefined(bigFile.content)
+    assert.isTrue(bigFile.originalFileExists)
+    assert.isTrue(bigFile.fileSize.includes('MB'))
+    assert.isTrue(await File.exists(bigFile.path))
   })
 
-  it('should create the nonexistentFile because it doesnt exists', async () => {
-    expect(nonexistentFile.content).toBeTruthy()
-    expect(nonexistentFile.fileExists).toBe(false)
+  test('should create the nonexistentFile because it doesnt exists', async ({ assert }) => {
+    assert.isDefined(nonexistentFile.content)
+    assert.isFalse(nonexistentFile.fileExists)
 
     // Create the file because it doesn't exist.
     await nonexistentFile.load({ withContent: true })
 
-    expect(nonexistentFile.content).toBeTruthy()
-    expect(nonexistentFile.fileExists).toBe(true)
-    expect(nonexistentFile.originalFileExists).toBe(false)
-    expect(nonexistentFile.fileSize.includes('B')).toBe(true)
-    expect(await File.exists(nonexistentFile.path)).toBe(true)
+    assert.isDefined(nonexistentFile.content)
+    assert.isTrue(nonexistentFile.fileExists)
+    assert.isFalse(nonexistentFile.originalFileExists)
+    assert.isTrue(nonexistentFile.fileSize.includes('B'))
+    assert.isTrue(await File.exists(nonexistentFile.path))
   })
 
-  it('should be able to get the file information in JSON Format', async () => {
-    expect(bigFile.toJSON().name).toBe(bigFile.name)
-    expect(nonexistentFile.toJSON().name).toBe(nonexistentFile.name)
+  test('should be able to get the file information in JSON Format', async ({ assert }) => {
+    assert.equal(bigFile.toJSON().name, bigFile.name)
+    assert.equal(nonexistentFile.toJSON().name, nonexistentFile.name)
   })
 
-  it('should be able to remove files', async () => {
+  test('should be able to remove files', async ({ assert }) => {
     await bigFile.remove()
 
-    expect(await File.exists(bigFile.path)).toBe(false)
+    assert.isFalse(await File.exists(bigFile.path))
   })
 
-  it('should throw an not found exception when trying to remove bigFile', async () => {
+  test('should throw an not found exception when trying to remove bigFile', async ({ assert }) => {
     await bigFile.remove()
 
     const useCase = async () => await bigFile.remove()
 
-    await expect(useCase()).rejects.toThrow(NotFoundFileException)
+    await assert.rejects(useCase, NotFoundFileException)
   })
 
-  it('should throw an not found exception when trying to remove nonExistentFile', async () => {
+  test('should throw an not found exception when trying to remove nonExistentFile', async ({ assert }) => {
     const useCase = () => nonexistentFile.removeSync()
 
-    expect(useCase).toThrow(NotFoundFileException)
+    assert.throws(useCase, NotFoundFileException)
   })
 
-  it('should be able to make a copy of the file', async () => {
+  test('should be able to make a copy of the file', async ({ assert }) => {
     const copyOfBigFile = await bigFile.copy(Path.storage('files/testing/copy-big-file.txt'), {
       withContent: false,
     })
 
-    expect(await File.exists(bigFile.path)).toBeTruthy()
-    expect(await File.exists(copyOfBigFile.path)).toBeTruthy()
-    expect(copyOfBigFile.content).toBeFalsy()
-    expect(copyOfBigFile.isCopy).toBeTruthy()
+    assert.isDefined(await File.exists(bigFile.path))
+    assert.isDefined(await File.exists(copyOfBigFile.path))
+    assert.isUndefined(copyOfBigFile.content)
+    assert.isTrue(copyOfBigFile.isCopy)
 
     const copyOfNoExistFile = nonexistentFile.copySync(Path.storage('testing/copy-non-existent-file.txt'))
 
-    expect(await File.exists(nonexistentFile.path)).toBeTruthy()
-    expect(await File.exists(copyOfNoExistFile.path)).toBeTruthy()
-    expect(copyOfNoExistFile.content).toBeTruthy()
-    expect(copyOfNoExistFile.isCopy).toBeTruthy()
+    assert.isDefined(await File.exists(nonexistentFile.path))
+    assert.isDefined(await File.exists(copyOfNoExistFile.path))
+    assert.isDefined(copyOfNoExistFile.content)
+    assert.isTrue(copyOfNoExistFile.isCopy)
   })
 
-  it('should be able to move the file', async () => {
+  test('should be able to move the file', async ({ assert }) => {
     const moveOfBigFile = await bigFile.move(Path.storage('testing/move-big-file.txt'), {
       withContent: false,
     })
 
-    expect(await File.exists(bigFile.path)).toBeFalsy()
-    expect(await File.exists(moveOfBigFile.path)).toBeTruthy()
-    expect(moveOfBigFile.content).toBeFalsy()
+    assert.isFalse(await File.exists(bigFile.path))
+    assert.isDefined(await File.exists(moveOfBigFile.path))
+    assert.isUndefined(moveOfBigFile.content)
 
     const moveOfNoExistFile = nonexistentFile.moveSync(Path.storage('testing/move-non-existent-file.txt'))
 
-    expect(await File.exists(nonexistentFile.path)).toBeFalsy()
-    expect(await File.exists(moveOfNoExistFile.path)).toBeTruthy()
-    expect(moveOfNoExistFile.content).toBeTruthy()
+    assert.isFalse(await File.exists(nonexistentFile.path))
+    assert.isTrue(await File.exists(moveOfNoExistFile.path))
+    assert.isDefined(moveOfNoExistFile.content)
   })
 
-  it('should be able to append data to the file', async () => {
+  test('should be able to append data to the file', async ({ assert }) => {
     await bigFile.append('Hello World!')
     nonexistentFile.appendSync('Hello World!')
 
     const bigFileContent = await bigFile.getContent()
     const nonexistentFileContent = nonexistentFile.getContentSync()
 
-    expect(bigFileContent.toString().endsWith('Hello World!')).toBeTruthy()
-    expect(nonexistentFileContent.toString().endsWith('Hello World!')).toBeTruthy()
+    assert.isTrue(bigFileContent.toString().endsWith('Hello World!'))
+    assert.isTrue(nonexistentFileContent.toString().endsWith('Hello World!'))
   })
 
-  it('should be able to prepend data to the file', async () => {
+  test('should be able to prepend data to the file', async ({ assert }) => {
     await bigFile.prepend('Hello World!')
     nonexistentFile.prependSync('Hello World!')
 
     const bigFileContent = await bigFile.getContent()
     const nonexistentFileContent = nonexistentFile.getContentSync()
 
-    expect(bigFileContent.toString().startsWith('Hello World!')).toBeTruthy()
-    expect(nonexistentFileContent.toString().startsWith('Hello World!')).toBeTruthy()
+    assert.isTrue(bigFileContent.toString().startsWith('Hello World!'))
+    assert.isTrue(nonexistentFileContent.toString().startsWith('Hello World!'))
   })
 
-  it('should be able to get the file content separately', async () => {
+  test('should be able to get the file content separately', async ({ assert }) => {
     const bigFileContent = await bigFile.getContent()
     const nonexistentFileContent = nonexistentFile.getContentSync({ saveContent: true })
 
@@ -195,16 +202,7 @@ describe('\n FileTest', () => {
     await nonexistentFile.getContent({ saveContent: true })
     await nonexistentFile.getContent({ saveContent: true })
 
-    expect(bigFileContent).toBeInstanceOf(Buffer)
-    expect(nonexistentFileContent).toBeInstanceOf(Buffer)
-  })
-
-  afterEach(async () => {
-    await File.safeRemove(bigFilePath)
-    await File.safeRemove(nonexistentFilePath)
-    await Folder.safeRemove(Path.storage())
-
-    bigFile = null
-    nonexistentFile = null
+    assert.instanceOf(bigFileContent, Buffer)
+    assert.instanceOf(nonexistentFileContent, Buffer)
   })
 })

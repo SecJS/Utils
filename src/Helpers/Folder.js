@@ -226,6 +226,7 @@ export class Folder {
   /**
    * Parse the folder path.
    *
+   * @private
    * @param {string} folderPath
    * @return {{path: string, name: string, dir: string}}
    */
@@ -390,10 +391,10 @@ export class Folder {
       throw new NotFoundFolderException(this.name)
     }
 
-    this.createdAt = null
-    this.accessedAt = null
-    this.modifiedAt = null
-    this.folderSize = null
+    this.createdAt = undefined
+    this.accessedAt = undefined
+    this.modifiedAt = undefined
+    this.folderSize = undefined
     this.folderExists = false
     this.originalFolderExists = false
     this.files = []
@@ -412,10 +413,10 @@ export class Folder {
       throw new NotFoundFolderException(this.name)
     }
 
-    this.createdAt = null
-    this.accessedAt = null
-    this.modifiedAt = null
-    this.folderSize = null
+    this.createdAt = undefined
+    this.accessedAt = undefined
+    this.modifiedAt = undefined
+    this.folderSize = undefined
     this.folderExists = false
     this.originalFolderExists = false
     this.files = []

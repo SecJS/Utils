@@ -8,59 +8,60 @@
  */
 
 import { v4 } from 'uuid'
-import { Uuid } from '#src/Helpers/Uuid'
+import { Uuid } from '#src/index'
+import { test } from '@japa/runner'
 import { InvalidUuidException } from '#src/Exceptions/InvalidUuidException'
 
-describe('\n UuidTest', () => {
+test.group('UuidTest', () => {
   const uuid = v4()
 
-  it('should verify if uuid is a valid uuid even if it is prefixed', () => {
+  test('should verify if uuid is a valid uuid even if it is prefixed', async ({ assert }) => {
     const tokenPrefixed = Uuid.generate('tkn')
 
     const verify = Uuid.verify(uuid)
     const verifyError = Uuid.verify('falseUuid')
     const verifyPrefixed = Uuid.verify(tokenPrefixed, true)
 
-    expect(verify).toBe(true)
-    expect(verifyError).toBe(false)
-    expect(verifyPrefixed).toBe(true)
+    assert.isTrue(verify)
+    assert.isFalse(verifyError)
+    assert.isTrue(verifyPrefixed)
   })
 
-  it('should get only the token from prefixed uuid', () => {
+  test('should get only the token from prefixed uuid', async ({ assert }) => {
     const tokenUuid = Uuid.generate('tkn')
 
-    expect(Uuid.getToken(tokenUuid)).toBe(tokenUuid.replace('tkn::', ''))
+    assert.equal(Uuid.getToken(tokenUuid), tokenUuid.replace('tkn::', ''))
   })
 
-  it('should get only the prefix from prefixed uuid', () => {
+  test('should get only the prefix from prefixed uuid', async ({ assert }) => {
     const tokenUuid = Uuid.generate('tkn')
 
-    expect(Uuid.getPrefix(uuid)).toBe(null)
-    expect(Uuid.getPrefix(tokenUuid)).toBe('tkn')
+    assert.isNull(Uuid.getPrefix(uuid), null)
+    assert.equal(Uuid.getPrefix(tokenUuid), 'tkn')
   })
 
-  it('should inject the prefix in the token', () => {
+  test('should inject the prefix in the token', async ({ assert }) => {
     const tokenUuid = Uuid.generate()
     const injectedPrefix = Uuid.injectPrefix('tkn', tokenUuid)
     const tokenPrefixedChange = Uuid.changePrefix('any', injectedPrefix)
 
-    expect(injectedPrefix).toBe(`tkn::${tokenUuid}`)
-    expect(tokenPrefixedChange).toBe(`any::${tokenUuid}`)
+    assert.equal(injectedPrefix, `tkn::${tokenUuid}`)
+    assert.equal(tokenPrefixedChange, `any::${tokenUuid}`)
 
     const useCase = () => Uuid.injectPrefix('tkn', 'not-valid-uuid')
 
-    expect(useCase).toThrow(InvalidUuidException)
+    assert.throws(useCase, InvalidUuidException)
   })
 
-  it('should change or generate a new token', () => {
+  test('should change or generate a new token', async ({ assert }) => {
     const tokenGenerated = Uuid.changeOrGenerate('tkn', undefined)
     const tokenChanged = Uuid.changeOrGenerate('tkn', `ooo::${uuid}`)
 
-    expect(tokenGenerated).toBeTruthy()
-    expect(tokenChanged).toBe(`tkn::${uuid}`)
+    assert.isDefined(tokenGenerated)
+    assert.equal(tokenChanged, `tkn::${uuid}`)
 
     const useCase = () => Uuid.changePrefix('tkn', 'not-valid-uuid')
 
-    expect(useCase).toThrow(InvalidUuidException)
+    assert.throws(useCase, InvalidUuidException)
   })
 })

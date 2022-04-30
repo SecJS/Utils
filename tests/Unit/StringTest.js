@@ -7,58 +7,59 @@
  * file that was distributed with this source code.
  */
 
-import { String } from '#src/Helpers/String'
+import { test } from '@japa/runner'
+import { String } from '#src/index'
 import { OrdinalNanException } from '#src/Exceptions/OrdinalNanException'
 
-describe('\n StringTest', () => {
-  it('should generate random strings by size', async () => {
-    expect(String.generateRandom(10).length).toBe(10)
-    expect(String.generateRandom(20).length).toBe(20)
+test.group('\n StringTest', () => {
+  test('should generate random strings by size', async ({ assert }) => {
+    assert.lengthOf(String.generateRandom(10), 10)
+    assert.lengthOf(String.generateRandom(20), 20)
   })
 
-  it('should generate random colors in hexadecimal format', async () => {
-    expect(String.generateRandomColor()[0]).toBe('#')
-    expect(String.generateRandomColor()[0]).toBe('#')
-    expect(String.generateRandomColor()[0]).toBe('#')
+  test('should generate random colors in hexadecimal format', async ({ assert }) => {
+    assert.isTrue(String.generateRandomColor().startsWith('#'))
+    assert.isTrue(String.generateRandomColor().startsWith('#'))
+    assert.isTrue(String.generateRandomColor().startsWith('#'))
   })
 
-  it('should normalize a base64 string value', async () => {
-    expect(String.normalizeBase64('+++///===')).toBe('---___')
+  test('should normalize a base64 string value', async ({ assert }) => {
+    assert.equal(String.normalizeBase64('+++///==='), '---___')
   })
 
-  it('should change the case of the string', async () => {
+  test('should change the case of the string', async ({ assert }) => {
     const string = 'Hello world' // Sentence case
 
-    expect(String.toCamelCase(string)).toBe('helloWorld')
-    expect(String.toPascalCase(string)).toBe('HelloWorld')
-    expect(String.toSnakeCase(string)).toBe('hello_world')
-    expect(String.toSnakeCase(string, true)).toBe('Hello_World')
-    expect(String.toConstantCase(string)).toBe('HELLO_WORLD')
-    expect(String.toDotCase(string)).toBe('hello.world')
-    expect(String.toDotCase(string, true)).toBe('Hello.World')
-    expect(String.toSentenceCase(string)).toBe('Hello world')
-    expect(String.toSentenceCase(string, true)).toBe('Hello World')
-    expect(String.toNoCase(string)).toBe('hello world')
-    expect(String.toDashCase(string)).toBe('hello-world')
-    expect(String.toDashCase(string, true)).toBe('Hello-World')
+    assert.equal(String.toCamelCase(string), 'helloWorld')
+    assert.equal(String.toPascalCase(string), 'HelloWorld')
+    assert.equal(String.toSnakeCase(string), 'hello_world')
+    assert.equal(String.toSnakeCase(string, true), 'Hello_World')
+    assert.equal(String.toConstantCase(string), 'HELLO_WORLD')
+    assert.equal(String.toDotCase(string), 'hello.world')
+    assert.equal(String.toDotCase(string, true), 'Hello.World')
+    assert.equal(String.toSentenceCase(string), 'Hello world')
+    assert.equal(String.toSentenceCase(string, true), 'Hello World')
+    assert.equal(String.toNoCase(string), 'hello world')
+    assert.equal(String.toDashCase(string), 'hello-world')
+    assert.equal(String.toDashCase(string, true), 'Hello-World')
   })
 
-  it('should transform the string to singular, plural and ordinal', async () => {
+  test('should transform the string to singular, plural and ordinal', async ({ assert }) => {
     const string = 'Hello world'
 
-    expect(String.pluralize(string)).toBe('Hello worlds')
-    expect(String.singularize(String.pluralize(string))).toBe('Hello world')
+    assert.equal(String.pluralize(string), 'Hello worlds')
+    assert.equal(String.singularize(String.pluralize(string)), 'Hello world')
 
-    expect(String.ordinalize('1')).toBe('1st')
-    expect(String.ordinalize('2')).toBe('2nd')
-    expect(String.ordinalize('3')).toBe('3rd')
-    expect(String.ordinalize('0.1')).toBe('0.1th')
-    expect(String.ordinalize('10')).toBe('10th')
-    expect(String.ordinalize('100')).toBe('100th')
-    expect(String.ordinalize('1000')).toBe('1000th')
+    assert.equal(String.ordinalize('1'), '1st')
+    assert.equal(String.ordinalize('2'), '2nd')
+    assert.equal(String.ordinalize('3'), '3rd')
+    assert.equal(String.ordinalize('0.1'), '0.1th')
+    assert.equal(String.ordinalize('10'), '10th')
+    assert.equal(String.ordinalize('100'), '100th')
+    assert.equal(String.ordinalize('1000'), '1000th')
 
     const useCase = () => String.ordinalize(Number.NaN)
 
-    expect(useCase).toThrow(OrdinalNanException)
+    assert.throws(useCase, OrdinalNanException)
   })
 })

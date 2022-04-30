@@ -302,6 +302,7 @@ export class Path {
     const stack = callSite()
     const requester = dirname(stack[stackIndex].getFileName()).replace(
       'file://',
+      '',
     )
 
     const execDir = normalize(requester.concat(sep, normalize(subPath)))

@@ -7,10 +7,11 @@
  * file that was distributed with this source code.
  */
 
-import { Debug } from '#src/Helpers/Debug'
+import { test } from '@japa/runner'
+import { Debug } from '#src/index'
 
-describe('\n DebugTest', () => {
-  it('should be able to create debug logs in any namespace', () => {
+test.group('DebugTest', () => {
+  test('should be able to create debug logs in any namespace', () => {
     Debug.log('Hello debug API!')
     Debug.log({ hello: 'world' }, 'api:testing')
   })

@@ -43,7 +43,12 @@ export class File {
    * @param {boolean?} isCopy
    * @return {File}
    */
-  constructor(filePath, content = null, mockedValues = false, isCopy = false) {
+  constructor(
+    filePath,
+    content = undefined,
+    mockedValues = false,
+    isCopy = false,
+  ) {
     const { ext, dir, name, base, mime, path } = File.#parsePath(filePath)
 
     /** @type {string} */
@@ -172,7 +177,9 @@ export class File {
   }
 
   /**
+   * Parse the file path.
    *
+   * @private
    * @param {string} filePath
    * @return {{
    *   ext: string,
@@ -281,7 +288,7 @@ export class File {
     this.fileSize = Parser.sizeToByte(fileStat.size)
 
     if (!options.withContent) {
-      this.content = null
+      this.content = undefined
 
       return this
     }
@@ -322,7 +329,7 @@ export class File {
         writable.write(this.content)
 
         writable.end(() => {
-          this.content = null
+          this.content = undefined
           this.fileExists = true
 
           resolve(this)
@@ -344,7 +351,7 @@ export class File {
     this.fileSize = Parser.sizeToByte(fileStat.size)
 
     if (!options.withContent) {
-      this.content = null
+      this.content = undefined
 
       return this
     }
@@ -382,11 +389,11 @@ export class File {
       throw new NotFoundFileException(this.path)
     }
 
-    this.content = null
-    this.createdAt = null
-    this.accessedAt = null
-    this.modifiedAt = null
-    this.fileSize = null
+    this.content = undefined
+    this.createdAt = undefined
+    this.accessedAt = undefined
+    this.modifiedAt = undefined
+    this.fileSize = undefined
     this.fileExists = false
     this.originalFileExists = false
 
@@ -403,11 +410,11 @@ export class File {
       throw new NotFoundFileException(this.path)
     }
 
-    this.content = null
-    this.createdAt = null
-    this.accessedAt = null
-    this.modifiedAt = null
-    this.fileSize = null
+    this.content = undefined
+    this.createdAt = undefined
+    this.accessedAt = undefined
+    this.modifiedAt = undefined
+    this.fileSize = undefined
     this.fileExists = false
     this.originalFileExists = false
 
@@ -662,6 +669,7 @@ export class File {
   /**
    * Create file values.
    *
+   * @private
    * @param {boolean?} mockedValues
    * @return {void}
    */

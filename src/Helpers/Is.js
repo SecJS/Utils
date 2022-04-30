@@ -17,6 +17,7 @@ export class Is {
   /**
    * Return the kindOf.
    *
+   * @private
    * @param {any} value
    * @return {any}
    */

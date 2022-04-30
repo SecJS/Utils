@@ -7,21 +7,22 @@
  * file that was distributed with this source code.
  */
 
-import { Exception } from '#src/Helpers/Exception'
+import { test } from '@japa/runner'
+import { Exception } from '#src/index'
 
-describe('\n ExceptionTest', () => {
-  it('should be able to create a new exception', () => {
+test.group('ExceptionTest', () => {
+  test('should be able to create a new exception', async ({ assert }) => {
     const exception = new Exception('My custom instance error', 500)
 
     const errorJson = exception.toJSON()
 
-    expect(errorJson.code).toBe('EXCEPTION')
-    expect(errorJson.name).toBe('Exception')
-    expect(errorJson.status).toBe(500)
-    expect(errorJson.content).toBe('My custom instance error')
+    assert.equal(errorJson.status, 500)
+    assert.equal(errorJson.code, 'EXCEPTION')
+    assert.equal(errorJson.name, 'Exception')
+    assert.equal(errorJson.content, 'My custom instance error')
   })
 
-  it('should be able to extend exception class to create a new exception', () => {
+  test('should be able to extend exception class to create a new exception', async ({ assert }) => {
     class InternalServerException extends Exception {
       constructor(content = 'Internal Server Error', status = 500) {
         super(content, status, 'E_RUNTIME_EXCEPTION', 'Restart computer.')
@@ -32,14 +33,14 @@ describe('\n ExceptionTest', () => {
 
     const errorJson = exception.toJSON(false)
 
-    expect(errorJson.stack).toBeFalsy()
-    expect(errorJson.code).toBe('E_RUNTIME_EXCEPTION')
-    expect(errorJson.name).toBe('InternalServerException')
-    expect(errorJson.status).toBe(500)
-    expect(errorJson.content).toBe('Internal Server Error')
+    assert.isUndefined(errorJson.stack)
+    assert.equal(errorJson.status, 500)
+    assert.equal(errorJson.code, 'E_RUNTIME_EXCEPTION')
+    assert.equal(errorJson.name, 'InternalServerException')
+    assert.equal(errorJson.content, 'Internal Server Error')
   })
 
-  it('should be able to pretiffy the exception', async () => {
+  test('should be able to pretiffy the exception', async ({ assert }) => {
     class InternalServerException extends Exception {
       constructor(content = 'Internal Server Error.', status = 500) {
         super(content, status, 'E_RUNTIME_EXCEPTION', 'Restart your computer, works always. 👍')
@@ -50,7 +51,7 @@ describe('\n ExceptionTest', () => {
 
     const prettyError = await exception.prettify()
 
-    expect(prettyError).toBeTruthy()
-    expect(typeof prettyError).toBe('string')
+    assert.isDefined(prettyError)
+    assert.typeOf(prettyError, 'string')
   })
 })

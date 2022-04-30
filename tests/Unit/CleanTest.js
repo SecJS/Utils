@@ -7,20 +7,21 @@
  * file that was distributed with this source code.
  */
 
-import { Clean } from '#src/Helpers/Clean'
+import { test } from '@japa/runner'
+import { Clean } from '#src/index'
 
-describe('\n CleanTest', () => {
-  it('should clean all falsy/empty values from array', () => {
+test.group('CleanTest', () => {
+  test('should clean all falsy/empty values from array', ({ assert }) => {
     const array = [1, null, 2, undefined, 3, { joao: 'joao', lenon: null }, '', {}]
 
     Clean.cleanArray(array)
-    expect(array).toStrictEqual([1, 2, 3, { joao: 'joao', lenon: null }, {}])
+    assert.deepEqual(array, [1, 2, 3, { joao: 'joao', lenon: null }, {}])
 
     Clean.cleanArray(array, true, true)
-    expect(array).toStrictEqual([1, 2, 3, { joao: 'joao' }])
+    assert.deepEqual(array, [1, 2, 3, { joao: 'joao' }])
   })
 
-  it('should clean all falsy/empty values from object', () => {
+  test('should clean all falsy/empty values from object', ({ assert }) => {
     const object = {
       a: 'a',
       b: 'b',
@@ -35,7 +36,7 @@ describe('\n CleanTest', () => {
 
     Clean.cleanObject(object)
 
-    expect(object).toStrictEqual({
+    assert.deepEqual(object, {
       a: 'a',
       b: 'b',
       c: 'c',
@@ -47,7 +48,7 @@ describe('\n CleanTest', () => {
 
     Clean.cleanObject(object, true, true)
 
-    expect(object).toStrictEqual({
+    assert.deepEqual(object, {
       a: 'a',
       b: 'b',
       c: 'c',

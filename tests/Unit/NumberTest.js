@@ -7,20 +7,18 @@
  * file that was distributed with this source code.
  */
 
-import { Number } from '#src/Helpers/Number'
+import { test } from '@japa/runner'
+import { Number } from '#src/index'
 
-describe('\n Numbers Class', () => {
-  it('should get the higher and lower number from an array of numbers', () => {
+test.group('Numbers Class', () => {
+  test('should get the higher and lower number from an array of numbers', async ({ assert }) => {
     const numbersArray = [1, 2, 3, 4, 5]
 
-    const lower = Number.getLower(numbersArray)
-    const higher = Number.getHigher(numbersArray)
-
-    expect(lower).toBe(1)
-    expect(higher).toBe(5)
+    assert.equal(Number.getLower(numbersArray), 1)
+    assert.equal(Number.getHigher(numbersArray), 5)
   })
 
-  it('should get km radius between two coordinates', () => {
+  test('should get km radius between two coordinates', async ({ assert }) => {
     const first = Number.getKmRadius(
       { latitude: -25503207, longitude: -545390592 },
       { latitude: -25503207, longitude: -545390592 },
@@ -30,33 +28,33 @@ describe('\n Numbers Class', () => {
       { latitude: -254957901, longitude: -545671577 },
     )
 
-    expect(first).toBe(0)
-    expect(second).toBe(5338.683217695541)
+    assert.equal(first, 0)
+    assert.equal(second, 5338.683217695541)
   })
 
-  it('should extract all numbers inside of a string in number and array format', () => {
+  test('should extract all numbers inside of a string in number and array format', async ({ assert }) => {
     const stringWithNumbers =
-      "My name is João Lenon and I've 20 years old and I've been living in Foz do Iguaçu for 18 years"
+      "My name is João Lenon and I've 21 years old and I've been living in Foz do Iguaçu for 19 years"
 
-    const twentyNumber = Number.extractNumber(stringWithNumbers)
+    const oneBigNumber = Number.extractNumber(stringWithNumbers)
     const numbersArray = Number.extractNumbers(stringWithNumbers)
 
-    expect(twentyNumber).toBe(2018)
-    expect(numbersArray).toStrictEqual([20, 18])
+    assert.equal(oneBigNumber, 2119)
+    assert.deepEqual(numbersArray, [21, 19])
   })
 
-  it('should get the average of numbers by args or array of numbers', () => {
+  test('should get the average of numbers by args or array of numbers', async ({ assert }) => {
     const arrayNumbers = [1, 2, 3, 4, 5]
 
     const argsAverage = Number.argsAverage(arrayNumbers[0], arrayNumbers[1])
     const arrayAverage = Number.arrayAverage(arrayNumbers)
 
-    expect(argsAverage).toBe(1.5)
-    expect(arrayAverage).toBe(3)
+    assert.equal(argsAverage, 1.5)
+    assert.equal(arrayAverage, 3)
   })
 
-  it('should generate a random integer between two integer values', () => {
-    expect(Number.randomIntFromInterval(0, 0)).toBeFalsy()
-    expect(Number.randomIntFromInterval(1, 10)).toBeTruthy()
+  test('should generate a random integer between two integer values', async ({ assert }) => {
+    assert.isNumber(Number.randomIntFromInterval(0, 0))
+    assert.isNumber(Number.randomIntFromInterval(1, 10))
   })
 })

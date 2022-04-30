@@ -7,186 +7,186 @@
  * file that was distributed with this source code.
  */
 
-import { Exception } from '#src/Helpers/Exception'
-import { Is } from '#src/Helpers/Is'
+import { test } from '@japa/runner'
+import { Is, Exception } from '#src/index'
 
-describe('\n IsTest', () => {
-  it('should verify if is a valid json string', async () => {
-    expect(Is.Json('')).toBeFalsy()
-    expect(Is.Json('Hello')).toBeFalsy()
-    expect(Is.Json('[]')).toBeTruthy()
-    expect(Is.Json('{}')).toBeTruthy()
-    expect(Is.Json(JSON.stringify({ hello: 'world' }))).toBeTruthy()
+test.group('\n IsTest', () => {
+  test('should verify if is a valid json string', async ({ assert }) => {
+    assert.isFalse(Is.Json(''))
+    assert.isFalse(Is.Json('Hello'))
+    assert.isTrue(Is.Json('[]'))
+    assert.isTrue(Is.Json('{}'))
+    assert.isTrue(Is.Json(JSON.stringify({ hello: 'world' })))
   })
 
-  it('should verify if is a valid ip address', async () => {
-    expect(Is.Ip('')).toBeFalsy()
-    expect(Is.Ip(' ')).toBeFalsy()
-    expect(Is.Ip('http://localhost:3000')).toBeFalsy()
-    expect(Is.Ip('http://127.0.0.1')).toBeTruthy()
-    expect(Is.Ip('https://127.0.0.1:1335')).toBeTruthy()
-    expect(Is.Ip('127.0.0.1')).toBeTruthy()
+  test('should verify if is a valid ip address', async ({ assert }) => {
+    assert.isFalse(Is.Ip(''))
+    assert.isFalse(Is.Ip(' '))
+    assert.isFalse(Is.Ip('http://localhost:3000'))
+    assert.isTrue(Is.Ip('http://127.0.0.1'))
+    assert.isTrue(Is.Ip('https://127.0.0.1:1335'))
+    assert.isTrue(Is.Ip('127.0.0.1'))
   })
 
-  it('should verify if is a valid uuid', async () => {
-    expect(Is.Uuid('')).toBeFalsy()
-    expect(Is.Uuid(' ')).toBeFalsy()
-    expect(Is.Uuid('50bc9524-c4b3-11ec-9d64-0242ac120002')).toBeTruthy()
-    expect(Is.Uuid('ath-50bc9524-c4b3-11ec-9d64-0242ac120002')).toBeFalsy()
+  test('should verify if is a valid uuid', async ({ assert }) => {
+    assert.isFalse(Is.Uuid(''))
+    assert.isFalse(Is.Uuid(' '))
+    assert.isTrue(Is.Uuid('50bc9524-c4b3-11ec-9d64-0242ac120002'))
+    assert.isFalse(Is.Uuid('ath-50bc9524-c4b3-11ec-9d64-0242ac120002'))
   })
 
-  it('should verify if is an empty string', async () => {
-    expect(Is.Empty(0)).toBeTruthy()
-    expect(Is.Empty(1)).toBeFalsy()
-    expect(Is.Empty('')).toBeTruthy()
-    expect(Is.Empty(' ')).toBeTruthy()
-    expect(Is.Empty('hello')).toBeFalsy()
+  test('should verify if is an empty string', async ({ assert }) => {
+    assert.isTrue(Is.Empty(0))
+    assert.isFalse(Is.Empty(1))
+    assert.isTrue(Is.Empty(''))
+    assert.isTrue(Is.Empty(' '))
+    assert.isFalse(Is.Empty('hello'))
   })
 
-  it('should verify if is an empty number', async () => {
-    expect(Is.Empty(0)).toBeTruthy()
-    expect(Is.Empty(10)).toBeFalsy()
+  test('should verify if is an empty number', async ({ assert }) => {
+    assert.isTrue(Is.Empty(0))
+    assert.isFalse(Is.Empty(10))
   })
 
-  it('should verify if is an empty object', async () => {
-    expect(Is.Empty({})).toBeTruthy()
-    expect(Is.Empty({ hello: 'world' })).toBeFalsy()
+  test('should verify if is an empty object', async ({ assert }) => {
+    assert.isTrue(Is.Empty({}))
+    assert.isFalse(Is.Empty({ hello: 'world' }))
   })
 
-  it('should verify if is an empty array', async () => {
-    expect(Is.Empty([])).toBeTruthy()
-    expect(Is.Empty([null])).toBeFalsy()
-    expect(Is.Empty([{ hello: 'world' }])).toBeFalsy()
+  test('should verify if is an empty array', async ({ assert }) => {
+    assert.isTrue(Is.Empty([]))
+    assert.isFalse(Is.Empty([null]))
+    assert.isFalse(Is.Empty([{ hello: 'world' }]))
   })
 
-  it('should verify if is a valid cep', async () => {
-    expect(Is.Cep(0)).toBeFalsy()
-    expect(Is.Cep('')).toBeFalsy()
-    expect(Is.Cep(43710130)).toBeTruthy()
-    expect(Is.Cep('43710-130')).toBeTruthy()
+  test('should verify if is a valid cep', async ({ assert }) => {
+    assert.isFalse(Is.Cep(0))
+    assert.isFalse(Is.Cep(''))
+    assert.isTrue(Is.Cep(43710130))
+    assert.isTrue(Is.Cep('43710-130'))
   })
 
-  it('should verify if is a valid cnpj', async () => {
-    expect(Is.Cpf(0)).toBeFalsy()
-    expect(Is.Cpf('')).toBeFalsy()
-    expect(Is.Cpf(52946109062)).toBeTruthy()
-    expect(Is.Cpf('529.461.090-62')).toBeTruthy()
+  test('should verify if is a valid cnpj', async ({ assert }) => {
+    assert.isFalse(Is.Cpf(0))
+    assert.isFalse(Is.Cpf(''))
+    assert.isTrue(Is.Cpf(52946109062))
+    assert.isTrue(Is.Cpf('529.461.090-62'))
   })
 
-  it('should verify if is a valid async function', async () => {
-    expect(Is.Async(0)).toBeFalsy()
-    expect(Is.Async('')).toBeFalsy()
-    expect(Is.Async(() => '')).toBeFalsy()
-    expect(Is.Async(async () => '')).toBeTruthy()
-    expect(Is.Async(() => new Promise(resolve => resolve))).toBeTruthy()
+  test('should verify if is a valid async function', async ({ assert }) => {
+    assert.isFalse(Is.Async(0))
+    assert.isFalse(Is.Async(''))
+    assert.isFalse(Is.Async(() => ''))
+    assert.isTrue(Is.Async(async () => ''))
+    assert.isTrue(Is.Async(() => new Promise(resolve => resolve)))
   })
 
-  it('should verify if is a valid cnpj', async () => {
-    expect(Is.Cnpj(0)).toBeFalsy()
-    expect(Is.Cnpj('')).toBeFalsy()
-    expect(Is.Cnpj(23984398000143)).toBeTruthy()
-    expect(Is.Cnpj('31.017.771/0001-15')).toBeTruthy()
+  test('should verify if is a valid cnpj', async ({ assert }) => {
+    assert.isFalse(Is.Cnpj(0))
+    assert.isFalse(Is.Cnpj(''))
+    assert.isTrue(Is.Cnpj(23984398000143))
+    assert.isTrue(Is.Cnpj('31.017.771/0001-15'))
   })
 
-  it('should verify if is a valid undefined', async () => {
-    expect(Is.Undefined(0)).toBeFalsy()
-    expect(Is.Undefined('')).toBeFalsy()
-    expect(Is.Undefined(undefined)).toBeTruthy()
+  test('should verify if is a valid undefined', async ({ assert }) => {
+    assert.isFalse(Is.Undefined(0))
+    assert.isFalse(Is.Undefined(''))
+    assert.isTrue(Is.Undefined(undefined))
   })
 
-  it('should verify if is a valid null', async () => {
-    expect(Is.Null(0)).toBeFalsy()
-    expect(Is.Null('')).toBeFalsy()
-    expect(Is.Null(null)).toBeTruthy()
+  test('should verify if is a valid null', async ({ assert }) => {
+    assert.isFalse(Is.Null(0))
+    assert.isFalse(Is.Null(''))
+    assert.isTrue(Is.Null(null))
   })
 
-  it('should verify if is a valid boolean', async () => {
-    expect(Is.Boolean(0)).toBeFalsy()
-    expect(Is.Boolean('')).toBeFalsy()
-    expect(Is.Boolean(true)).toBeTruthy()
-    expect(Is.Boolean(false)).toBeTruthy()
+  test('should verify if is a valid boolean', async ({ assert }) => {
+    assert.isFalse(Is.Boolean(0))
+    assert.isFalse(Is.Boolean(''))
+    assert.isTrue(Is.Boolean(true))
+    assert.isTrue(Is.Boolean(false))
   })
 
-  it('should verify if is a valid buffer', async () => {
-    expect(Is.Buffer(0)).toBeFalsy()
-    expect(Is.Buffer('')).toBeFalsy()
-    expect(Is.Buffer(Buffer.from('Hello World'))).toBeTruthy()
+  test('should verify if is a valid buffer', async ({ assert }) => {
+    assert.isFalse(Is.Buffer(0))
+    assert.isFalse(Is.Buffer(''))
+    assert.isTrue(Is.Buffer(Buffer.from('Hello World')))
   })
 
-  it('should verify if is a valid number', async () => {
-    expect(Is.Number(0)).toBeTruthy()
-    expect(Is.Number('')).toBeFalsy()
-    expect(Is.Number(-10)).toBeTruthy()
+  test('should verify if is a valid number', async ({ assert }) => {
+    assert.isTrue(Is.Number(0))
+    assert.isFalse(Is.Number(''))
+    assert.isTrue(Is.Number(-10))
   })
 
-  it('should verify if is a valid string', async () => {
-    expect(Is.String(0)).toBeFalsy()
-    expect(Is.String('')).toBeTruthy()
-    expect(Is.String('hello world')).toBeTruthy()
+  test('should verify if is a valid string', async ({ assert }) => {
+    assert.isFalse(Is.String(0))
+    assert.isTrue(Is.String(''))
+    assert.isTrue(Is.String('hello world'))
   })
 
-  it('should verify if is a valid object', async () => {
-    expect(Is.Object(0)).toBeFalsy()
-    expect(Is.Object({ hello: 'world' })).toBeTruthy()
-    expect(Is.Object('hello world')).toBeFalsy()
-    expect(Is.Object(JSON.stringify({ hello: 'world' }))).toBeFalsy()
+  test('should verify if is a valid object', async ({ assert }) => {
+    assert.isFalse(Is.Object(0))
+    assert.isTrue(Is.Object({ hello: 'world' }))
+    assert.isFalse(Is.Object('hello world'))
+    assert.isFalse(Is.Object(JSON.stringify({ hello: 'world' })))
   })
 
-  it('should verify if is a valid date', async () => {
-    expect(Is.Date(0)).toBeFalsy()
-    expect(Is.Date(new Date())).toBeTruthy()
-    expect(Is.Date(new Date().getTime())).toBeFalsy()
+  test('should verify if is a valid date', async ({ assert }) => {
+    assert.isFalse(Is.Date(0))
+    assert.isTrue(Is.Date(new Date()))
+    assert.isFalse(Is.Date(new Date().getTime()))
   })
 
-  it('should verify if is a valid array', async () => {
-    expect(Is.Array(0)).toBeFalsy()
-    expect(Is.Array('')).toBeFalsy()
-    expect(Is.Array([''])).toBeTruthy()
+  test('should verify if is a valid array', async ({ assert }) => {
+    assert.isFalse(Is.Array(0))
+    assert.isFalse(Is.Array(''))
+    assert.isTrue(Is.Array(['']))
   })
 
-  it('should verify if is a valid regexp', async () => {
-    expect(Is.Regexp(0)).toBeFalsy()
-    expect(Is.Regexp('')).toBeFalsy()
-    expect(Is.Regexp(/g/)).toBeTruthy()
+  test('should verify if is a valid regexp', async ({ assert }) => {
+    assert.isFalse(Is.Regexp(0))
+    assert.isFalse(Is.Regexp(''))
+    assert.isTrue(Is.Regexp(/g/))
     // eslint-disable-next-line prefer-regex-literals
-    expect(Is.Regexp(new RegExp(''))).toBeTruthy()
+    assert.isTrue(Is.Regexp(new RegExp('')))
   })
 
-  it('should verify if is a valid error', async () => {
-    expect(Is.Error(0)).toBeFalsy()
-    expect(Is.Error('')).toBeFalsy()
-    expect(Is.Error(new Error())).toBeTruthy()
-    expect(Is.Error(new Exception('Test'))).toBeTruthy()
+  test('should verify if is a valid error', async ({ assert }) => {
+    assert.isFalse(Is.Error(0))
+    assert.isFalse(Is.Error(''))
+    assert.isTrue(Is.Error(new Error()))
+    assert.isTrue(Is.Error(new Exception('Test')))
   })
 
-  it('should verify if is a valid function', async () => {
-    expect(Is.Function(0)).toBeFalsy()
-    expect(Is.Function('')).toBeFalsy()
-    expect(Is.Function(() => '')).toBeTruthy()
-    expect(
+  test('should verify if is a valid function', async ({ assert }) => {
+    assert.isFalse(Is.Function(0))
+    assert.isFalse(Is.Function(''))
+    assert.isTrue(Is.Function(() => ''))
+    assert.isTrue(
       Is.Function(function test() {
         return ''
       }),
-    ).toBeTruthy()
+    )
   })
 
-  it('should verify if is a valid class', async () => {
-    expect(Is.Class(0)).toBeFalsy()
-    expect(Is.Class('')).toBeFalsy()
-    expect(Is.Class(Exception)).toBeTruthy()
+  test('should verify if is a valid class', async ({ assert }) => {
+    assert.isFalse(Is.Class(0))
+    assert.isFalse(Is.Class(''))
+    assert.isTrue(Is.Class(Exception))
   })
 
-  it('should verify if is a valid integer', async () => {
-    expect(Is.Integer(0)).toBeTruthy()
-    expect(Is.Integer(1.2)).toBeFalsy()
+  test('should verify if is a valid integer', async ({ assert }) => {
+    assert.isTrue(Is.Integer(0))
+    assert.isFalse(Is.Integer(1.2))
   })
 
-  it('should verify if is a valid float', async () => {
-    expect(Is.Float(0)).toBeFalsy()
-    expect(Is.Float(1.2)).toBeTruthy()
+  test('should verify if is a valid float', async ({ assert }) => {
+    assert.isFalse(Is.Float(0))
+    assert.isTrue(Is.Float(1.2))
   })
 
-  it('should verify if is a valid array of objects', async () => {
+  test('should verify if is a valid array of objects', async ({ assert }) => {
     const data = [
       {
         hello: 'hello',
@@ -196,11 +196,11 @@ describe('\n IsTest', () => {
       },
     ]
 
-    expect(Is.ArrayOfObjects(0)).toBeFalsy()
-    expect(Is.ArrayOfObjects('')).toBeFalsy()
-    expect(Is.ArrayOfObjects([])).toBeFalsy()
-    expect(Is.ArrayOfObjects([1, 2, 3])).toBeFalsy()
-    expect(Is.ArrayOfObjects(['', '', ''])).toBeFalsy()
-    expect(Is.ArrayOfObjects(data)).toBeTruthy()
+    assert.isFalse(Is.ArrayOfObjects(0))
+    assert.isFalse(Is.ArrayOfObjects(''))
+    assert.isFalse(Is.ArrayOfObjects([]))
+    assert.isFalse(Is.ArrayOfObjects([1, 2, 3]))
+    assert.isFalse(Is.ArrayOfObjects(['', '', '']))
+    assert.isTrue(Is.ArrayOfObjects(data))
   })
 })

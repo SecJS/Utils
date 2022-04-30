@@ -7,11 +7,11 @@
  * file that was distributed with this source code.
  */
 
-import { Json } from '#src/Helpers/Json'
-import { Exec } from '#src/Helpers/Exec'
+import { test } from '@japa/runner'
+import { Exec, Json } from '#src/index'
 
-describe('\n Json Class', () => {
-  it('should return a deep copy from the object', async () => {
+test.group('Json Class', () => {
+  test('should return a deep copy from the object', async ({ assert }) => {
     const object = {
       test: 'hello',
       hello: () => 'hy',
@@ -22,43 +22,41 @@ describe('\n Json Class', () => {
     objectCopy.test = 'hello from copy'
     objectCopy.hello = () => 'hy from copy'
 
-    expect(object.test).toBe('hello')
-    expect(object.hello()).toBe('hy')
-    expect(objectCopy.test).toBe('hello from copy')
-    expect(objectCopy.hello()).toBe('hy from copy')
+    assert.equal(object.test, 'hello')
+    assert.equal(object.hello(), 'hy')
+    assert.equal(objectCopy.test, 'hello from copy')
+    assert.equal(objectCopy.hello(), 'hy from copy')
   })
 
-  it('should return all json found inside of the string', () => {
+  test('should return all json found inside of the string', async ({ assert }) => {
     const text = 'this is a string with a json inside of it {"text":"hello"} and one more json {"hello":"world"}'
 
-    expect(Json.getJson(text)).toStrictEqual(['{"text":"hello"}', '{"hello":"world"}'])
+    assert.deepEqual(Json.getJson(text), ['{"text":"hello"}', '{"hello":"world"}'])
   })
 
-  it('should return null if JSON parse goes wrong', () => {
+  test('should return null if JSON parse goes wrong', async ({ assert }) => {
     const text = 'a string that is not a valid JSON'
 
-    expect(Json.parse(text)).toBe(null)
+    assert.isNull(Json.parse(text))
   })
 
-  it('should return the object when string is a valid JSON', () => {
+  test('should return the object when string is a valid JSON', async ({ assert }) => {
     const text = '{"text":"hello"}'
 
-    expect(Json.parse(text)).toStrictEqual({ text: 'hello' })
+    assert.deepEqual(Json.parse(text), { text: 'hello' })
   })
 
-  it('should clean data object removing all keys that are not in key array', async () => {
+  test('should clean data object removing all keys that are not in key array', async ({ assert }) => {
     const data = {
       hello: 'hello',
       world: 'world',
     }
 
-    expect(Json.fillable(data, ['world'])).toStrictEqual({ world: 'world' })
-    expect(Json.fillable(data, ['world', 'someNullWord'])).toStrictEqual({
-      world: 'world',
-    })
+    assert.deepEqual(Json.fillable(data, ['world']), { world: 'world' })
+    assert.deepEqual(Json.fillable(data, ['world', 'someNullWord']), { world: 'world' })
   })
 
-  it('should be able to observe changes of an object', async () => {
+  test('should be able to observe changes of an object', async ({ assert }) => {
     const object = {
       joao: 'lenon',
       hello: 'world',
@@ -67,10 +65,10 @@ describe('\n Json Class', () => {
     const objectProxy = Json.observeChanges(
       object,
       (value, arg1, arg2, arg3) => {
-        expect(value).toBe('oi')
-        expect(arg1).toBe(1)
-        expect(arg2).toBe(2)
-        expect(arg3).toBe(3)
+        assert.equal(value, 'oi')
+        assert.equal(arg1, 1)
+        assert.equal(arg2, 2)
+        assert.equal(arg3, 3)
       },
       1,
       2,
@@ -82,23 +80,21 @@ describe('\n Json Class', () => {
     await Exec.sleep(2000)
   })
 
-  it('should be able to remove duplicated values from array', async () => {
+  test('should be able to remove duplicated values from array', async ({ assert }) => {
     const array = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5]
 
-    const newArray = Json.removeDuplicated(array)
-
-    expect(newArray).toStrictEqual([1, 2, 3, 4, 5])
+    assert.deepEqual(Json.removeDuplicated(array), [1, 2, 3, 4, 5])
   })
 
-  it('should be able to sort any value from the array', async () => {
+  test('should be able to sort any value from the array', async ({ assert }) => {
     const array = [1, 2, 3, 4, 5]
 
     const sortedValue = Json.sort(array)
 
-    expect(array.find(a => a === sortedValue)).toBeTruthy()
+    assert.isDefined(array.find(a => a === sortedValue))
   })
 
-  it('should be able to get nested properties from object', async () => {
+  test('should be able to get nested properties from object', async ({ assert }) => {
     const object = {
       hello: {
         world: {
@@ -113,8 +109,8 @@ describe('\n Json Class', () => {
     const undefinedValue = Json.get(object, 'hello.worlld.value.hello')
     const defaultValue = Json.get(object, 'hello.worlld.value.hello', 'Hi World!')
 
-    expect(value).toBe('Hello World!')
-    expect(defaultValue).toBe('Hi World!')
-    expect(undefinedValue).toBe(undefined)
+    assert.equal(value, 'Hello World!')
+    assert.equal(defaultValue, 'Hi World!')
+    assert.isUndefined(undefinedValue)
   })
 })

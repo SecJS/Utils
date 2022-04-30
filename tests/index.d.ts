@@ -155,34 +155,6 @@ export declare class Exec {
 }
 
 export declare class File {
-  public originalDir: string
-
-  public originalName: string
-
-  public originalBase: string
-
-  public originalPath: string
-
-  public dir: string
-
-  public name: string
-
-  public base: string
-
-  public path: string
-
-  public isCopy: boolean
-
-  public originalFileExists: boolean
-
-  public fileExists: boolean
-
-  public content: Buffer
-
-  public mime: string
-
-  public extension: string
-
   constructor(
     filePath: string,
     content?: Buffer,
@@ -249,24 +221,6 @@ export declare class File {
 }
 
 export declare class Folder {
-  public originalDir: string
-
-  public originalName: string
-
-  public originalPath: string
-
-  public dir: string
-
-  public name: string
-
-  public path: string
-
-  public isCopy: boolean
-
-  public originalFolderExists: boolean
-
-  public folderExists: boolean
-
   constructor(folderPath: string, mockedValues?: boolean, isCopy?: boolean)
 
   static folderSizeSync(folderPath: string): number

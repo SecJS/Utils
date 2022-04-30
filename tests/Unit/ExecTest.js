@@ -7,43 +7,45 @@
  * file that was distributed with this source code.
  */
 
-import { Exec } from '#src/Helpers/Exec'
-import { Path } from '#src/Helpers/Path'
-import { File } from '#src/Helpers/File'
-import { Folder } from '#src/Helpers/Folder'
+import { test } from '@japa/runner'
+import { Exec, File, Path, Folder } from '#src/index'
 import { NodeCommandException } from '#src/Exceptions/NodeCommandException'
 
-describe('\n ExecTest', () => {
-  it('should be able to sleep the code for some ms', async () => {
+test.group('ExecTest', group => {
+  group.each.teardown(async () => {
+    await Folder.safeRemove(Path.storage())
+  })
+
+  test('should be able to sleep the code for some ms', async () => {
     await Exec.sleep(10)
   })
 
-  it('should be able to execute a command in the VM and get the stdout', async () => {
+  test('should be able to execute a command in the VM and get the stdout', async ({ assert }) => {
     const { stdout } = await Exec.command('ls')
 
-    expect(stdout.includes('README.md')).toBe(true)
+    assert.isTrue(stdout.includes('README.md'))
   })
 
-  it('should throw an node exec exception when command fails', async () => {
+  test('should throw an node exec exception when command fails', async ({ assert }) => {
     const useCase = async () => await Exec.command('echo "error thrown" && exit 255')
 
-    await expect(useCase).rejects.toThrow(NodeCommandException)
+    await assert.rejects(useCase, NodeCommandException)
   })
 
-  it('should be able to execute a command that throws errors and ignore it', async () => {
+  test('should be able to execute a command that throws errors and ignore it', async ({ assert }) => {
     const { stdout } = await Exec.command('echo "error thrown" && exit 255', { ignoreErrors: true })
 
-    expect(stdout.includes('error thrown')).toBe(true)
+    assert.isTrue(stdout.includes('error thrown'))
   })
 
-  it('should be able to download files', async () => {
+  test('should be able to download files', async ({ assert }) => {
     const file = await Exec.download('node.pkg', Path.storage('downloads'), 'https://nodejs.org/dist/latest/node.pkg')
 
-    expect(file.base).toBe('node.pkg')
-    expect(await File.exists(file.path)).toBeTruthy()
+    assert.equal(file.base, 'node.pkg')
+    assert.isTrue(await File.exists(file.path))
   })
 
-  it('should be able to paginate a collection of data', async () => {
+  test('should be able to paginate a collection of data', async ({ assert }) => {
     let i = 0
     const collection = []
 
@@ -62,15 +64,15 @@ describe('\n ExecTest', () => {
       resourceUrl: 'https://my-api.com/products',
     })
 
-    expect(paginatedData.data).toStrictEqual(collection)
-    expect(paginatedData.meta).toStrictEqual({
+    assert.deepEqual(paginatedData.data, collection)
+    assert.deepEqual(paginatedData.meta, {
       itemCount: 10,
       totalItems: 11,
       totalPages: 2,
       currentPage: 0,
       itemsPerPage: 10,
     })
-    expect(paginatedData.links).toStrictEqual({
+    assert.deepEqual(paginatedData.links, {
       first: 'https://my-api.com/products?limit=10',
       previous: 'https://my-api.com/products?page=0&limit=10',
       next: 'https://my-api.com/products?page=1&limit=10',
@@ -78,17 +80,13 @@ describe('\n ExecTest', () => {
     })
   })
 
-  it('should be able to get the module first export match or default', async () => {
+  test('should be able to get the module first export match or default', async ({ assert }) => {
     const moduleDefault = await Exec.getModule(import('../Stubs/config/app.js'))
 
-    expect(moduleDefault.name).toBe('SecJS')
+    assert.equal(moduleDefault.name, 'SecJS')
 
     const moduleFirstExport = await Exec.getModule(import('#src/Helpers/Options'))
 
-    expect(moduleFirstExport.name).toBe('Options')
-  })
-
-  afterEach(async () => {
-    await Folder.safeRemove(Path.storage())
+    assert.equal(moduleFirstExport.name, 'Options')
   })
 })
