@@ -170,6 +170,8 @@ export declare class File {
   public base: string
 
   public path: string
+  
+  public href: string
 
   public isCopy: boolean
 

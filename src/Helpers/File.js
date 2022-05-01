@@ -23,15 +23,16 @@ import {
 } from 'node:fs'
 
 import { lookup } from 'mime-types'
+import { pathToFileURL } from 'node:url'
 import { randomBytes } from 'node:crypto'
 import { isAbsolute, parse, sep } from 'node:path'
 
+import { Path } from '#src/Helpers/Path'
 import { Json } from '#src/Helpers/Json'
 import { Debug } from '#src/Helpers/Debug'
 import { Parser } from '#src/Helpers/Parser'
 import { Options } from '#src/Helpers/Options'
 import { NotFoundFileException } from '#src/Exceptions/NotFoundFileException'
-import { Path } from '#src/Helpers/Path'
 
 export class File {
   /**
@@ -238,6 +239,7 @@ export class File {
       name: this.name,
       base: this.base,
       path: this.path,
+      href: this.href,
       mime: this.mime,
       createdAt: this.createdAt,
       accessedAt: this.accessedAt,
@@ -682,6 +684,7 @@ export class File {
       this.name = buffer.toString('base64').replace(/[^a-zA-Z0-9]/g, '')
       this.base = this.name + this.extension
       this.path = this.dir + '/' + this.base
+      this.href = pathToFileURL(this.path).href
 
       return
     }
