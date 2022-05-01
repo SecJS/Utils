@@ -249,6 +249,10 @@ export declare class File {
 }
 
 export declare class Folder {
+  public files: File[]
+
+  public folders: Folder[]
+
   public originalDir: string
 
   public originalName: string
