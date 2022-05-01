@@ -693,5 +693,6 @@ export class File {
     this.name = this.originalName
     this.base = this.originalBase
     this.path = this.originalPath
+    this.href = pathToFileURL(this.path).href
   }
 }
