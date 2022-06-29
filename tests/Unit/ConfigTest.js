@@ -8,12 +8,14 @@
  */
 
 import { test } from '@japa/runner'
-import { Path, Config, Folder } from '#src/index'
+import { Config, Folder, Path } from '#src/index'
 import { RecursiveConfigException } from '#src/Exceptions/RecursiveConfigException'
 import { ConfigNotNormalizedException } from '#src/Exceptions/ConfigNotNormalizedException'
 
 test.group('ConfigTest', group => {
   group.each.setup(async () => {
+    process.env.NODE_ENV = 'test'
+
     Config.configs.clear()
 
     const config = new Config()
@@ -58,5 +60,20 @@ test.group('ConfigTest', group => {
     await new Config().load(Path.config('app.js.map'))
 
     assert.equal(Config.get('app.name'), 'SecJS')
+  })
+
+  test('should be able to reload configuration values', async ({ assert }) => {
+    assert.equal(Config.get('app.env'), 'test')
+
+    process.env.NODE_ENV = 'example'
+
+    Config.configs.clear()
+
+    const config = new Config()
+
+    await config.safeLoad(Path.config('app.js'))
+    await config.safeLoad(Path.config('database.js'))
+
+    assert.equal(Config.get('app.env'), 'example')
   })
 })
