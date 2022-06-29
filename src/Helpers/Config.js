@@ -99,6 +99,9 @@ export class Config {
     }
 
     Debug.log(`Loading ${path} configuration file`, 'api:configurations')
-    Config.configs.set(name, (await import(file.href)).default)
+    Config.configs.set(
+      name,
+      (await import(`${file.href}?version=${Math.random()}${ext}`)).default,
+    )
   }
 }
