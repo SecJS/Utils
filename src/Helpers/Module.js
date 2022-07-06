@@ -157,11 +157,12 @@ export class Module {
   /**
    * Create the __dirname property. Set in global if necessary.
    *
-   * @param {boolean} setInGlobal
+   * @param {string} [url]
+   * @param {boolean} [setInGlobal]
    * @return {string}
    */
-  static createDirname(setInGlobal = false) {
-    const __dirname = dirname(Module.createFilename(false))
+  static createDirname(url = import.meta.url, setInGlobal = false) {
+    const __dirname = dirname(Module.createFilename(url, false))
 
     if (setInGlobal) {
       global.__dirname = __dirname
@@ -173,11 +174,12 @@ export class Module {
   /**
    * Create the __filename property. Set in global if necessary.
    *
-   * @param {boolean} setInGlobal
+   * @param {string} [url]
+   * @param {boolean} [setInGlobal]
    * @return {string}
    */
-  static createFilename(setInGlobal = false) {
-    const __filename = fileURLToPath(import.meta.url)
+  static createFilename(url = import.meta.url, setInGlobal = false) {
+    const __filename = fileURLToPath(url)
 
     if (setInGlobal) {
       global.__filename = __filename

@@ -435,9 +435,9 @@ export class Module {
 
   static import(path: string): Promise<any>
 
-  static createDirname(setInGlobal?: boolean): string
+  static createDirname(url?: string, setInGlobal?: boolean): string
 
-  static createFilename(setInGlobal?: boolean): string
+  static createFilename(url?: string, setInGlobal?: boolean): string
 }
 
 
