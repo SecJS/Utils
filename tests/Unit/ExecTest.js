@@ -8,7 +8,7 @@
  */
 
 import { test } from '@japa/runner'
-import { Exec, File, Path, Folder } from '#src/index'
+import { Exec, File, Folder, Path } from '#src/index'
 import { NodeCommandException } from '#src/Exceptions/NodeCommandException'
 
 test.group('ExecTest', group => {
@@ -78,15 +78,5 @@ test.group('ExecTest', group => {
       next: 'https://my-api.com/products?page=1&limit=10',
       last: 'https://my-api.com/products?page=2&limit=10',
     })
-  })
-
-  test('should be able to get the module first export match or default', async ({ assert }) => {
-    const moduleDefault = await Exec.getModule(import('../Stubs/config/app.js'))
-
-    assert.equal(moduleDefault.name, 'SecJS')
-
-    const moduleFirstExport = await Exec.getModule(import('#src/Helpers/Options'))
-
-    assert.equal(moduleFirstExport.name, 'Options')
   })
 })

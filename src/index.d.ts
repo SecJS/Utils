@@ -150,8 +150,6 @@ export declare class Exec {
     total: number,
     pagination: PaginationContract,
   ): PaginatedResponse
-
-  static getModule(module: any | Promise<any>): Promise<any>
 }
 
 export declare class File {
@@ -170,7 +168,7 @@ export declare class File {
   public base: string
 
   public path: string
-  
+
   public href: string
 
   public isCopy: boolean
@@ -415,6 +413,33 @@ export declare class Json {
 
   static get(object: any, key: string, defaultValue?: any): any | undefined
 }
+
+export class Module {
+  static get(module: any | Promise<any>): Promise<any>
+
+  static getWithAlias(module: any | Promise<any>, subAlias: string): Promise<{ alias: string, module: any }>
+
+  static getAll(modules: any[] | Promise<any[]>): Promise<any[]>
+
+  static getAllWithAlias(modules: any[] | Promise<any[]>, subAlias: string): Promise<{ alias: string, module: any }[]>
+
+  static getFrom(path: string): Promise<any>
+
+  static getFromWithAlias(path: string, subAlias: string): Promise<{ alias: string, module: any }>
+
+  static getAllFrom(path: string): Promise<any>
+
+  static getAllFromWithAlias(path: string, subAlias: string): Promise<{ alias: string, module: any }[]>
+
+  static getAllJSFilesFrom(path: string): Promise<File[]>
+
+  static import(path: string): Promise<any>
+
+  static createDirname(setInGlobal?: boolean): string
+
+  static createFilename(setInGlobal?: boolean): string
+}
+
 
 export declare class Number {
   static getHigher(numbers: number[]): number

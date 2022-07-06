@@ -481,6 +481,81 @@ console.log(sortedValue) // a, b or c
 
 ---
 
+### Module
+
+> Use Module to resolve modules exports, import modules using hrefs' ensuring compatibility between OS's, creating
+> aliases for your modules exports and creating __filename and __dirname properties.
+
+```ts
+import { Module } from '@secjs/utils'
+
+const module = await Module.get(import('#src/Helpers/Options'))
+
+console.log(module.name) // Options
+```
+
+```ts
+import { Module } from '@secjs/utils'
+
+const modules = await Module.getAll([import('#src/Helpers/Number'), import('#src/Helpers/Options')])
+
+console.log(modules[0].name) // Number
+console.log(modules[1].name) // Options
+```
+
+```ts
+import { Module } from '@secjs/utils'
+
+const modules = await Module.getAllWithAlias([
+  import('#src/Helpers/Number'),
+  import('#src/Helpers/Options')
+], 'App/Helpers')
+
+console.log(modules[0].module.name) // Number
+console.log(modules[0].alias) // 'App/Helpers/Number'
+
+console.log(modules[1].module.name) // Options
+console.log(modules[1].alias) // 'App/Helpers/Options'
+```
+
+```ts
+import { Path, Module } from '@secjs/utils'
+
+const module = await Module.getFrom(Path.config('app.js'))
+
+console.log(module.name) // Athenna
+console.log(module.description) // Athenna application
+console.log(module.environment) // production
+```
+
+```ts
+import { Path, Module } from '@secjs/utils'
+
+const modules = await Module.getAllFromWithAlias(Path.config(), 'App/Configs')
+const appConfigFile = module[0].module
+const appConfigAlias = module[0].alias
+
+console.log(appConfigAlias) // App/Configs/App
+console.log(appConfigFile.name) // Athenna
+console.log(appConfigFile.description) // Athenna application
+console.log(appConfigFile.environment) // production
+```
+
+```ts
+import { Module } from '@secjs/utils'
+
+const setInGlobalTrue = true
+const setInGlobalFalse = false
+
+const dirname = Module.createDirname(setInGlobalFalse)
+const filename = Module.createFilename(setInGlobalTrue)
+
+console.log(__dirname) // Error! __dirname is not defined in global
+console.log(__filename) // '/Users/...'
+```
+
+---
+
 ### Route
 
 > Use Route to manipulate paths, getParams, getQueryParams, create route matcher RegExp etc.
