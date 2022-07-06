@@ -70,14 +70,14 @@ test.group('ExecTest', group => {
   })
 
   test('should be able to create __filename property inside node global', async ({ assert }) => {
-    Module.createFilename(true)
+    Module.createFilename(import.meta.url, true)
 
-    assert.isTrue(__filename.includes('Module.js'))
+    assert.isTrue(__filename.includes('ModuleTest.js'))
   })
 
   test('should be able to create __dirname property inside node global', async ({ assert }) => {
-    Module.createDirname(true)
+    Module.createDirname(import.meta.url, true)
 
-    assert.isTrue(__dirname.includes('Helpers'))
+    assert.isTrue(__dirname.includes('Unit'))
   })
 })

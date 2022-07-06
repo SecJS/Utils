@@ -547,8 +547,8 @@ import { Module } from '@secjs/utils'
 const setInGlobalTrue = true
 const setInGlobalFalse = false
 
-const dirname = Module.createDirname(setInGlobalFalse)
-const filename = Module.createFilename(setInGlobalTrue)
+const dirname = Module.createDirname(import.meta.url, setInGlobalFalse)
+const filename = Module.createFilename(import.meta.url, setInGlobalTrue)
 
 console.log(__dirname) // Error! __dirname is not defined in global
 console.log(__filename) // '/Users/...'
