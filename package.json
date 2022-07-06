@@ -1,6 +1,6 @@
 {
   "name": "@secjs/utils",
-  "version": "1.9.4",
+  "version": "1.9.5",
   "description": "Utils functions and classes for Node.js",
   "license": "MIT",
   "author": "João Lenon <lenon@athenna.io>",
@@ -64,7 +64,7 @@
     "@japa/run-failed-tests": "1.0.7",
     "@japa/runner": "2.0.7",
     "@japa/spec-reporter": "1.1.12",
-    "@otris/jsdoc-tsd": "^2.0.11",
+    "@otris/jsdoc-tsd": "2.0.11",
     "c8": "7.11.2",
     "commitizen": "4.2.4",
     "cross-env": "7.0.3",

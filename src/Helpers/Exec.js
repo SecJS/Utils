@@ -146,20 +146,4 @@ export class Exec {
 
     return { meta, links, data }
   }
-
-  /**
-   * Get the module first export match or default.
-   *
-   * @param {any,Promise<any>} module
-   * @return {Promise<any>}
-   */
-  static async getModule(module) {
-    module = await module
-
-    if (module.default) {
-      return module.default
-    }
-
-    return module[Object.keys(module)[0]]
-  }
 }
