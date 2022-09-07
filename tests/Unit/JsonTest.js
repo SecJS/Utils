@@ -108,9 +108,13 @@ test.group('Json Class', () => {
     const value = Json.get(object, 'hello.world.value.hello')
     const undefinedValue = Json.get(object, 'hello.worlld.value.hello')
     const defaultValue = Json.get(object, 'hello.worlld.value.hello', 'Hi World!')
+    const fullObject = Json.get(object, '*')
+    const defaultValueInObjectNull = Json.get(undefined, '*', { hello: 'world' })
 
     assert.equal(value, 'Hello World!')
     assert.equal(defaultValue, 'Hi World!')
     assert.isUndefined(undefinedValue)
+    assert.deepEqual(object, fullObject)
+    assert.deepEqual(defaultValueInObjectNull, { hello: 'world' })
   })
 })
