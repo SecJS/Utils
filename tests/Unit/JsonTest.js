@@ -86,12 +86,12 @@ test.group('Json Class', () => {
     assert.deepEqual(Json.removeDuplicated(array), [1, 2, 3, 4, 5])
   })
 
-  test('should be able to sort any value from the array', async ({ assert }) => {
+  test('should be able to raffle any value from the array', async ({ assert }) => {
     const array = [1, 2, 3, 4, 5]
 
-    const sortedValue = Json.sort(array)
+    const raffledValue = Json.raffle(array)
 
-    assert.isDefined(array.find(a => a === sortedValue))
+    assert.isDefined(array.find(a => a === raffledValue))
   })
 
   test('should be able to get nested properties from object', async ({ assert }) => {

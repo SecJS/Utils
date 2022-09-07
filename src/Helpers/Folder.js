@@ -33,8 +33,8 @@ export class Folder {
    * Creates a new instance of Folder.
    *
    * @param {string} folderPath
-   * @param {boolean} mockedValues
-   * @param {boolean} isCopy
+   * @param {boolean} [mockedValues]
+   * @param {boolean} [isCopy]
    * @return {Folder}
    */
   constructor(folderPath, mockedValues = false, isCopy = false) {
@@ -168,7 +168,7 @@ export class Folder {
    * Get sub files of folder.
    *
    * @param {Folder[]} folders
-   * @param {string?} pattern
+   * @param {string} [pattern]
    * @return {File[]}
    */
   static #getSubFiles(folders, pattern) {
@@ -200,7 +200,7 @@ export class Folder {
    *
    * @param {Folder} folder
    * @param {boolean} recursive
-   * @param {string?} pattern
+   * @param {string} [pattern]
    * @return {Folder[]}
    */
   static #getSubFolders(folder, recursive, pattern) {
@@ -294,7 +294,7 @@ export class Folder {
    *   withSub?: boolean,
    *   withFileContent?: boolean,
    *   isInternalLoad?: boolean,
-   * }?} options
+   * }} [options]
    * @return {Folder}
    */
   loadSync(options) {
@@ -341,7 +341,7 @@ export class Folder {
    *   withSub?: boolean,
    *   withFileContent?: boolean,
    *   isInternalLoad?: boolean,
-   * }?} options
+   * }} [options]
    * @return {Promise<Folder>}
    */
   async load(options) {
@@ -433,7 +433,7 @@ export class Folder {
    *   withSub?: boolean,
    *   withFileContent?: boolean,
    *   mockedValues?: boolean
-   * }?} options
+   * }} [options]
    * @return {Folder}
    */
   copySync(path, options) {
@@ -481,7 +481,7 @@ export class Folder {
    *   withSub?: boolean,
    *   withFileContent?: boolean,
    *   mockedValues?: boolean
-   * }?} options
+   * }} [options]
    * @return {Promise<Folder>}
    */
   async copy(path, options) {
@@ -533,7 +533,7 @@ export class Folder {
    *   withSub?: boolean,
    *   withFileContent?: boolean,
    *   mockedValues?: boolean
-   * }?} options
+   * }} [options]
    * @return {Folder}
    */
   moveSync(path, options) {
@@ -583,7 +583,7 @@ export class Folder {
    *   withSub?: boolean,
    *   withFileContent?: boolean,
    *   mockedValues?: boolean
-   * }?} options
+   * }} [options]
    * @return {Promise<Folder>}
    */
   async move(path, options) {
@@ -632,8 +632,8 @@ export class Folder {
   /**
    * Get all the files of folder using glob pattern.
    *
-   * @param {string?} pattern
-   * @param {boolean?} recursive
+   * @param {string} [pattern]
+   * @param {boolean} [recursive]
    * @return {File[]}
    */
   getFilesByPattern(pattern, recursive = false) {
@@ -665,8 +665,8 @@ export class Folder {
   /**
    * Get all the folders of folder using glob pattern.
    *
-   * @param {string?} pattern
-   * @param {boolean?} recursive
+   * @param {string} [pattern]
+   * @param {boolean} [recursive]
    * @return {Folder[]}
    */
   getFoldersByPattern(pattern, recursive = false) {

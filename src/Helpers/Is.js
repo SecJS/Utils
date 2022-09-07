@@ -76,7 +76,7 @@ export class Is {
   /**
    * Verify if is valid Empty.
    *
-   * @param {string, Object, Array} value
+   * @param {string|any|any[]} value
    * @return {boolean}
    */
   static Empty(value) {
@@ -102,7 +102,7 @@ export class Is {
   /**
    * Verify if is a valid Cep.
    *
-   * @param {string, number} cep
+   * @param {string|number} cep
    * @return {boolean}
    */
   static Cep(cep) {
@@ -114,7 +114,7 @@ export class Is {
   /**
    * Verify if is a valid Cpf.
    *
-   * @param {string, number} cpf
+   * @param {string|number} cpf
    * @return {boolean}
    */
   static Cpf(cpf) {
@@ -126,7 +126,7 @@ export class Is {
   /**
    * Verify if is a valid Cnpj.
    *
-   * @param {string, number} cnpj
+   * @param {string|number} cnpj
    * @return {boolean}
    */
   static Cnpj(cnpj) {

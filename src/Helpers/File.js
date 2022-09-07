@@ -39,9 +39,9 @@ export class File {
    * Creates a new instance of File.
    *
    * @param {string} filePath
-   * @param {Buffer?} content
-   * @param {boolean?} mockedValues
-   * @param {boolean?} isCopy
+   * @param {Buffer} [content]
+   * @param {boolean} [mockedValues]
+   * @param {boolean} [isCopy]
    * @return {File}
    */
   constructor(
@@ -262,7 +262,7 @@ export class File {
    * @param {{
    *   withContent?: boolean,
    *   isInternalLoad?: boolean
-   * }?} options
+   * }} [options]
    * @return {File}
    */
   loadSync(options) {
@@ -313,7 +313,7 @@ export class File {
    * @param {{
    *   withContent?: boolean,
    *   isInternalLoad?: boolean
-   * }?} options
+   * }} [options]
    * @return {Promise<File>}
    */
   async load(options) {
@@ -430,7 +430,7 @@ export class File {
    * @param {{
    *   withContent?: boolean,
    *   mockedValues?: boolean
-   * }?} options
+   * }} [options]
    * @return {File}
    */
   copySync(path, options) {
@@ -458,7 +458,7 @@ export class File {
    * @param {{
    *   withContent?: boolean,
    *   mockedValues?: boolean
-   * }?} options
+   * }} [options]
    * @return {Promise<File>}
    */
   async copy(path, options) {
@@ -486,7 +486,7 @@ export class File {
    * @param {{
    *   withContent?: boolean,
    *   mockedValues?: boolean
-   * }?} options
+   * }} [options]
    * @return {File}
    */
   moveSync(path, options) {
@@ -518,7 +518,7 @@ export class File {
    * @param {{
    *   withContent?: boolean,
    *   mockedValues?: boolean
-   * }?} options
+   * }} [options]
    * @return {Promise<File>}
    */
   async move(path, options) {
@@ -614,7 +614,7 @@ export class File {
    *
    * @param {{
    *   saveContent?: boolean
-   * }?} options
+   * }} [options]
    * @return {Buffer}
    */
   getContentSync(options) {
@@ -636,7 +636,7 @@ export class File {
    *
    * @param {{
    *   saveContent?: boolean
-   * }?} options
+   * }} [options]
    * @return {Promise<Buffer>}
    */
   async getContent(options) {

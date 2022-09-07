@@ -26,7 +26,7 @@ export class Config {
    * Get the value from configuration files.
    *
    * @param {string} key
-   * @param {any?} defaultValue
+   * @param {any} [defaultValue]
    * @return {any}
    */
   static get(key, defaultValue = undefined) {

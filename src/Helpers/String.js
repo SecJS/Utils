@@ -61,7 +61,7 @@ export class String {
    * Transforms the string to "snake_case".
    *
    * @param {string} value
-   * @param {boolean?} capitalize
+   * @param {boolean} [capitalize]
    * @return {string}
    */
   static toSnakeCase(value, capitalize) {
@@ -98,7 +98,7 @@ export class String {
    * Transforms the string to "Sentence case".
    *
    * @param {string} value
-   * @param {boolean?} capitalize
+   * @param {boolean} [capitalize]
    * @return {string}
    */
   static toSentenceCase(value, capitalize) {
@@ -113,7 +113,7 @@ export class String {
    * Transforms the string to "dot.case".
    *
    * @param {string} value
-   * @param {boolean?} capitalize
+   * @param {boolean} [capitalize]
    * @return {string}
    */
   static toDotCase(value, capitalize) {
@@ -140,7 +140,7 @@ export class String {
    * Transforms a string to "dash-case"
    *
    * @param {string} value
-   * @param {boolean} capitalize
+   * @param {boolean} [capitalize]
    * @return {string}
    */
   static toDashCase(value, capitalize) {

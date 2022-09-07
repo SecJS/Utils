@@ -14,8 +14,8 @@ export class Clean {
    * Remove all falsy values from array.
    *
    * @param {any[]} array
-   * @param {boolean?} removeEmpty
-   * @param {boolean?} cleanInsideObjects
+   * @param {boolean} [removeEmpty]
+   * @param {boolean} [cleanInsideObjects]
    * @return {any[]}
    */
   static cleanArray(array, removeEmpty = false, cleanInsideObjects = false) {
@@ -47,8 +47,8 @@ export class Clean {
    * Remove all falsy values from object.
    *
    * @param {any} object
-   * @param {boolean?} removeEmpty
-   * @param {boolean?} cleanInsideArrays
+   * @param {boolean} [removeEmpty]
+   * @param {boolean} [cleanInsideArrays]
    * @return {any}
    */
   static cleanObject(object, removeEmpty = false, cleanInsideArrays = false) {

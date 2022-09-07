@@ -16,7 +16,7 @@ export class Uuid {
    * Verify if string is a valid uuid.
    *
    * @param {string} token
-   * @param {boolean?} isPrefixed
+   * @param {boolean} [isPrefixed]
    * @return {boolean}
    */
   static verify(token, isPrefixed = false) {
@@ -30,7 +30,7 @@ export class Uuid {
   /**
    * Generate an uuid token
    *
-   * @param {string?} prefix
+   * @param {string} [prefix]
    * @return {string}
    */
   static generate(prefix) {
@@ -116,7 +116,6 @@ export class Uuid {
    *
    * @param {string} prefix
    * @param {string?} token
-   * @throws {InvalidUuidException}
    * @return {string}
    */
   static changeOrGenerate(prefix, token) {

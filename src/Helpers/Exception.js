@@ -18,10 +18,10 @@ export class Exception extends Error {
   /**
    * Creates a new instance of Exception.
    *
-   * @param {string?} content
-   * @param {number?} status
-   * @param {string?} code
-   * @param {string?} help
+   * @param {string} [content]
+   * @param {number} [status]
+   * @param {string} [code]
+   * @param {string} [help]
    * @return {Exception}
    */
   constructor(content, status = 500, code, help) {
@@ -70,7 +70,7 @@ export class Exception extends Error {
   /**
    * Transform the exception to a valid JSON Object.
    *
-   * @param stack
+   * @param [stack] {boolean}
    * @return {{
    *   code: string,
    *   name: string,
@@ -97,12 +97,12 @@ export class Exception extends Error {
   /**
    * Prettify the error using Youch API.
    *
-   * @param {any?} options
-   * @param {string?} options.prefix
-   * @param {boolean?} options.hideMessage
-   * @param {boolean?} options.hideErrorTitle
-   * @param {boolean?} options.displayShortPath
-   * @param {boolean?} options.displayMainFrameOnly
+   * @param {any} [options]
+   * @param {string} [options.prefix]
+   * @param {boolean} [options.hideMessage]
+   * @param {boolean} [options.hideErrorTitle]
+   * @param {boolean} [options.displayShortPath]
+   * @param {boolean} [options.displayMainFrameOnly]
    * @return {Promise<string>}
    */
   async prettify(options) {

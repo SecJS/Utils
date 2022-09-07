@@ -85,7 +85,7 @@ export class Json {
   }
 
   /**
-   * Remove all keys from data that is not inside array keys
+   * Remove all keys from data that is not inside array keys.
    *
    * @param {any} data
    * @param {any[]} keys
@@ -102,7 +102,7 @@ export class Json {
   }
 
   /**
-   * Remove all duplicated values from the array
+   * Remove all duplicated values from the array.
    *
    * @param {any[]} array
    * @return {any[]}
@@ -112,12 +112,12 @@ export class Json {
   }
 
   /**
-   * Sort an index value from the array
+   * Raffle any value from the array.
    *
    * @param {any[]} array
-   * @return {number}
+   * @return {any}
    */
-  static sort(array) {
+  static raffle(array) {
     const index = Math.random() * array.length
 
     return array[Math.floor(index)]
@@ -127,7 +127,7 @@ export class Json {
    * Get the object properties based on key.
    *
    * @param {string} key
-   * @param {any?} defaultValue
+   * @param {any} [defaultValue]
    * @param {any} object
    * @return {any|undefined}
    */

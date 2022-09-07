@@ -16,6 +16,7 @@ export class Path {
   /**
    * Set a default beforePath for all Path methods that
    * use Path.pwd.
+   *
    * @type {string}
    */
   static defaultBeforePath = ''
@@ -23,7 +24,7 @@ export class Path {
   /**
    * Return the pwd path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} [subPath]
    * @return {string}
    */
   static pwd(subPath = sep) {
@@ -39,7 +40,7 @@ export class Path {
   /**
    * Return the app path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static app(subPath = sep) {
@@ -49,7 +50,7 @@ export class Path {
   /**
    * Return the bootstrap path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static bootstrap(subPath = sep) {
@@ -59,7 +60,7 @@ export class Path {
   /**
    * Return the config path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static config(subPath = sep) {
@@ -69,7 +70,7 @@ export class Path {
   /**
    * Return the database path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static database(subPath = sep) {
@@ -79,7 +80,7 @@ export class Path {
   /**
    * Return the lang path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static lang(subPath = sep) {
@@ -89,7 +90,7 @@ export class Path {
   /**
    * Return the node_modules path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static nodeModules(subPath = sep) {
@@ -99,7 +100,7 @@ export class Path {
   /**
    * Return the providers' path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static providers(subPath = sep) {
@@ -109,7 +110,7 @@ export class Path {
   /**
    * Return the public path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static public(subPath = sep) {
@@ -119,7 +120,7 @@ export class Path {
   /**
    * Return the resources' path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static resources(subPath = sep) {
@@ -129,7 +130,7 @@ export class Path {
   /**
    * Return the routes' path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static routes(subPath = sep) {
@@ -139,7 +140,7 @@ export class Path {
   /**
    * Return the storage path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static storage(subPath = sep) {
@@ -149,7 +150,7 @@ export class Path {
   /**
    * Return the tests' path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static tests(subPath = sep) {
@@ -159,7 +160,7 @@ export class Path {
   /**
    * Return the logs' path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static logs(subPath = sep) {
@@ -169,7 +170,7 @@ export class Path {
   /**
    * Return the views' path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static views(subPath = sep) {
@@ -179,7 +180,7 @@ export class Path {
   /**
    * Return the assets' path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static assets(subPath = sep) {
@@ -189,7 +190,7 @@ export class Path {
   /**
    * Return the locales' path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static locales(subPath = sep) {
@@ -199,7 +200,7 @@ export class Path {
   /**
    * Return the facades' path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static facades(subPath = sep) {
@@ -209,7 +210,7 @@ export class Path {
   /**
    * Return the stubs' path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static stubs(subPath = sep) {
@@ -219,7 +220,7 @@ export class Path {
   /**
    * Return the http path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static http(subPath = sep) {
@@ -229,7 +230,7 @@ export class Path {
   /**
    * Return the console path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static console(subPath = sep) {
@@ -239,7 +240,7 @@ export class Path {
   /**
    * Return the services' path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static services(subPath = sep) {
@@ -249,7 +250,7 @@ export class Path {
   /**
    * Return the migrations' path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static migrations(subPath = sep) {
@@ -259,7 +260,7 @@ export class Path {
   /**
    * Return the seeders' path of your project.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static seeders(subPath = sep) {
@@ -269,7 +270,7 @@ export class Path {
   /**
    * Return the .bin path of your node_modules.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static bin(subPath = sep) {
@@ -279,7 +280,7 @@ export class Path {
   /**
    * Return the tmp path of your vm.
    *
-   * @param {string?} subPath
+   * @param {string} subPath
    * @return {string}
    */
   static vmTmp(subPath = sep) {
@@ -291,11 +292,25 @@ export class Path {
   }
 
   /**
+   * Return the home path of your vm.
+   *
+   * @param {string} subPath
+   * @return {string}
+   */
+  static vmHome(subPath = sep) {
+    const osHomeDir = homedir()
+
+    const homeDir = osHomeDir.concat(sep, normalize(subPath))
+
+    return this.#removeSlashes(homeDir)
+  }
+
+  /**
    * Return the execution path of where this method
    * is being called.
    *
-   * @param {string?} subPath
-   * @param {number?} stackIndex
+   * @param {string} subPath
+   * @param {number} [stackIndex]
    * @return {string}
    */
   static this(subPath = sep, stackIndex = 1) {
@@ -308,20 +323,6 @@ export class Path {
     const execDir = normalize(requester.concat(sep, normalize(subPath)))
 
     return this.#removeSlashes(execDir)
-  }
-
-  /**
-   * Return the home path of your vm.
-   *
-   * @param {string?} subPath
-   * @return {string}
-   */
-  static vmHome(subPath = sep) {
-    const osHomeDir = homedir()
-
-    const homeDir = osHomeDir.concat(sep, normalize(subPath))
-
-    return this.#removeSlashes(homeDir)
   }
 
   /**

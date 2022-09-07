@@ -474,9 +474,9 @@ console.log(Json.removeDuplicated(array)) // [1, 2, 4]
 
 ```ts
 const array = ['a', 'b', 'c'] // Array length = 2 (0, 1, 2)
-const sortedValue = Json.sort(array) // Sorted value from the array, could be a, b or c
+const raffledValue = Json.raffle(array) // Raffled value from the array, could be a, b or c
 
-console.log(sortedValue) // a, b or c
+console.log(raffledValue) // a, b or c
 ```
 
 ---

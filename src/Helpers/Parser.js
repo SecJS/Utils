@@ -37,7 +37,7 @@ export class Parser {
    *   separator?: string,
    *   pairSeparator?: string,
    *   lastSeparator?: string
-   * }?} options
+   * }} [options]
    * @return {string}
    */
   static arrayToString(values, options) {
@@ -153,7 +153,7 @@ export class Parser {
   /**
    * Parses a byte format to number.
    *
-   * @param {string, number} byte
+   * @param {string|number} byte
    * @return {number}
    */
   static byteToSize(byte) {
@@ -184,7 +184,7 @@ export class Parser {
   /**
    * Parses the status code number to it reason in string.
    *
-   * @param {string, number} status
+   * @param {string|number} status
    * @return {string}
    */
   static statusCodeToReason(status) {

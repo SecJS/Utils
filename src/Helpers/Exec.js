@@ -37,7 +37,7 @@ export class Exec {
    * @param {string} command
    * @param {{
    *   ignoreErrors?: boolean
-   * }?} options
+   * }} [options]
    * @throws {NodeCommandException}
    * @return {Promise<{ stdout: string, stderr: string }>}
    */
@@ -62,9 +62,9 @@ export class Exec {
   /**
    * Download an archive to determined path.
    *
-   * @param {string} url
    * @param {string} name
-   * @param {string?} path
+   * @param {string} path
+   * @param {string} url
    * @return {Promise<File>}
    */
   static async download(name, path, url) {

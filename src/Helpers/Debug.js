@@ -54,8 +54,8 @@ export class Debug {
   /**
    * Format and throw the message in the stdout accordingly to the namespace.
    *
-   * @param {string|Object} message
-   * @param {string} namespace
+   * @param {string|any} message
+   * @param {string} [namespace]
    * @return {void}
    */
   static log(message, namespace = 'api:main') {
