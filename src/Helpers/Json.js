@@ -132,7 +132,7 @@ export class Json {
    * @return {any|undefined}
    */
   static get(object, key, defaultValue) {
-    if (key === '*' && object) {
+    if (key === '' && object) {
       return object
     }
 

@@ -493,8 +493,8 @@ const object = {
 const value = Json.get(object, 'hello.world.value.hello') // 'Hello World!'
 const undefinedValue = Json.get(object, 'hello.worlld.value.hello') // undefined
 const defaultValue = Json.get(object, 'hello.worlld.value.hello', 'Hi World!') // 'Hi World!'
-const fullObject = Json.get(object, '*') // Same as object { hello: { world: { value: { hello: 'Hello World!' } } } }
-const defaultValueInObjectNull = Json.get(undefined, '*', { hello: 'world' }) // { hello: 'world' }
+const fullObject = Json.get(object, '') // Same as object { hello: { world: { value: { hello: 'Hello World!' } } } }
+const defaultValueInObjectNull = Json.get(undefined, '', { hello: 'world' }) // { hello: 'world' }
 ```
 
 ---

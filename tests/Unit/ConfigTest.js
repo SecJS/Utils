@@ -30,6 +30,15 @@ test.group('ConfigTest', group => {
     await Folder.safeRemove(Path.config())
   })
 
+  test('should be able to get full configurations values from Config class', ({ assert }) => {
+    const app = Config.get('app')
+
+    assert.deepEqual(app, {
+      name: 'SecJS',
+      env: 'test',
+    })
+  })
+
   test('should be able to get configurations values from Config class', ({ assert }) => {
     const appName = Config.get('app.name')
 
