@@ -14,21 +14,24 @@ export class NodeCommandException extends Exception {
    * Creates a new instance of NodeCommandException.
    *
    * @param {string} command
-   * @param {string?} stdout
-   * @param {string?} stderr
+   * @param {any} error
    * @return {NodeCommandException}
    */
-  constructor(command, stdout, stderr) {
+  constructor(command, error) {
     const content = `Error has occurred when executing the command "${command}"`
 
     let help = ''
 
-    if (stdout) {
-      help = help.concat(`Command stdout:\n\n${stdout}\n\n`)
+    if (error.stdout) {
+      help = help.concat(`Command stdout:\n\n${error.stdout}\n\n`)
     }
 
-    if (stderr) {
-      help = help.concat(`Command stderr:\n\n${stderr}\n\n`)
+    if (error.stderr) {
+      help = help.concat(`Command stderr:\n\n${error.stderr}\n\n`)
+    }
+
+    if (!error.stdout && !error.stdout) {
+      help = `Command error:\n\n${JSON.stringify(error)}\n\n`
     }
 
     super(content, 500, 'E_NODE_EXEC', help)

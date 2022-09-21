@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+import { Collection as CollectJS } from 'collect.js'
+
 export declare interface ExceptionJSON {
   code?: string
   name: string
@@ -119,6 +121,74 @@ export declare class Clean {
     removeEmpty?: boolean,
     cleanInsideArrays?: boolean,
   ): any
+}
+
+export declare class Collection<Item = any> extends CollectJS<Item> {
+  /**
+   * Remove all duplicated values from the array.
+   *
+   * @return {any[]}
+   */
+  removeDuplicated(): Item[]
+
+  /**
+   * The sortDesc method sort the collection in descending mode.
+   */
+  sortDesc(): Collection<Item>
+
+  /**
+   * The sortKeys method sort the keys of the collection.
+   */
+  sortKeys(): Collection<Item>
+
+  /**
+   * The sortKeysDesc method sort the keys of the collection in descending mode.
+   */
+  sortKeysDesc(): Collection<Item>
+
+  /**
+   * The order method orders the collection.
+   */
+  order(fn?: (a: Item, b: Item) => number): Collection<Item>
+
+  /**
+   * The orderBy method orders the collection by the given key.
+   * The ordered collection keeps the original array keys.
+   */
+  orderBy<V>(value: V): Collection<Item>
+
+  /**
+   * The orderBy method orders the collection by the given callback.
+   * The ordered collection keeps the original array keys.
+   */
+  orderBy(fn: (item: Item) => number): Collection<Item>
+
+  /**
+   * This method has the same signature as the orderBy method,
+   * but will order the collection in the opposite order.
+   */
+  orderByDesc<V>(value: V): Collection<Item>
+
+  /**
+   * This method has the same signature as the orderBy method,
+   * but will order the collection in the opposite order.
+   */
+  orderByDesc(fn: (item: Item) => number): Collection<Item>
+
+  /**
+   * The orderDesc method order the collection in descending mode.
+   */
+  orderDesc(): Collection<Item>
+
+  /**
+   * The orderKeys method order the keys of the collection.
+   */
+  orderKeys(): Collection<Item>
+
+  /**
+   * The orderKeysDesc method order the keys of the collection in descending mode.
+   */
+  orderKeysDesc(): Collection<Item>
 }
 
 export declare class Config {

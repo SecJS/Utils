@@ -32,6 +32,19 @@ npm install @secjs/utils
 
 ## Usage
 
+### Collection
+
+> Use the collection to work with arrays and objects. `Collection` uses
+> the [collect.js](https://www.npmjs.com/package/collect.js)
+> package under the hood. This class offers an (almost) identical api
+> to [`Laravel Collections`](https://laravel.com/docs/9.x/collections).
+
+```js
+import { Collection } from '@secjs/utils'
+
+const collection = new Collection([1, 2, 3])
+```
+
 ### File
 
 > Use File to create an instance of a File, it's existing or not.

@@ -55,7 +55,7 @@ export class Exec {
         return { stdout: error.stdout, stderr: error.stderr }
       }
 
-      throw new NodeCommandException(command, error.stdout, error.stderr)
+      throw new NodeCommandException(command, error)
     }
   }
 

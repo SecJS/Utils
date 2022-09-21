@@ -104,6 +104,7 @@ export class Json {
   /**
    * Remove all duplicated values from the array.
    *
+   * @deprecated Use the Collection.removeDuplicated method.
    * @param {any[]} array
    * @return {any[]}
    */
@@ -114,6 +115,7 @@ export class Json {
   /**
    * Raffle any value from the array.
    *
+   * @deprecated Use the Collection.random method.
    * @param {any[]} array
    * @return {any}
    */

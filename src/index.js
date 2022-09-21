@@ -9,6 +9,7 @@
 
 // Helpers
 export * from './Helpers/Clean.js'
+export * from './Helpers/Collection.js'
 export * from './Helpers/Config.js'
 export * from './Helpers/Debug.js'
 export * from './Helpers/Exception.js'
