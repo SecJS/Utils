@@ -1,6 +1,6 @@
 {
   "name": "@secjs/utils",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Utils functions and classes for Node.js",
   "license": "MIT",
   "author": "João Lenon <lenon@athenna.io>",

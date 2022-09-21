@@ -125,11 +125,30 @@ export declare class Clean {
 
 export declare class Collection<Item = any> extends CollectJS<Item> {
   /**
+   * An alias for macro instance method:
+   *
+   * @example
+   *  new Collection().macro()
+   *
+   *  @param {string} name
+   *  @param {Function} fn
+   */
+  static macro(name: string, fn: Function): void
+
+  /**
    * Remove all duplicated values from the array.
    *
    * @return {any[]}
    */
   removeDuplicated(): Item[]
+
+  /**
+   * Execute the toResource method inside objects if exists.
+   *
+   * @param {any} [criterias]
+   * @return {any[]}
+   */
+  toResource(criterias?: any): any[]
 
   /**
    * The sortDesc method sort the collection in descending mode.
@@ -1937,4 +1956,12 @@ export declare class Uuid {
    * @return {string}
    */
   static changeOrGenerate(prefix: string, token?: string): string
+}
+
+declare global {
+  interface Array<T> {
+    toResource(criterias?: any): T[];
+
+    toCollection(): Collection<T>;
+  }
 }
